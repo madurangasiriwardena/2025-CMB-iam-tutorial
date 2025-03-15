@@ -22,4 +22,5 @@ export interface FormButtonToolbarProps {
     needCancel: boolean,
     onCancel?: ()=>void,
     submitButtonDisabled: boolean,
+    block?: boolean
 }

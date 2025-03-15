@@ -27,9 +27,9 @@ import { FormButtonToolbarProps } from "../../models/formButtonToolbar/formButto
  * 
  * @returns Button toolbar for the forms
  */
-export function FormButtonToolbar(props: FormButtonToolbarProps) {
+export function FormButtonToolbar(props: FormButtonToolbarProps ) {
 
-    const { submitButtonText, cancelButtonText, needCancel, onCancel, submitButtonDisabled } = props;
+    const { submitButtonText, cancelButtonText, needCancel, onCancel, submitButtonDisabled, block } = props;
 
     return (
         <FormSuite.Group>
@@ -40,6 +40,7 @@ export function FormButtonToolbar(props: FormButtonToolbarProps) {
                     size="lg"
                     appearance="primary"
                     type="submit"
+                    block={block}
                     disabled={ submitButtonDisabled }>
                     { submitButtonText }
                 </Button>
@@ -47,10 +48,11 @@ export function FormButtonToolbar(props: FormButtonToolbarProps) {
                 {
                     needCancel
                         ? (<Button
-                            className={ styles["addUserButton"] }
+                            className={ styles["cancelButton"] }
                             size="lg"
-                            appearance="ghost"
+                            appearance="default"
                             type="button"
+                            block={block}
                             onClick={ onCancel }>
                             { cancelButtonText }
                         </Button>)
