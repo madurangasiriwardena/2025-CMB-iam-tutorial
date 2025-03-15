@@ -19,14 +19,60 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { notPostError } from "@pet-management-webapp/shared/data-access/data-access-common-api-util";
 import getToken from "./clientCredentials";
-import validateOrgName from "./createTeam/checkName";
-import createOrg from "./createTeam/addTeam";
+import validateOrgName from "./organizations/checkName";
+import deleteTeam from "./organizations/deleteTeam";
+import createOrg from "./organizations/addTeam";
 import listCurrentApplication from "./settings/application/listCurrentApplication";
 import getRole from "./settings/role/getRole";
 import switchOrg from "./settings/switchOrg";
 import pollForDefaultUserstore from "./helpers/pollUserstore";
 import pollForUserCreation from "./helpers/pollUser";
 import pollforRolePatching from "./helpers/pollRolePatch";
+
+/**
+ * Helper function to delete an organization (for rollback)
+ * 
+ * @param accessToken - Access token with permissions to delete organizations
+ * @param orgId - ID of the organization to delete
+ * @returns Promise<boolean> - True if deletion was successful
+ */
+async function rollbackOrganization(accessToken: string, orgId: string): Promise<boolean> {
+  try {
+    
+    const mockReq = {
+      method: "DELETE",
+      body: { orgId, accessToken }
+    } as unknown as NextApiRequest;
+    
+    const mockRes = {
+      statusCode: 0,
+      responseData: null,
+      status: function(code) {
+        this.statusCode = code;
+        return this;
+      },
+      json: function(data) {
+        this.responseData = data;
+        return this;
+      }
+    } as unknown as NextApiResponse;
+    
+    await deleteTeam(mockReq, mockRes);
+    
+    const success = mockRes.statusCode === 200 && mockRes.responseData?.success === true;
+    
+    if (success) {
+      console.log("Successfully rolled back organization");
+    } else {
+      console.error(`Failed to roll back organization: ${orgId}`, mockRes.responseData);
+    }
+    
+    return success;
+  } catch (error) {
+    console.error(`Exception during organization rollback for ${orgId}:`, error);
+    return false;
+  }
+}
 
 /**
  * Signup handler to onboard user and team.
@@ -57,12 +103,12 @@ export default async function handler(
   try {
     // Step 1: Get access token
     const tokenData = await getToken();
-    let accessToken = tokenData.access_token;
+    const rootAccessToken = tokenData.access_token;
 
     // Step 2: Validate organization name
     const mockReq = {
       method: "POST",
-      body: JSON.stringify({ name: organizationName, accessToken }),
+      body: JSON.stringify({ name: organizationName, accessToken: rootAccessToken }),
     } as unknown as NextApiRequest;
 
     const mockRes = {
@@ -88,7 +134,7 @@ export default async function handler(
     // Step 3: Create organization
     const createOrgReq = {
       method: "POST",
-      body: JSON.stringify({ name: organizationName, accessToken }),
+      body: JSON.stringify({ name: organizationName, accessToken: rootAccessToken }),
     } as unknown as NextApiRequest;
 
     const createOrgRes = {
@@ -114,7 +160,7 @@ export default async function handler(
     // Step 4: Switch to the newly created organization to get a token for that org.
     const switchOrgReq = {
       method: "POST",
-      body: JSON.stringify({ subOrgId: orgId, param: accessToken }),
+      body: JSON.stringify({ subOrgId: orgId, param: rootAccessToken }),
     } as unknown as NextApiRequest;
 
     const switchOrgRes = {
@@ -131,13 +177,19 @@ export default async function handler(
     await switchOrg(switchOrgReq, switchOrgRes);
 
     if (switchOrgRes.statusCode !== 200) {
+
+      if (rootAccessToken && orgId) {
+        await rollbackOrganization(rootAccessToken, orgId);
+      }
+
       return res.status(switchOrgRes.statusCode).json({
         error: "Failed to switch to the new organization",
         details: switchOrgRes.data,
+        message: "Sign up failed. Please try again.",
       });
     }
 
-    accessToken = switchOrgRes.data.access_token;
+    const accessToken = switchOrgRes.data.access_token;
 
     // Step 5: Check for DEFAULT userstore
     const defaultUserstoreExists = await pollForDefaultUserstore(
@@ -146,10 +198,15 @@ export default async function handler(
     );
 
     if (!defaultUserstoreExists) {
+
+      if (rootAccessToken && orgId) {
+        await rollbackOrganization(rootAccessToken, orgId);
+      }
+
       return res.status(408).json({
         error: "Timed out waiting for DEFAULT userstore to be provisioned",
         message:
-          "The organization was created, but the DEFAULT userstore was not provisioned in time. Please try again later.",
+          "Sign up failed. Please try again.",
       });
     }
 
@@ -164,7 +221,12 @@ export default async function handler(
     );
 
     if (!success) {
-      return res.status(status).json({ error: data.error || "User creation failed" });
+
+      if (rootAccessToken && orgId) {
+        await rollbackOrganization(rootAccessToken, orgId);
+      }
+
+      return res.status(status).json({ error: data.error || "Sign up failed. Please try again." });
     }
 
     const userData = data;
@@ -195,9 +257,14 @@ export default async function handler(
       !appRes.data.applications ||
       appRes.data.applications.length === 0
     ) {
+
+      if (rootAccessToken && orgId) {
+        await rollbackOrganization(rootAccessToken, orgId);
+      }
+
       return res
         .status(404)
-        .json({ error: `Application '${appName}' not found` });
+        .json({ error: `Sign up failed. Application '${appName}' not found` });
     }
 
     const appId = appRes.data.applications[0].id;
@@ -234,7 +301,12 @@ export default async function handler(
       !roleRes.data.Resources ||
       roleRes.data.Resources.length === 0
     ) {
-      return res.status(404).json({ error: "Admin role not found" });
+
+      if (rootAccessToken && orgId) {
+        await rollbackOrganization(rootAccessToken, orgId);
+      }
+
+      return res.status(404).json({ error: "Sign up failed. Admin role not found" });
     }
 
     const roleId = roleRes?.data?.Resources[0]?.id;
@@ -247,10 +319,20 @@ export default async function handler(
     );
 
     if (!rolePatchSuccess) {
-      return res.status(status).json({ error: data.error || "Adding user to role failed" });
+
+      if (rootAccessToken && orgId) {
+        await rollbackOrganization(rootAccessToken, orgId);
+      }
+
+      return res.status(rolePatchstatus).json({ error: rolePatchData.error || "Sign up failed. Couldn't add user to Admin role." });
     }
 
     if (rolePatchstatus !== 200) {
+
+      if (rootAccessToken && orgId) {
+        await rollbackOrganization(rootAccessToken, orgId);
+      }
+
       return res.status(rolePatchstatus).json(rolePatchData);
     }
 
