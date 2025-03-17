@@ -29,11 +29,11 @@ import { LogoComponentProps } from "../../models/logoComponent/logoComponent";
  */
 export function LogoComponent(prop: LogoComponentProps) {
 
-    const { name, imageSize, white } = prop;
+    const { name, imageSize, image, white } = prop;
 
     return (
         <SharedLogoComponent
-            image={ logoImage }
+            image={ image ?? logoImage }
             tagLine={ getConfig().BusinessAdminAppConfig.ApplicationConfig.Branding.tag }
             name={ name }
             imageSize={ imageSize }
