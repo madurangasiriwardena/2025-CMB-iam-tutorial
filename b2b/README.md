@@ -26,7 +26,7 @@ Before you start, ensure you have the following:
 - Asgardeo account
 - Node.js v18+ and npm
 - A favorite text editor or IDE
-- Install Ballerina 2201.5.0 [Download Ballerina](https://dist.ballerina.io/downloads/2201.5.0/ballerina-2201.5.0-swan-lake-macos-arm-x64.pkg)
+- Install Ballerina 2201.5.0 [Download Ballerina](https://ballerina.io/downloads/)
 
 ## Deploy API Services
 
