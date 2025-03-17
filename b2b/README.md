@@ -59,9 +59,10 @@ If you have not already done so, create an organization in Asgardeo before regis
 
   <img width="800" alt="Image" src="https://github.com/user-attachments/assets/a099b0fc-01f3-4f06-9fb2-4fde8bfe9b65" />
 
-!!! Note
+  <br />
 
-    The authorized redirect URL determines where Asgardeo should send users after they successfully log in. Typically, this will be the web address where Teamspace is hosted. For this guide, we'll use `http://localhost:3002/api/auth/callback/asgardeo`, as the app will be accessible at this URL.
+  > **Note:**  
+  > The authorized redirect URL determines where Asgardeo should send users after they successfully log in. Typically, this will be the web address where Teamspace is hosted. For this guide, we'll use `http://localhost:3002/api/auth/callback/asgardeo`, as the app will be accessible at this URL.
 
 5. Allow sharing the application with organizations and click "Create". You can also do this later from the “Advanced” tab of the created application as well.
 
@@ -277,9 +278,8 @@ Let’s look at how the sign-up flow implementation works in the Teamspace app.
 
 Our sign-up flow uses the self-service approach offered by Asgardeo. This approach empowers organizations to take control of the onboarding process by enabling organizations to create their own organizations and onboard administrators.
 
-!!! Note
-
-    [Self-Service Approach](https://wso2.com/asgardeo/docs/guides/organization-management/onboard-org-admins/self-service-approach/#maintain-organization-admins)
+  > **Note:**  
+  > Read more on the [Self-Service Approach.](https://wso2.com/asgardeo/docs/guides/organization-management/onboard-org-admins/self-service)
 
 Visit Teamspace at `https://localhost:3002` and click “Sign Up”.
 
