@@ -41,6 +41,7 @@ import sideNavDataForAdmin
 import HomeComponentForAdmin
     from "../../../../libs/shared/ui/ui-components/src/lib/components/homeComponent/homeComponentForAdmin";
 import Custom500 from "../../pages/500";
+import TeamspaceDark from "../../../../libs/business-admin-app/ui/ui-assets/src/lib/images/teamspace_dark.png";
 
 
 interface HomeProps {
@@ -141,6 +142,7 @@ export default function Home(props: HomeProps): JSX.Element {
                 logoComponent={ (
                     <LogoComponent 
                         imageSize="small" 
+                        image={ TeamspaceDark }
                         name={ name } 
                         white={ true } 
                     /> 
