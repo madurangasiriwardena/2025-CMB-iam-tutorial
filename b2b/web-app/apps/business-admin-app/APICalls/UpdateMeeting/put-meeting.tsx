@@ -20,9 +20,9 @@ import { MeetingInfo } from "../../types/meeting";
 import createHeaders from "../createHeaders";
 import { getMeetingInstance } from "../getMeetings/meetingInstance";
 
-export async function putMeeting(accessToken: string, doctorId: string, payload?: MeetingInfo) {
+export async function putMeeting(accessToken: string, meetingId: string, payload?: MeetingInfo) {
     const headers = createHeaders(accessToken);
-    const response = await getMeetingInstance().put(`meetings/${encodeURIComponent(doctorId)}`, payload, {
+    const response = await getMeetingInstance().put(`meetings/${encodeURIComponent(meetingId)}`, payload, {
         headers: headers
     });
 

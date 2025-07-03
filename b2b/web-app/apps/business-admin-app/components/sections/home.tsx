@@ -41,6 +41,8 @@ import sideNavDataForAdmin
 import HomeComponentForAdmin
     from "../../../../libs/shared/ui/ui-components/src/lib/components/homeComponent/homeComponentForAdmin";
 import Custom500 from "../../pages/500";
+import Chat from '../../components/sections/Chat';
+import { set } from "date-fns";
 
 
 interface HomeProps {
@@ -77,7 +79,11 @@ export default function Home(props: HomeProps): JSX.Element {
         //     });
     };
 
-    
+    const [messages, setMessages] = React.useState([
+        { role: 'system', content: 'You are an assistant that helps schedule meetings.' }
+    ]);
+    const [loading, setLoading] = React.useState(false);
+    const [userMessage, setUserMessage] = React.useState("");
 
 
     const mainPanelComponenet = (activeKey): JSX.Element => {
@@ -128,6 +134,30 @@ export default function Home(props: HomeProps): JSX.Element {
         setSignOutModalOpen(false);
     };
 
+    const handleSendMessage = async (input: string) => {
+        setMessages(prev => [...prev, { role: 'user', content: input }]);
+        setUserMessage(input);
+        setLoading(true);
+        try {
+            const res = await fetch('http://localhost:8000/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.accessToken}` },
+                body: JSON.stringify({ "message": input })
+            });
+            console.log('Chat API response status:', res.status); // Log the response code
+            const data = await res.json();
+            let aiMessage = data.response?.chat_response || 'Sorry, I could not process that.';
+            const authUrl = data.response?.tool_response?.authorization_url;
+            if (authUrl) {
+                aiMessage += `\n\n[Authorize Meeting](${authUrl})`;
+            }
+            setMessages(prev => [...prev, { role: 'assistant', content: aiMessage }]);
+        } catch (e) {
+            setMessages(prev => [...prev, { role: 'assistant', content: 'Error contacting AI.' }]);
+        }
+        setLoading(false);
+    };
+
     let homeComponent;
 
     if (session) {
@@ -164,6 +194,10 @@ export default function Home(props: HomeProps): JSX.Element {
                 signOutCallback={ signOutCallback } />
 
             { homeComponent }
+
+            <div style={{ marginTop: 32, display: 'flex', justifyContent: 'center' }}>
+              <Chat onSendMessage={handleSendMessage} messages={messages} loading={loading} />
+            </div>
         </div>
     );
 }
