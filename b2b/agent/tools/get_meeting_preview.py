@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 import json
 import os
 from typing import Type, Optional, Union
@@ -7,6 +7,7 @@ from pydantic import BaseModel, Field
 import requests
 from utils.state_manager import state_manager
 from utils.constants import FlowState, FrontendState
+import tzlocal
 
 from schemas import CrewOutput, Response
 from utils.asgardeo_manager import asgardeo_manager
@@ -30,7 +31,7 @@ class ScheduleMeetingPreviewTool(BaseTool):
         super().__init__()
         self.thread_id = thread_id
 
-    def _run(self, topic: str, date: str, startTime: str, duration: str, timeZone: str) -> str:
+    def _run(self, topic: str, date: str, startTime: str, duration: str, timeZone: str = None) -> str:
         try:
             
             if not topic:
@@ -47,16 +48,28 @@ class ScheduleMeetingPreviewTool(BaseTool):
 
             # can calculate the current timezone
             if not timeZone:
-                raise Exception("timeZone is required. If you don't have a timeZone, you can find them is the chat context or ask the user for the timeZone.")
+                # Use the system's current timezone if not provided
+                timeZone = str(tzlocal.get_localzone())
             
             user_id = asgardeo_manager.get_user_id_from_thread_id(self.thread_id)
 
             authorization_url = asgardeo_manager.get_authorization_url(self.thread_id, user_id, ["openid", "create_meeting"])
 
+            schedule_preview = {
+                "topic": topic,
+                "date": date,
+                "startTime": startTime,
+                "duration": duration,
+                "timeZone": timeZone
+            }
             frontend_state = FrontendState.BOOKING_PREVIEW
+            state_manager.add_state(self.thread_id, FlowState.BOOKING_PREVIEW_INITIATED)
+            message = json.dumps(schedule_preview)+ " Please confirm the meeting schedule."
             response = Response(
-                chat_response="Please confirm the booking",
+                # TODO Add the meeting details to the chat response
+                chat_response=message,
                 tool_response={
+                    "schedule_preview": schedule_preview,
                     "authorization_url": authorization_url
                 }
             )

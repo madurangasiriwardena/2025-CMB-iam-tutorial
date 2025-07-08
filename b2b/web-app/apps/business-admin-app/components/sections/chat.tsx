@@ -1,124 +1,384 @@
-import React, { useState } from 'react';
+import React, {FormEvent, useEffect, useRef, useState} from 'react';
+import {LoadingIndicator} from "./chat/loading-indicator";
+import {MarkdownRenderer} from "./chat/markdown-renderer";
+import {Info, Send} from "lucide-react";
+import {SchedulingConfirmationCard} from "./chat/booking-confirmation-card";
+import {useStateStore} from "./state-store";
 
-// Helper to render message content with clickable links if present
-function renderMessageContent(content: string) {
-  // Simple regex to match [text](url) markdown links
-  const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
-  const parts = [];
-  let lastIndex = 0;
-  let match;
-  let key = 0;
-  while ((match = linkRegex.exec(content)) !== null) {
-    if (match.index > lastIndex) {
-      parts.push(content.slice(lastIndex, match.index));
-    }
-    parts.push(
-      <a href={match[2]} target="_blank" rel="noopener noreferrer" key={key++} style={{ color: '#4F40EE', textDecoration: 'underline' }}>
-        {match[1]}
-      </a>
-    );
-    lastIndex = match.index + match[0].length;
-  }
-  if (lastIndex < content.length) {
-    parts.push(content.slice(lastIndex));
-  }
-  return parts;
+type MeetingPreview = {
+  topic: string
+  date: string
+  startTime: string
+  duration: string
+  timeZone: string
 }
 
-const Chat = ({ onSendMessage, messages, loading }) => {
+type MeetingDetails = {
+  meeting_id: string
+}
+
+type Response = {
+  chat_response: string
+  tool_response: {
+    authorization_url?: string
+    BookingDetails?: MeetingPreview
+    booking_details?: MeetingDetails
+    schedule_preview?: {
+      meeting_id: string
+    }
+  }
+}
+
+type AgentMessage = {
+  id: string
+  response: Response
+  frontend_state: string
+  message_states: string[]
+}
+
+type Message = {
+  id: string
+  content: string
+  isUser: boolean
+  isLoading?: boolean
+  loadingAction?: 'searching' | 'booking' | 'default'
+  toolResponse?: AgentMessage
+}
+
+function StateInfoButton({ threadId, messageStates }: { threadId: string, messageStates: string[] }) {
+  const { setThreadId, setState, toggleStatusPanel, isStatusPanelVisible, currentThreadId } = useStateStore();
+
+  // Debug effect to track state changes
+  useEffect(() => {
+    console.log("StateInfoButton state:", { threadId, currentThreadId, isStatusPanelVisible, messageStates });
+  }, [threadId, currentThreadId, isStatusPanelVisible, messageStates]);
+
+  const handleInfoClick = () => {
+    console.log("Show Status clicked - before:", {
+      currentThreadId: threadId,
+      isStatusPanelVisible,
+      messageStates
+    });
+
+    // Set the thread ID and state directly from the message
+    setThreadId(threadId);
+    setState(messageStates || []); // Ensure we pass an array even if messageStates is undefined
+    toggleStatusPanel(true);
+
+    console.log("Show Status clicked - after:", {
+      currentThreadId: threadId,
+      isStatusPanelVisible,
+      messageStates
+    });
+  };
+
+  return (
+      <button
+          onClick={handleInfoClick}
+          className="flex items-center text-gray-400 hover:text-orange-500 transition-colors text-xs mt-2"
+      >
+        <Info className="h-3.5 w-3.5 mr-1" />
+        <span>Explanation</span>
+      </button>
+  );
+}
+
+const Chat = ({ session }) => {
   const [input, setInput] = useState('');
   const [open, setOpen] = useState(false);
+  const [threadId] = useState<string>(Date.now().toString())
+  const [showPreviewConfirmWidget, setShowPreviewConfirmWidget] = useState<boolean>(true)
+  const { setThreadId: setGlobalThreadId } = useStateStore()
+  const [isLoading, setIsLoading] = useState(false)
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: Date.now().toString(),
+      content: `Hello ${session?.user?.username || 'there'} ! How can I help you today?`,
+      isUser: false,
+    },
+  ])
 
-  const handleSend = () => {
-    if (input.trim()) {
-      onSendMessage(input);
-      setInput('');
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleBookConfirmationRetry = async (meeting: any) => {
+    const bookingMessage = `Ok i am ok with booking details you provide. Lets schedule the meeting topic ${meeting.topic} on ${meeting.date} at ${meeting.startTime} for ${meeting.duration} in time zone ${meeting.timeZone}.`;
+
+    const loadingMessage: Message = {
+      id: 'loading',
+      content: '',
+      isUser: false,
+      isLoading: true,
+      loadingAction: 'booking'
     }
-  };
+
+    setMessages((prev) => [...prev, loadingMessage])
+    setIsLoading(true)
+
+    try {
+      const response = await fetch(`http://localhost:8000/chat`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${session?.accessToken}`
+        },
+        body: JSON.stringify({
+          message: bookingMessage,
+          threadId: threadId
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      }
+
+      const agentMessage = await response.json() as AgentMessage
+
+      const botMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        content: agentMessage.response.chat_response,
+        isUser: false,
+        toolResponse: agentMessage
+      }
+
+      setShowPreviewConfirmWidget(false)
+
+      setMessages((prev) => prev.filter(msg => msg.id !== 'loading').concat(botMessage))
+    } catch (error) {
+      console.error("Error booking room:", error)
+      setMessages(prev => prev.filter(msg => msg.id !== 'loading').concat({
+        id: Date.now().toString(),
+        content: "Sorry, I couldn't process your booking request. Please try again.",
+        isUser: false
+      }))
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const renderToolResponse = (msg: AgentMessage) => {
+    if (msg.response.tool_response?.authorization_url && !msg.response.tool_response.authorization_url.includes('calendar')) {
+      return (
+          showPreviewConfirmWidget &&
+          <SchedulingConfirmationCard
+              threadId={threadId}
+              authorizationUrl={msg.response.tool_response.authorization_url}
+              onContinueBooking={() => {
+                if (msg.response.tool_response.schedule_preview) {
+                  handleBookConfirmationRetry(
+                      msg.response.tool_response.schedule_preview
+                  )
+                }
+              }}
+          />
+      )
+    }
+    return null
+  }
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault()
+    if (!input.trim() || isLoading) return
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      content: input,
+      isUser: true,
+    }
+
+    const loadingMessage: Message = {
+      id: 'loading',
+      content: '',
+      isUser: false,
+      isLoading: true,
+      loadingAction: 'default'
+    }
+
+    setMessages((prev) => [...prev, userMessage, loadingMessage])
+    setInput("")
+    setIsLoading(true)
+
+    try {
+      const response = await fetch(`http://localhost:8000/chat`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${session?.accessToken}`,
+        },
+        body: JSON.stringify({
+          message: input,
+          threadId: threadId
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      }
+
+      const agentMessage = await response.json() as AgentMessage
+
+      const botMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        content: agentMessage.response.chat_response,
+        isUser: false,
+        toolResponse: agentMessage
+      }
+
+      setMessages((prev) => prev.filter(msg => msg.id !== 'loading').concat(botMessage))
+    } catch (error) {
+      console.error("Error sending message:", error)
+      setMessages(prev => prev.filter(msg => msg.id !== 'loading').concat({
+        id: Date.now().toString(),
+        content: "Sorry, I couldn't process your message. Please try again.",
+        isUser: false
+      }))
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   return (
     <>
       {/* Floating chat button */}
       {!open && (
-        <button
-          onClick={() => setOpen(true)}
-          style={{
-            position: 'fixed',
-            bottom: 32,
-            right: 32,
-            zIndex: 1000,
-            background: '#4F40EE',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '50%',
-            width: 56,
-            height: 56,
-            fontSize: 28,
-            boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-            cursor: 'pointer',
-          }}
-          aria-label="Open chat"
-        >
-          💬
-        </button>
+          <button
+              onClick={() => setOpen(true)}
+              style={{
+                position: 'fixed',
+                bottom: 32,
+                right: 32,
+                zIndex: 1000,
+                background: '#3582fc',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '50%',
+                width: 56,
+                height: 56,
+                fontSize: 28,
+                boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+                cursor: 'pointer',
+              }}
+              aria-label="Open chat"
+          >
+            💬
+          </button>
       )}
       {/* Popup chat box */}
       {open && (
-        <div
-          style={{
-            position: 'fixed',
-            bottom: 100,
-            right: 32,
-            zIndex: 1001,
-            background: '#fff',
-            border: '1px solid #ccc',
-            borderRadius: 12,
-            boxShadow: '0 4px 24px rgba(0,0,0,0.18)',
-            padding: 16,
-            maxWidth: 400,
-            width: '100%',
-            minHeight: 320,
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-            <span style={{ fontWeight: 600 }}>AI Chat</span>
-            <button
-              onClick={() => setOpen(false)}
-              style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer' }}
-              aria-label="Close chat"
-            >
-              ×
-            </button>
+          <div
+              style={{
+                position: 'fixed',
+                bottom: 100,
+                right: 32,
+                zIndex: 1001,
+                background: '#fff',
+                border: '1px solid #ccc',
+                borderRadius: 12,
+                boxShadow: '0 4px 24px rgba(0,0,0,0.18)',
+                padding: 0,
+                maxWidth: 400,
+                width: '100%',
+                minHeight: 320,
+                display: 'flex',
+                flexDirection: 'column',
+                overflow: 'hidden',
+              }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', borderBottom: '1px solid #eee', background: '#f7f7fa' }}>
+              <span style={{ fontWeight: 600 }}>AI Chat</span>
+              <button
+                  onClick={() => setOpen(false)}
+                  style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer' }}
+                  aria-label="Close chat"
+              >
+                ×
+              </button>
+            </div>
+            <div style={{ flex: 1, overflowY: 'auto', padding: '16px', background: '#f7f7fa' }}>
+              {messages.map((msg, idx) => (
+                  <div
+                      key={msg.id || idx}
+                      style={{
+                        display: 'flex',
+                        flexDirection: msg.isUser ? 'row-reverse' : 'row',
+                        alignItems: 'flex-end',
+                        marginBottom: 12,
+                      }}
+                  >
+                    <img
+                        src={msg.isUser ? 'https://ui-avatars.com/api/?name=User&background=4F40EE&color=fff&size=32' : 'https://ui-avatars.com/api/?name=AI&background=E0E1E2&color=333&size=32'}
+                        alt={msg.isUser ? 'User' : 'AI'}
+                        style={{ width: 32, height: 32, borderRadius: '50%', margin: msg.isUser ? '0 0 0 8px' : '0 8px 0 0' }}
+                    />
+                    <div
+                        style={{
+                          background: msg.isUser ? '#4F40EE' : '#fff',
+                          color: msg.isUser ? '#fff' : '#222',
+                          border: msg.isUser ? 'none' : '1px solid #e0e0e0',
+                          borderRadius: msg.isUser ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
+                          padding: '10px 16px',
+                          maxWidth: '70%',
+                          fontSize: 14,
+                          boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
+                          wordBreak: 'break-word',
+                          display: 'inline-block',
+                        }}
+                    >
+                      {msg.isLoading ? (
+                          <LoadingIndicator action={msg.loadingAction} />
+                      ) : (
+                          <>
+                            {msg.isUser ? (
+                                <p className="text-sm">{msg.content}</p>
+                            ) : (
+                                <div className="text-sm text-gray-800">
+                                  <MarkdownRenderer content={msg.content} />
+                                </div>
+                            )}
+                            {!msg.isUser && msg.toolResponse && renderToolResponse(msg.toolResponse)}
+                          </>
+                          // <>
+                          //   <span>{msg.content}</span>
+                          //   {/* Render SchedulingConfirmationCard/tool response if present and not loading */}
+                          //   {!msg.isUser && !msg.isLoading && msg.toolResponse && renderToolResponse(msg.toolResponse)}
+                          // </>
+                      )}
+                    </div>
+                  </div>
+              ))}
+              <div ref={messagesEndRef} />
+            </div>
+            <div style={{ padding: 16, borderTop: '1px solid #eee', background: '#fff' }}>
+              <form onSubmit={handleSubmit} style={{ display: 'flex', gap: 8 }}>
+                <input
+                    type="text"
+                    placeholder="Type your message..."
+                    value={input}
+                    onChange={e => setInput(e.target.value)}
+                    disabled={isLoading}
+                    style={{ flex: 1, padding: 8, borderRadius: 4, border: '1px solid #ccc', fontSize: 14 }}
+                />
+                <button
+                    type="submit"
+                    disabled={isLoading || !input.trim()}
+                    style={{ padding: '8px 16px', background: '#4F40EE', color: '#fff', border: 'none', borderRadius: 4, cursor: isLoading ? 'not-allowed' : 'pointer' }}
+                >
+                  <Send size={18} />
+                </button>
+              </form>
+            </div>
           </div>
-          <div style={{ minHeight: 200, maxHeight: 300, overflowY: 'auto', marginBottom: 8, flex: 1 }}>
-            {messages.map((msg, idx) => (
-              <div key={idx} style={{ margin: '8px 0', textAlign: msg.role === 'user' ? 'right' : 'left' }}>
-                <span style={{ background: msg.role === 'user' ? '#e0f7fa' : '#f1f8e9', padding: 8, borderRadius: 4 }}>
-                  {typeof msg.content === 'string' ? renderMessageContent(msg.content) : msg.content}
-                </span>
-              </div>
-            ))}
-            {loading && <div>AI is typing...</div>}
-          </div>
-          <div style={{ display: 'flex', gap: 8 }}>
-            <input
-              type="text"
-              value={input}
-              onChange={e => setInput(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && handleSend()}
-              placeholder="Type your message..."
-              style={{ flex: 1, padding: 8, borderRadius: 4, border: '1px solid #ccc' }}
-            />
-            <button onClick={handleSend} disabled={loading || !input.trim()} style={{ padding: '8px 16px' }}>
-              Send
-            </button>
-          </div>
-        </div>
       )}
     </>
   );
-};
+}
 
 export default Chat;

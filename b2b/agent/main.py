@@ -120,6 +120,7 @@ async def callback(
         state_manager.add_state(thread_id, FlowState.BOOKING_AUTORIZED)
         return HTMLResponse(content=f"<html><body><script>window.location.href = '{os.environ['WEBSITE_URL']}/auth_success';</script></body></html>", status_code=200)
     except Exception as e:
+        logging.error(f"Error in callback: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))   
     
 @app.get("/state/{thread_id}")

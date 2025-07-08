@@ -35,8 +35,8 @@ class ScheduleMeetingTool(BaseTool):
         try:
 
             # TODO rename the BOOKING_PREVIEW_INITIATED to MEETING_PREVIEW_INITIATED
-            # if FlowState.BOOKING_PREVIEW_INITIATED not in state_manager.get_states(self.thread_id):
-            #     raise Exception("Booking preview not completed")
+            if FlowState.BOOKING_PREVIEW_INITIATED not in state_manager.get_states(self.thread_id):
+                raise Exception("Booking preview not completed")
 
             state_manager.add_state(self.thread_id, FlowState.BOOKING_PREVIEW_COMPLETED)
             state_manager.add_state(self.thread_id, FlowState.BOOKING_INITIATED)
@@ -78,7 +78,8 @@ class ScheduleMeetingTool(BaseTool):
                     "status": "failed"
                 }
                 message = f"Failed to schdule meeting: {response_dict['error']}"
-                frontend_state = FrontendState.BOOKING_COMPLETED_ERROR  
+                frontend_state = FrontendState.BOOKING_COMPLETED_ERROR
+                state_manager.add_state(self.thread_id, FlowState.BOOKING_PREVIEW_INITIATED)
             response = Response(
                 chat_response=message,
                 tool_response={

@@ -81,12 +81,22 @@ def create_crew(question, thread_id: str = None):
             - ScheduleMeetingPreviewTool
 
             ## Critical Rules
+            - Always check current flow_state before any action
+            - Only initiate booking when flow_state includes "BOOKING_PREVIEW_INITIATED"
             - URLs belong only in tool_response, never in chat_response
             - Any exceptions comeing from the tools should be formatted to nice message to user and presented in chat_response.
 
             ## Action Protocol
 
-            ### 1. Booking Finalization
+            ### 1. Booking Preview
+            When user wants to schedule a meeting:
+            - Use ScheduleMeetingPreviewTool
+            - If errors occur, revert and show the meeting preview details
+            - Provide a summary of schedule_preview in the chat_response and ask for confirmation. Do not include URLs.
+            - Include authorization_url and schedule_preview in tool_response.
+
+            ### 2. Booking Finalization
+            When flow_state is "BOOKING_PREVIEW_INITIATED":
             - Wait for explicit user approval ("Yes, schedule it!")
             - Call ScheduleMeetingTool to finalize
             - If errors occur, revert to confirmation step
