@@ -79,7 +79,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
     }, [ fetchData ]);
 
     const fetchBrandingPreference = async () => {
-        const res: BrandingPreference = (await controllerDecodeGetBrandingPreference(session) as BrandingPreference);
+        const res: BrandingPreference = (await controllerDecodeGetBrandingPrefrence(session) as BrandingPreference);
         const activeTheme: string = res["preference"]["theme"]["activeTheme"];
 
         setLogoUrl(res["preference"]["theme"][activeTheme]["images"]["logo"]["imgURL"]);
@@ -103,7 +103,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
         brandingPreference["preference"]["theme"][activeTheme]["colors"]["secondary"]["main"] = 
             values["secondary_color"];
 
-        controllerDecodeUpdateBrandingPreference(session, brandingPreference)
+        controllerDecodeUpdateBrandingPrefrence(session, brandingPreference)
             .then(() => {
                 const newPersonalization: Personalization = {
                     faviconUrl: values["favicon_url"],
