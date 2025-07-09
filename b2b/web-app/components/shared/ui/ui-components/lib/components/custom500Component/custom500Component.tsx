@@ -20,7 +20,7 @@ import Image from "next/image";
 import React from "react";
 import { Button, Stack } from "rsuite";
 import styles from "./custom500Component.module.css";
-import errorImage from "../../../../../ui-assets/lib/images/500.svg";
+import errorImage from "../../../../ui-assets/lib/images/500.svg";
 import { Custom500ComponentProps } from "../../models/custom500Component/custom500Component";
 
 export function Custom500Component(prop : Custom500ComponentProps) {
