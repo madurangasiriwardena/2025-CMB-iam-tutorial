@@ -19,26 +19,26 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@pet-management-webapp/business-admin-app/data-access/data-access-common-api-util": [
-        "src/business-admin-app/data-access/data-access-common-api-util/src/index.ts"
+      "@pet-management-webapp/data-access-common-api-util": [
+        "src/data-access/data-access-common-api-util/src/index.ts"
       ],
-      "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util": [
-        "src/business-admin-app/data-access/data-access-common-models-util/src/index.ts"
+      "@pet-management-webapp/data-access-common-models-util": [
+        "src/data-access/data-access-common-models-util/src/index.ts"
       ],
-      "@pet-management-webapp/business-admin-app/data-access/data-access-controller": [
-        "src/business-admin-app/data-access/data-access-controller/src/index.ts"
+      "@pet-management-webapp/data-access-controller": [
+        "src/data-access/data-access-controller/src/index.ts"
       ],
-      "@pet-management-webapp/business-admin-app/ui/ui-assets": [
-        "src/business-admin-app/ui/ui-assets/src"
+      "@pet-management-webapp/ui-assets": [
+        "src/ui/ui-assets/src"
       ],
-      "@pet-management-webapp/business-admin-app/ui/ui-components": [
-        "src/business-admin-app/ui/ui-components/src/index.ts"
+      "@pet-management-webapp/ui-components": [
+        "src/ui/ui-components/src/index.ts"
       ],
-      "@pet-management-webapp/business-admin-app/util/util-application-config-util": [
-        "src/business-admin-app/util/util-application-config-util/src/index.ts"
+      "@pet-management-webapp/util-application-config-util": [
+        "src/util/util-application-config-util/src/index.ts"
       ],
-      "@pet-management-webapp/business-admin-app/util/util-authorization-config-util": [
-        "src/business-admin-app/util/util-authorization-config-util/src/index.ts"
+      "@pet-management-webapp/util-authorization-config-util": [
+        "src/util/util-authorization-config-util/src/index.ts"
       ],
       "@pet-management-webapp/shared/data-access/data-access-common-api-util": [
         "src/shared/data-access/data-access-common-api-util/src/index.ts"

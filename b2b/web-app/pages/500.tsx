@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { signout } from "@pet-management-webapp/business-admin-app/util/util-authorization-config-util";
+import { signout } from "@pet-management-webapp/util-authorization-config-util";
 import dynamic from "next/dynamic";
 
 export default function Custom500() {

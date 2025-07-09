@@ -17,11 +17,11 @@
  */
 
 import { Application, ApplicationList, IdentityProvider, checkIfIdpIsinAuthSequence } from
-    "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
+    "@pet-management-webapp/data-access-common-models-util";
 import {
     controllerDecodeDeleteIdentityProvider, controllerDecodeGetApplication,
     controllerDecodeListCurrentApplication
-} from "@pet-management-webapp/business-admin-app/data-access/data-access-controller";
+} from "@pet-management-webapp/data-access-controller";
 import { errorTypeDialog, successTypeDialog } from "@pet-management-webapp/shared/ui/ui-components";
 import { checkIfJSONisEmpty } from "@pet-management-webapp/shared/util/util-common";
 import Trash from "@rsuite/icons/Trash";

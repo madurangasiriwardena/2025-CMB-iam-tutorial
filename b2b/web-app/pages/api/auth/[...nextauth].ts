@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { getConfig } from "@pet-management-webapp/business-admin-app/util/util-application-config-util";
+import { getConfig } from "@pet-management-webapp/util-application-config-util";
 import { getLoggedUserFromProfile, getLoggedUserId, getOrgId, getOrgName } from
     "@pet-management-webapp/shared/util/util-authorization-config-util";
 import { jwtDecode } from "jwt-decode";

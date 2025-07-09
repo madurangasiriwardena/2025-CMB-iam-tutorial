@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { LogoComponent } from "@pet-management-webapp/business-admin-app/ui/ui-components";
+import { LogoComponent } from "@pet-management-webapp/ui-components";
 import { SigninRedirectComponent } from "@pet-management-webapp/shared/ui/ui-components";
 import { orgSignin } from "@pet-management-webapp/shared/util/util-authorization-config-util";
 import React, { useEffect, useState } from "react";

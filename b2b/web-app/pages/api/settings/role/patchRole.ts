@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { requestOptionsWithBody } from "@pet-management-webapp/business-admin-app/data-access/data-access-common-api-util";
+import { requestOptionsWithBody } from "@pet-management-webapp/data-access-common-api-util";
 import {
   RequestMethod,
   dataNotRecievedError,

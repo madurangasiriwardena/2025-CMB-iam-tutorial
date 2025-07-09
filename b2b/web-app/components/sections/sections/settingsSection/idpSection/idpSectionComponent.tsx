@@ -21,10 +21,10 @@ import {
     IdentityProviderTemplate,
     StandardBasedOidcIdentityProvider,
     StandardBasedSAMLIdentityProvider
-} from "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
+} from "@pet-management-webapp/data-access-common-models-util";
 import {
     controllerDecodeListAllIdentityProviders
-} from "@pet-management-webapp/business-admin-app/data-access/data-access-controller";
+} from "@pet-management-webapp/data-access-controller";
 import {
     EmptySettingsComponent, SettingsTitleComponent, errorTypeDialog, successTypeDialog
 } from "@pet-management-webapp/shared/ui/ui-components";

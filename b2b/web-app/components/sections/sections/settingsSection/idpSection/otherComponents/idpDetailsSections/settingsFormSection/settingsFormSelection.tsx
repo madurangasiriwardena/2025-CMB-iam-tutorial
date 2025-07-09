@@ -19,7 +19,7 @@
 import {
     IdentityProviderFederatedAuthenticatorProperty, IdentityProviderTemplate,
     IdentityProviderTemplateModelAuthenticatorProperty, selectedTemplateBaesedonTemplateId
-} from "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
+} from "@pet-management-webapp/data-access-common-models-util";
 import { HelperTextComponent, infoTypeDialog } from "@pet-management-webapp/shared/ui/ui-components";
 import { CopyTextToClipboardCallback, copyTheTextToClipboard } from "@pet-management-webapp/shared/util/util-common";
 import CopyIcon from "@rsuite/icons/Copy";

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { requestOptions } from "@pet-management-webapp/business-admin-app/data-access/data-access-common-api-util";
+import { requestOptions } from "@pet-management-webapp/data-access-common-api-util";
 import { dataNotRecievedError, notPostError } 
     from "@pet-management-webapp/shared/data-access/data-access-common-api-util";
 import { getOrgUrl } from "@pet-management-webapp/shared/util/util-application-config-util";

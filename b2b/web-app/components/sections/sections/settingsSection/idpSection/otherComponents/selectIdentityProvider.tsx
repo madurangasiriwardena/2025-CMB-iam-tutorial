@@ -17,7 +17,7 @@
  */
 
 import { IdentityProviderTemplate, getImageForTheIdentityProvider } from
-    "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
+    "@pet-management-webapp/data-access-common-models-util";
 import { ModelHeaderComponent } from "@pet-management-webapp/shared/ui/ui-basic-components";
 import Image from "next/image";
 import { Avatar, Modal } from "rsuite";

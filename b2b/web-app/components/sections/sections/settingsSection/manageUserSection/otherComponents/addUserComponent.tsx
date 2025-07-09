@@ -17,7 +17,7 @@
  */
 
 import { InviteConst, controllerDecodeAddUser, controllerDecodeListAllRoles, controllerDecodePatchRole } 
-    from "@pet-management-webapp/business-admin-app/data-access/data-access-controller";
+    from "@pet-management-webapp/data-access-controller";
 import { User } from "@pet-management-webapp/shared/data-access/data-access-common-models-util";
 import { FormButtonToolbar, FormField, ModelHeaderComponent } 
     from "@pet-management-webapp/shared/ui/ui-basic-components";
@@ -35,7 +35,7 @@ import { Form } from "react-final-form";
 import { Divider, Loader, Modal, Panel, Radio, RadioGroup, SelectPicker, Stack, useToaster } from "rsuite";
 import FormSuite from "rsuite/Form";
 import styles from "../../../../../../styles/Settings.module.css";
-import { Role } from "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
+import { Role } from "@pet-management-webapp/data-access-common-models-util";
 
 
 interface AddUserComponentProps {

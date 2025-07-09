@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { getConfig } from "@pet-management-webapp/business-admin-app/util/util-application-config-util";
+import { getConfig } from "@pet-management-webapp/util-application-config-util";
 
 export default async function handler() {
     const tokenResponse = await fetch(

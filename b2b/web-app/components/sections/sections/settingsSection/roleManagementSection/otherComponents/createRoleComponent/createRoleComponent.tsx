@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { Role } from "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
+import { Role } from "@pet-management-webapp/data-access-common-models-util";
 import { controllerDecodeCreateRole } 
-    from "@pet-management-webapp/business-admin-app/data-access/data-access-controller";
+    from "@pet-management-webapp/data-access-controller";
 import { errorTypeDialog, successTypeDialog } from "@pet-management-webapp/shared/ui/ui-components";
 import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE } from "@pet-management-webapp/shared/util/util-front-end-util";
 import { Session } from "next-auth";

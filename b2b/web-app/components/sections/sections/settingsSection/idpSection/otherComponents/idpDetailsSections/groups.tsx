@@ -21,14 +21,14 @@ import {
     IdentityProviderGroupMappings, 
     IdpGroup, 
     Role
-} from "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
+} from "@pet-management-webapp/data-access-common-models-util";
 import { 
     controllerDecodeGetIdentityProviderGroupMappings, 
     controllerDecodeListAllRoles, 
     controllerDecodePatchIdpClaims, 
     controllerDecodePatchIdpGroups 
 } from
-    "@pet-management-webapp/business-admin-app/data-access/data-access-controller";
+    "@pet-management-webapp/data-access-controller";
 import { FormButtonToolbar, FormField } from "@pet-management-webapp/shared/ui/ui-basic-components";
 import { errorTypeDialog, successTypeDialog } from "@pet-management-webapp/shared/ui/ui-components";
 import { checkIfJSONisEmpty } from "@pet-management-webapp/shared/util/util-common";
@@ -41,7 +41,7 @@ import { Field, Form, FormSpy } from "react-final-form";
 import { Checkbox, CheckboxGroup, Loader, Panel, PanelGroup, TagInput, Toaster, useToaster } from "rsuite";
 import FormSuite from "rsuite/Form";
 import styles from "../../../../../../../styles/Settings.module.css";
-import { getConfig } from "@pet-management-webapp/business-admin-app/util/util-application-config-util";
+import { getConfig } from "@pet-management-webapp/util-application-config-util";
 
 interface GeneralProps {
     fetchData: () => Promise<void>

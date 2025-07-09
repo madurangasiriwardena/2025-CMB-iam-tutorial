@@ -6,7 +6,7 @@ import {
   FormField
 } from "@pet-management-webapp/shared/ui/ui-basic-components";
 import FormSuite from "rsuite/Form";
-import { getConfig } from "@pet-management-webapp/business-admin-app/util/util-application-config-util";
+import { getConfig } from "@pet-management-webapp/util-application-config-util";
 
 export const SignUp = ({ open, onClose }) => {
   const [loading, setLoading] = useState(false);

@@ -17,9 +17,9 @@
  */
 
 import { IdentityProvider, getImageForTheIdentityProvider, selectedTemplateBaesedonTemplateId } from
-    "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
+    "@pet-management-webapp/data-access-common-models-util";
 import { controllerDecodeGetDetailedIdentityProvider } from
-    "@pet-management-webapp/business-admin-app/data-access/data-access-controller";
+    "@pet-management-webapp/data-access-controller";
 import { AccordianItemHeaderComponent, JsonDisplayComponent } from "@pet-management-webapp/shared/ui/ui-components";
 import { SAML_IDP } from "@pet-management-webapp/shared/util/util-common";
 import CodeIcon from "@rsuite/icons/Code";

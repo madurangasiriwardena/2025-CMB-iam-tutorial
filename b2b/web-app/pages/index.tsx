@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { LogoComponent } from "@pet-management-webapp/business-admin-app/ui/ui-components";
+import { LogoComponent } from "@pet-management-webapp/ui-components";
 import { IndexHomeComponent } from "@pet-management-webapp/shared/ui/ui-components";
 import { NextRouter, useRouter } from "next/router";
 import React, { useEffect } from "react";
@@ -25,8 +25,8 @@ import { getPersonalization } from "../APICalls/GetPersonalization/get-personali
 import personalize from "../components/sections/sections/settingsSection/personalizationSection/personalize";
 import { Personalization } from "../types/personalization";
 import { SignUp } from "../components/sections/signup";
-import logoImage from "../src/business-admin-app/ui/ui-assets/src/lib/images/teamspace_logo.png";
-import favicon from "../src/business-admin-app/ui/ui-assets/src/lib/images/teamspace_favicon.png";
+import logoImage from "../src/ui/ui-assets/src/lib/images/teamspace_logo.png";
+import favicon from "../src/ui/ui-assets/src/lib/images/teamspace_favicon.png";
 
 /**
  * 

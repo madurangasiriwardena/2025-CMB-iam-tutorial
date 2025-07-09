@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { getConfig } from "@pet-management-webapp/business-admin-app/util/util-application-config-util";
+import { getConfig } from "@pet-management-webapp/util-application-config-util";
 
 /**
  * check if the user is an administrator of the logged in identity server

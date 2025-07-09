@@ -17,7 +17,7 @@
  */
 
 import { IdentityProvider, IdentityProviderTemplate, getIdPCallbackUrl } from
-    "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
+    "@pet-management-webapp/data-access-common-models-util";
 import { ModelHeaderComponent } from "@pet-management-webapp/shared/ui/ui-basic-components";
 import { infoTypeDialog } from "@pet-management-webapp/shared/ui/ui-components";
 import { CopyTextToClipboardCallback, OIDC_IDP, SAML_IDP, copyTheTextToClipboard }

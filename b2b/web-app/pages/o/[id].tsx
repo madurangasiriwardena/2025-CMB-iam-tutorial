@@ -18,7 +18,7 @@
 
 import { 
     BrandingPreference 
-} from "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
+} from "@pet-management-webapp/data-access-common-models-util";
 import { orgSignin, redirect } from "@pet-management-webapp/shared/util/util-authorization-config-util";
 import { postMeeting } from "../../APICalls/ScheduleMeeting/post-meeting";
 import { getMeeting } from "../../APICalls/getMeetings/get-meeting";
@@ -27,7 +27,7 @@ import { postPersonalization } from "../../APICalls/UpdatePersonalization/post-p
 import personalize from "../../components/sections/sections/settingsSection/personalizationSection/personalize";
 import { MeetingInfo } from "../../types/meeting";
 import { Personalization } from "../../types/personalization";
-import { controllerDecodeGetBrandingPrefrence } from "@pet-management-webapp/business-admin-app/data-access/data-access-controller";
+import { controllerDecodeGetBrandingPrefrence } from "@pet-management-webapp/data-access-controller";
 import { Session } from "next-auth";
 import { getSession } from "next-auth/react";
 import { useEffect } from "react";

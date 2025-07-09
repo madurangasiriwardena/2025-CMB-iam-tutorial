@@ -18,13 +18,13 @@
 
 import {
     IdentityProvider, IdentityProviderGroupMappings, LocalClaim
-} from "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
+} from "@pet-management-webapp/data-access-common-models-util";
 import { 
     controllerDecodeGetIdentityProviderGroupMappings, 
     controllerDecodeGetLocalClaims, 
     controllerDecodePatchIdpClaims 
 }
-    from "@pet-management-webapp/business-admin-app/data-access/data-access-controller";
+    from "@pet-management-webapp/data-access-controller";
 import { FormButtonToolbar, FormField } from "@pet-management-webapp/shared/ui/ui-basic-components";
 import { checkIfJSONisEmpty } from "@pet-management-webapp/shared/util/util-common";
 import { LOADING_DISPLAY_NONE }

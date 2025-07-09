@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { LogoComponent } from "@pet-management-webapp/business-admin-app/ui/ui-components";
-import { signout } from "@pet-management-webapp/business-admin-app/util/util-authorization-config-util";
+import { LogoComponent } from "@pet-management-webapp/ui-components";
+import { signout } from "@pet-management-webapp/util-authorization-config-util";
 import { SignOutComponent } from "@pet-management-webapp/shared/ui/ui-components";
 import { getPersonalization } from "../../APICalls/GetPersonalization/get-personalization";
 import { Session } from "next-auth";
@@ -37,7 +37,7 @@ import personalize from "./sections/settingsSection/personalizationSection/perso
 import RoleManagementSectionComponent from
     "./sections/settingsSection/roleManagementSection/roleManagementSectionComponent";
 import sideNavDataForAdmin
-    from "../../src/business-admin-app/ui/ui-assets/src/lib/data/sideNavDataForAdmin.json";
+    from "../../src/ui/ui-assets/src/lib/data/sideNavDataForAdmin.json";
 import HomeComponentForAdmin
     from "../../src/shared/ui/ui-components/src/lib/components/homeComponent/homeComponentForAdmin";
 import Custom500 from "../../pages/500";

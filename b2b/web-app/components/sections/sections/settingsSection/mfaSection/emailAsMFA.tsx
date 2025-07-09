@@ -18,10 +18,10 @@
 
 import { 
     Application, ApplicationList, checkIfAuthenticatorIsinAuthSequence 
-} from "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
+} from "@pet-management-webapp/data-access-common-models-util";
 import { 
     controllerDecodeGetApplication, controllerDecodeListCurrentApplication 
-} from "@pet-management-webapp/business-admin-app/data-access/data-access-controller";
+} from "@pet-management-webapp/data-access-controller";
 import { AccordianItemHeaderComponent } from "@pet-management-webapp/shared/ui/ui-components";
 import { EMAIL, EMAIL_OTP_AUTHENTICATOR, checkIfJSONisEmpty } from "@pet-management-webapp/shared/util/util-common";
 import { 

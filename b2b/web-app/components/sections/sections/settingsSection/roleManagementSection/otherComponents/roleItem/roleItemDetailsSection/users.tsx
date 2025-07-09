@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { Role, RoleUsers } from "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
+import { Role, RoleUsers } from "@pet-management-webapp/data-access-common-models-util";
 import { controllerDecodePatchRole, controllerDecodeViewUsers } from
-    "@pet-management-webapp/business-admin-app/data-access/data-access-controller";
+    "@pet-management-webapp/data-access-controller";
 import { InternalUser } from "@pet-management-webapp/shared/data-access/data-access-common-models-util";
 import { FormButtonToolbar, FormField } from "@pet-management-webapp/shared/ui/ui-basic-components";
 import { errorTypeDialog, successTypeDialog } from "@pet-management-webapp/shared/ui/ui-components";

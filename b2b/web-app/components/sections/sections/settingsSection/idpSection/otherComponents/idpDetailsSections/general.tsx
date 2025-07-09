@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { IdentityProvider } from "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
+import { IdentityProvider } from "@pet-management-webapp/data-access-common-models-util";
 import { controllerDecodePatchGeneralSettingsIdp } from
-    "@pet-management-webapp/business-admin-app/data-access/data-access-controller";
+    "@pet-management-webapp/data-access-controller";
 import { FormButtonToolbar, FormField } from "@pet-management-webapp/shared/ui/ui-basic-components";
 import { errorTypeDialog, successTypeDialog } from "@pet-management-webapp/shared/ui/ui-components";
 import { checkIfJSONisEmpty } from "@pet-management-webapp/shared/util/util-common";
