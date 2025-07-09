@@ -17,15 +17,15 @@
  */
 
 import Image from "next/image";
-import { useRouter } from "next/router";
 import React from "react";
 import { Button, Stack } from "rsuite";
-import styles from "./custom404Component.module.css";
-import errorImage from "../../../../../ui-assets/src/lib/images/404.svg";
+import styles from "./custom500Component.module.css";
+import errorImage from "../../../../../ui-assets/lib/images/500.svg";
+import { Custom500ComponentProps } from "../../models/custom500Component/custom500Component";
 
-export function Custom404Component() {
-    const router = useRouter();
-    const goBack = () => router.back();
+export function Custom500Component(prop : Custom500ComponentProps) {
+
+    const { goBack } = prop;
 
     return (
         <Stack
@@ -35,7 +35,7 @@ export function Custom404Component() {
             justifyContent="center"
             alignItems="center">
 
-            <Image src={ errorImage } width={ 600 } alt="404 image" />
+            <Image src={ errorImage } width={ 500 } alt="404 image" />
 
             <Stack
                 spacing={ 25 }
@@ -43,18 +43,23 @@ export function Custom404Component() {
                 justifyContent="center"
                 alignItems="center">
 
-                <p className={ styles["p"] }><b>The page your searching seems to be missing.</b>
+                <p className={ styles["p"] }><b>It looks like you have been inactive for a long time.</b>
                     <br />
-                    You can go back, or contact our <u>Customer Service</u> team if you need any help
+                    When you click on <i>Go back</i>, we will try to recover the session if it exists.
+                    <br />
+                    If you don&apos;t have an active session, you will be redirected to the login page.
                 </p>
-
-                <Button size="lg" appearance="ghost" onClick={ goBack }>Go Back</Button>
-
+                <Button
+                    size="lg"
+                    appearance="ghost"
+                    onClick={ goBack }>
+                    Go Back
+                </Button>
             </Stack>
-
+            
         </Stack>
     );
 }
 
 
-export default Custom404Component;
+export default Custom500Component;
