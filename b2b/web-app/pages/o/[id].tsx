@@ -22,11 +22,11 @@ import {
 import { orgSignin, redirect } from "@pet-management-webapp/shared/util/util-authorization-config-util";
 import { postMeeting } from "../../APICalls/ScheduleMeeting/post-meeting";
 import { getMeeting } from "../../APICalls/getMeetings/get-meeting";
-import { getPersonalization } from "apps/business-admin-app/APICalls/GetPersonalization/get-personalization";
-import { postPersonalization } from "apps/business-admin-app/APICalls/UpdatePersonalization/post-personalization";
-import personalize from "apps/business-admin-app/components/sections/sections/settingsSection/personalizationSection/personalize";
+import { getPersonalization } from "../../APICalls/GetPersonalization/get-personalization";
+import { postPersonalization } from "../../APICalls/UpdatePersonalization/post-personalization";
+import personalize from "../../components/sections/sections/settingsSection/personalizationSection/personalize";
 import { MeetingInfo } from "../../types/meeting";
-import { Personalization } from "apps/business-admin-app/types/personalization";
+import { Personalization } from "../../types/personalization";
 import controllerDecodeGetBrandingPreference 
     from "libs/business-admin-app/data-access/data-access-controller/src/lib/controller/branding/controllerDecodeGetBrandingPreference";
 import { Session } from "next-auth";

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Personalization } from "apps/business-admin-app/types/personalization";
+import { Personalization } from "../../types/personalization";
 import createHeaders from "../createHeaders";
 import { getPersonalizationInstance } from "../GetPersonalization/personalizationInstance";
 

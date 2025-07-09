@@ -19,7 +19,7 @@
 import { LogoComponent } from "@pet-management-webapp/business-admin-app/ui/ui-components";
 import { signout } from "@pet-management-webapp/business-admin-app/util/util-authorization-config-util";
 import { SignOutComponent } from "@pet-management-webapp/shared/ui/ui-components";
-import { getPersonalization } from "apps/business-admin-app/APICalls/GetPersonalization/get-personalization";
+import { getPersonalization } from "../../APICalls/GetPersonalization/get-personalization";
 import { Session } from "next-auth";
 import React, { useCallback, useEffect, useState } from "react";
 import "rsuite/dist/rsuite.min.css";

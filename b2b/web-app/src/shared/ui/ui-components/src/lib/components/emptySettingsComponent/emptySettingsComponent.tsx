@@ -17,7 +17,7 @@
  */
 
 import { Button, FlexboxGrid, Stack } from "rsuite";
-import styles from "../../../../../../../../apps/business-admin-app/styles/app.module.css";
+import styles from "../../../../../../../../styles/app.module.css";
 import { EmptySettingsComponentProps } from "../../models/emptySettingsComponent/emptySettingsComponent";
 
 /**

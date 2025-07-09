@@ -18,7 +18,7 @@
 
 import { Grid, Typography } from "@mui/material";
 import { ModelHeaderComponent } from "@pet-management-webapp/shared/ui/ui-basic-components";
-import { putMeeting } from "apps/business-admin-app/APICalls/UpdateMeeting/put-meeting";
+import { putMeeting } from "../../../../APICalls/UpdateMeeting/put-meeting";
 import { Meeting } from "../../../../types/meeting";
 import { Session } from "next-auth";
 import { useEffect, useState } from "react";
