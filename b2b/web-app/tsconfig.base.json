@@ -29,7 +29,7 @@
         "src/business-admin-app/data-access/data-access-controller/src/index.ts"
       ],
       "@pet-management-webapp/business-admin-app/ui/ui-assets": [
-        "src/business-admin-app/ui/ui-assets/src/index.ts"
+        "src/business-admin-app/ui/ui-assets/src"
       ],
       "@pet-management-webapp/business-admin-app/ui/ui-components": [
         "src/business-admin-app/ui/ui-components/src/index.ts"

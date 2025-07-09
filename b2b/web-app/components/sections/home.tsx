@@ -37,9 +37,9 @@ import personalize from "./sections/settingsSection/personalizationSection/perso
 import RoleManagementSectionComponent from
     "./sections/settingsSection/roleManagementSection/roleManagementSectionComponent";
 import sideNavDataForAdmin
-    from "../../../../libs/business-admin-app/ui/ui-assets/src/lib/data/sideNavDataForAdmin.json";
+    from "../../src/business-admin-app/ui/ui-assets/src/lib/data/sideNavDataForAdmin.json";
 import HomeComponentForAdmin
-    from "../../../../libs/shared/ui/ui-components/src/lib/components/homeComponent/homeComponentForAdmin";
+    from "../../src/shared/ui/ui-components/src/lib/components/homeComponent/homeComponentForAdmin";
 import Custom500 from "../../pages/500";
 import ChatButton from '../../components/sections/chat-button';
 import { set } from "date-fns";

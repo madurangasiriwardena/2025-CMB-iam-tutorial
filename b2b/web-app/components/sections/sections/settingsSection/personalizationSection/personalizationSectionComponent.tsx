@@ -32,10 +32,10 @@ import { deletePersonalization } from "../../../../../APICalls/DeletePersonaliza
 import { getPersonalization } from "../../../../../APICalls/GetPersonalization/get-personalization";
 import { postPersonalization } from "../../../../../APICalls/UpdatePersonalization/post-personalization";
 import { Personalization } from "../../../../../types/personalization";
-import controllerDecodeGetBrandingPreference 
-    from "libs/business-admin-app/data-access/data-access-controller/src/lib/controller/branding/controllerDecodeGetBrandingPreference";
-import controllerDecodeUpdateBrandingPreference 
-    from "libs/business-admin-app/data-access/data-access-controller/src/lib/controller/branding/controllerDecodeUpdateBrandingPreference";
+import {
+    controllerDecodeGetBrandingPrefrence,
+    controllerDecodeUpdateBrandingPrefrence
+} from "@pet-management-webapp/business-admin-app/data-access/data-access-controller";
 import { Session } from "next-auth";
 import React, { useCallback, useEffect, useState } from "react";
 import { Field, Form } from "react-final-form";

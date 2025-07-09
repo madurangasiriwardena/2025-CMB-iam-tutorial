@@ -24,5 +24,5 @@ export default {
     "^.+\\.[tj]sx?$": ["@swc/jest", { jsc: { transform: { react: { runtime: "automatic" } } } }]
   },
   moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
-  coverageDirectory: "../../../../coverage/libs/business-admin-app/ui/ui-components"
+  coverageDirectory: "../../../../coverage/src/business-admin-app/ui/ui-components"
 };

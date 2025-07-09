@@ -27,8 +27,7 @@ import { postPersonalization } from "../../APICalls/UpdatePersonalization/post-p
 import personalize from "../../components/sections/sections/settingsSection/personalizationSection/personalize";
 import { MeetingInfo } from "../../types/meeting";
 import { Personalization } from "../../types/personalization";
-import controllerDecodeGetBrandingPreference 
-    from "libs/business-admin-app/data-access/data-access-controller/src/lib/controller/branding/controllerDecodeGetBrandingPreference";
+import { controllerDecodeGetBrandingPrefrence } from "@pet-management-webapp/business-admin-app/data-access/data-access-controller";
 import { Session } from "next-auth";
 import { getSession } from "next-auth/react";
 import { useEffect } from "react";
@@ -91,7 +90,7 @@ export default function Org(props : OrgProps) {
             .catch(async (err) => {
                 if (err.response?.status === 404 && session.group === "admin") {
                     const res: BrandingPreference = 
-                        (await controllerDecodeGetBrandingPreference(session) as BrandingPreference);
+                        (await controllerDecodeGetBrandingPrefrence(session) as BrandingPreference);
                     const activeTheme: string = res["preference"]["theme"]["activeTheme"];
 
                     const newPersonalization: Personalization = {

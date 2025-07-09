@@ -24,5 +24,5 @@ export default {
     "^.+\\.[tj]sx?$": ["@swc/jest", { jsc: { transform: { react: { runtime: "automatic" } } } }]
   },
   moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
-  coverageDirectory: "../../../../coverage/libs/business-admin-app/data-access/data-access-common-models-util"
+  coverageDirectory: "../../../../coverage/src/business-admin-app/data-access/data-access-common-models-util"
 };

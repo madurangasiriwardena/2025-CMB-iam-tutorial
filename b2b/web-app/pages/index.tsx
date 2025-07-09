@@ -25,8 +25,8 @@ import { getPersonalization } from "../APICalls/GetPersonalization/get-personali
 import personalize from "../components/sections/sections/settingsSection/personalizationSection/personalize";
 import { Personalization } from "../types/personalization";
 import { SignUp } from "../components/sections/signup";
-import logoImage from "../../../libs/business-admin-app/ui/ui-assets/src/lib/images/teamspace_logo.png";
-import favicon from "../../../libs/business-admin-app/ui/ui-assets/src/lib/images/teamspace_favicon.png";
+import logoImage from "../src/business-admin-app/ui/ui-assets/src/lib/images/teamspace_logo.png";
+import favicon from "../src/business-admin-app/ui/ui-assets/src/lib/images/teamspace_favicon.png";
 
 /**
  * 
