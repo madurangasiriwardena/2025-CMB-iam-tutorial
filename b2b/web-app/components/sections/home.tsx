@@ -37,9 +37,9 @@ import personalize from "./sections/settingsSection/personalizationSection/perso
 import RoleManagementSectionComponent from
     "./sections/settingsSection/roleManagementSection/roleManagementSectionComponent";
 import sideNavDataForAdmin
-    from "../../src/ui/ui-assets/lib/data/sideNavDataForAdmin.json";
+    from "@pet-management-webapp/ui-assets/lib/data/sideNavDataForAdmin.json";
 import HomeComponentForAdmin
-    from "../../src/shared/ui/ui-components/lib/components/homeComponent/homeComponentForAdmin";
+    from "@pet-management-webapp/shared/ui/ui-components/lib/components/homeComponent/homeComponentForAdmin";
 import Custom500 from "../../pages/500";
 import ChatButton from '../../components/sections/chat-button';
 import { set } from "date-fns";

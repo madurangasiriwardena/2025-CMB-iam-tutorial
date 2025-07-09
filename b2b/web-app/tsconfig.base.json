@@ -20,52 +20,52 @@
     "baseUrl": ".",
     "paths": {
       "@pet-management-webapp/data-access-common-api-util": [
-        "src/data-access/data-access-common-api-util/index.ts"
+        "data-access/data-access-common-api-util/index.ts"
       ],
       "@pet-management-webapp/data-access-common-models-util": [
-        "src/data-access/data-access-common-models-util/index.ts"
+        "data-access/data-access-common-models-util/index.ts"
       ],
       "@pet-management-webapp/data-access-controller": [
-        "src/data-access/data-access-controller/index.ts"
+        "data-access/data-access-controller/index.ts"
       ],
       "@pet-management-webapp/ui-assets": [
-        "src/ui/ui-assets"
+        "ui/ui-assets"
       ],
       "@pet-management-webapp/ui-components": [
-        "src/ui/ui-components/index.ts"
+        "ui/ui-components/index.ts"
       ],
       "@pet-management-webapp/util-application-config-util": [
-        "src/util/util-application-config-util/index.ts"
+        "util/util-application-config-util/index.ts"
       ],
       "@pet-management-webapp/util-authorization-config-util": [
-        "src/util/util-authorization-config-util/index.ts"
+        "util/util-authorization-config-util/index.ts"
       ],
       "@pet-management-webapp/shared/data-access/data-access-common-api-util": [
-        "src/shared/data-access/data-access-common-api-util/index.ts"
+        "shared/data-access/data-access-common-api-util/index.ts"
       ],
       "@pet-management-webapp/shared/data-access/data-access-common-models-util": [
-        "src/shared/data-access/data-access-common-models-util/index.ts"
+        "shared/data-access/data-access-common-models-util/index.ts"
       ],
       "@pet-management-webapp/shared/ui/ui-assets": [
-        "src/shared/ui/ui-assets"
+        "shared/ui/ui-assets"
       ],
       "@pet-management-webapp/shared/ui/ui-basic-components": [
-        "src/shared/ui/ui-basic-components/index.ts"
+        "shared/ui/ui-basic-components/index.ts"
       ],
       "@pet-management-webapp/shared/ui/ui-components": [
-        "src/shared/ui/ui-components/index.ts"
+        "shared/ui/ui-components/index.ts"
       ],
       "@pet-management-webapp/shared/util/util-application-config-util": [
-        "src/shared/util/util-application-config-util/index.ts"
+        "shared/util/util-application-config-util/index.ts"
       ],
       "@pet-management-webapp/shared/util/util-authorization-config-util": [
-        "src/shared/util/util-authorization-config-util/index.ts"
+        "shared/util/util-authorization-config-util/index.ts"
       ],
       "@pet-management-webapp/shared/util/util-common": [
-        "src/shared/util/util-common/index.ts"
+        "shared/util/util-common/index.ts"
       ],
       "@pet-management-webapp/shared/util/util-front-end-util": [
-        "src/shared/util/util-front-end-util/index.ts"
+        "shared/util/util-front-end-util/index.ts"
       ]
     }
   },

@@ -18,11 +18,11 @@
 
 /* eslint-disable */
 export default {
-  displayName: "util-application-config-util",
+  displayName: "ui-components",
   preset: "../../../../jest.preset.js",
   transform: {
     "^.+\\.[tj]sx?$": ["@swc/jest", { jsc: { transform: { react: { runtime: "automatic" } } } }]
   },
   moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
-  coverageDirectory: "../../../../coverage/src/util/util-application-config-util"
+  coverageDirectory: "../../../../coverage/ui/ui-components"
 };

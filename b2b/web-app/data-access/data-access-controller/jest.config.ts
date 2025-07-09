@@ -24,5 +24,5 @@ export default {
     "^.+\\.[tj]sx?$": ["@swc/jest", { jsc: { transform: { react: { runtime: "automatic" } } } }]
   },
   moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
-  coverageDirectory: "../../../../coverage/src/data-access/data-access-controller"
+  coverageDirectory: "../../../../coverage/data-access/data-access-controller"
 };

@@ -17,9 +17,9 @@
  */
 
 import { EMAIL, EMPTY_STRING, SMS, TOTP } from "@pet-management-webapp/shared/util/util-common";
-import emailOTPImage from "../../../../../src/ui/ui-assets/lib/images/email-solid.svg";
-import smsOTPImage from "../../../../../src/ui/ui-assets/lib/images/sms-otp.svg";
-import totpOTPImage from "../../../../../src/ui/ui-assets/lib/images/totp.svg";
+import emailOTPImage from "@pet-management-webapp/ui-assets/lib/images/email-solid.svg";
+import smsOTPImage from "@pet-management-webapp/ui-assets/lib/images/sms-otp.svg";
+import totpOTPImage from "@pet-management-webapp/ui-assets/lib/images/totp.svg";
 
 export function getImageForMFAProvider(providerId: string): string {
     if (providerId === EMAIL) {
@@ -29,5 +29,4 @@ export function getImageForMFAProvider(providerId: string): string {
         return smsOTPImage;
     }
     if (providerId === TOTP) {
-        return totpOTPImage;
-    }        return EMPTY_STRING;}
+        return totpOTPImage;    }        return EMPTY_STRING;}

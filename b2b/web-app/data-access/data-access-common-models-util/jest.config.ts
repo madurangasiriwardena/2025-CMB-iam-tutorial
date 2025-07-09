@@ -18,11 +18,11 @@
 
 /* eslint-disable */
 export default {
-  displayName: "util-authorization-config-util",
+  displayName: "data-access-common-models-util",
   preset: "../../../../jest.preset.js",
   transform: {
     "^.+\\.[tj]sx?$": ["@swc/jest", { jsc: { transform: { react: { runtime: "automatic" } } } }]
   },
   moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
-  coverageDirectory: "../../../../coverage/src/util/util-authorization-config-util"
+  coverageDirectory: "../../../../coverage/data-access/data-access-common-models-util"
 };
