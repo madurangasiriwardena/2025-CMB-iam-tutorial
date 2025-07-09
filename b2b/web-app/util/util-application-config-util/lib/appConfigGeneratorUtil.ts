@@ -17,7 +17,7 @@
  */
 
 import getNextConfig from "next/config";
-import config from "../../../../../../config.json";
+import config from "../../../config.json";
 
 interface ConfigObject {
   CommonConfig: {
