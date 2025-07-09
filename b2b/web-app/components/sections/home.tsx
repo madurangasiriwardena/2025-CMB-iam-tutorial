@@ -38,8 +38,8 @@ import RoleManagementSectionComponent from
     "./sections/settingsSection/roleManagementSection/roleManagementSectionComponent";
 import sideNavDataForAdmin
     from "@pet-management-webapp/ui-assets/lib/data/sideNavDataForAdmin.json";
-import HomeComponentForAdmin
-    from "@pet-management-webapp/shared/ui/ui-components/lib/components/homeComponent/homeComponentForAdmin";
+import { HomeComponentForAdmin }
+    from "@pet-management-webapp/shared/ui/ui-components";
 import Custom500 from "../../pages/500";
 import ChatButton from '../../components/sections/chat-button';
 import { set } from "date-fns";
