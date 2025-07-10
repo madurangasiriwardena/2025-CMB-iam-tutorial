@@ -21,7 +21,7 @@ import { getBaseUrl, getOrgUrl }
 import { EMPTY_STRING, OIDC_IDP, SAML_IDP } from "@pet-management-webapp/shared/util/util-common";
 import IdentityProviderDiscoveryUrl from "./identityProviderDiscoveryUrl";
 import IdentityProviderTemplateModel from "./identityProviderTemplateModel";
-import enterpriseImage from "../../../../../ui/ui-assets/lib/images/enterprise.svg";
+import enterpriseImage from "@pet-management-webapp/ui-assets/lib/images/enterprise.svg";
 
 /**
  * @param templateId - template id of the identity provider
