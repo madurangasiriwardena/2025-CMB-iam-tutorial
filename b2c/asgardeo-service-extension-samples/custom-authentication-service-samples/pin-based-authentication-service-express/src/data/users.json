@@ -1,0 +1,58 @@
+{
+  "federated": [
+      {
+          "id": "8a2b49b5-91fa-4f3b-b2d8-d12f7f77dcaa",
+          "username": "Tom",
+          "pin": "5678",
+          "data": {
+            "id": "8a2b49b5-91fa-4f3b-b2d8-d12f7f77dcaa",
+            "claims": [
+              {
+                "uri": "http://wso2.org/claims/username",
+                "value": "tom@goodwill.com"
+              },
+              {
+                "uri": "http://wso2.org/claims/emailaddress",
+                "value": "tom@goodwill.com"
+              },
+              {
+                "uri": "http://wso2.org/claims/lastname",
+                "value": "Tyler"
+              },
+              {
+                "uri": "http://wso2.org/claims/givenname",
+                "value": "Tom"
+              }
+            ]
+          }
+        }
+  ],
+  "internal": [
+    {
+      "id": "4841fef1-d4a6-4420-b783-8e9bda0c5d46",
+      "username": "Peter",
+      "pin": "1234",
+      "data": {
+        "id": "4841fef1-d4a6-4420-b783-8e9bda0c5d46",
+        "claims": [
+          {
+            "uri": "http://wso2.org/claims/username",
+            "value": "Peter"
+          },
+          {
+            "uri": "http://wso2.org/claims/emailaddress",
+            "value": "peter@pizzashack.com"
+          },
+          {
+            "uri": "http://wso2.org/claims/lastname",
+            "value": "Parker"
+          },
+          {
+            "uri": "http://wso2.org/claims/givenname",
+            "value": "Peter"
+          }
+        ]
+      }
+    }
+  ]
+}
