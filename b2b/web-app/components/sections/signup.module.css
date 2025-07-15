@@ -57,3 +57,19 @@
 .addonIcon {
     font-size: 20px;
 }
+
+.addonPrice {
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.totalPrice {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.shortInput {
+    max-width: 260px;
+}

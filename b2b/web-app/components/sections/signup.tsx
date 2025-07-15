@@ -21,6 +21,24 @@ export const SignUp = ({ open, onClose }) => {
   const [error, setError] = useState(null);
   const [step, setStep] = useState(1);
 
+  const subscriptionPrices = {
+    basic: 0,
+    business: 5,
+    enterprise: 9,
+  };
+
+  const addonPrices = {
+    "teamspace-agent": 3,
+  };
+
+  const calculateTotal = (subscription: string, addons: string[] = []) => {
+    let total = subscriptionPrices[subscription] || 0;
+    addons.forEach((addon) => {
+      total += addonPrices[addon] || 0;
+    });
+    return total;
+  };
+
   const toaster = useToaster();
 
   const validatePassword = (value) => {
@@ -136,17 +154,18 @@ export const SignUp = ({ open, onClose }) => {
         <Form
           onSubmit={onFormSubmit}
           validate={validate}
-          render={() => (
+          initialValues={{ subscription: "basic", addons: [] }}
+          render={({ handleSubmit, values }) => (
             <FormSuite
               layout="vertical"
-              onSubmit={onFormSubmit}
+              onSubmit={handleSubmit}
               fluid
               style={{ overflow: "visible" }}
             >
               {step === 1 && (
                 <>
                   <FormField name="email" label="Email" needErrorMessage={true}>
-                    <FormSuite.Control name="email" required />
+                    <FormSuite.Control name="email" required className={styles.shortInput} />
                   </FormField>
 
                   <Field name="password">
@@ -156,6 +175,7 @@ export const SignUp = ({ open, onClose }) => {
                           <FormSuite.Control
                             {...input}
                             type="password"
+                            className={styles.shortInput}
                             error={meta.touched && meta.error}
                             errorMessage={meta.touched && meta.error}
                             required
@@ -170,15 +190,15 @@ export const SignUp = ({ open, onClose }) => {
                   </Field>
 
                   <FormField name="firstName" label="First Name" needErrorMessage={true}>
-                    <FormSuite.Control name="firstName" required />
+                    <FormSuite.Control name="firstName" required className={styles.shortInput} />
                   </FormField>
 
                   <FormField name="lastName" label="Last Name" needErrorMessage={true}>
-                    <FormSuite.Control name="lastName" required />
+                    <FormSuite.Control name="lastName" required className={styles.shortInput} />
                   </FormField>
 
                   <FormField name="organizationName" label="Organization Name" needErrorMessage={true}>
-                    <FormSuite.Control name="organizationName" required />
+                    <FormSuite.Control name="organizationName" required className={styles.shortInput} />
                   </FormField>
                 </>
               )}
@@ -318,7 +338,7 @@ export const SignUp = ({ open, onClose }) => {
                     )}
                   </Field>
 
-                  <Field name="addons" initialValue={[]}>
+                  <Field name="addons" initialValue={[]}> 
                     {({ input }) => (
                       <FormField name="addons" label="Add-ons">
                         <div className={styles.addonContainer}>
@@ -334,16 +354,23 @@ export const SignUp = ({ open, onClose }) => {
                           >
                             <span>
                               <AndroidIcon className={styles.addonIcon} />
-                              Teamspace Agent
+                              <strong>Teamspace Agent</strong>
                             </span>
                             <div className={styles.addonDescription}>
                               Increase productivity with an AI agent
                             </div>
+                            <div className={styles.addonPrice}>$3/user/mo</div>
                           </div>
                         </div>
                       </FormField>
                     )}
                   </Field>
+
+                  <div className={styles.totalPrice}>
+                    {calculateTotal(values.subscription, values.addons) === 0
+                      ? "Free"
+                      : `$${calculateTotal(values.subscription, values.addons)}/user/mo`}
+                  </div>
                 </>
               )}
 
