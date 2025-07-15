@@ -3,8 +3,7 @@ import {
   Modal,
   Loader,
   Message,
-  Checkbox,
-  CheckboxGroup,
+  Button,
   useToaster,
 } from "rsuite";
 import { Form, Field } from "react-final-form";
@@ -185,6 +184,9 @@ export const SignUp = ({ open, onClose }) => {
 
               {step === 2 && (
                 <>
+                  <Button appearance="subtle" onClick={() => setStep(1)} style={{ marginBottom: 10 }}>
+                    Back
+                  </Button>
                   <Field name="subscription" initialValue="basic">
                     {({ input, meta }) => (
                       <>
@@ -194,25 +196,19 @@ export const SignUp = ({ open, onClose }) => {
                               <th>Features</th>
                               <th
                                 onClick={() => input.onChange("basic")}
-                                className={
-                                  input.value === "basic" ? styles.selected : undefined
-                                }
+                                className={`${styles.clickable} ${input.value === "basic" ? styles.selected : ""}`}
                               >
                                 Basic
                               </th>
                               <th
                                 onClick={() => input.onChange("business")}
-                                className={
-                                  input.value === "business" ? styles.selected : undefined
-                                }
+                                className={`${styles.clickable} ${input.value === "business" ? styles.selected : ""}`}
                               >
                                 Business
                               </th>
                               <th
                                 onClick={() => input.onChange("enterprise")}
-                                className={
-                                  input.value === "enterprise" ? styles.selected : undefined
-                                }
+                                className={`${styles.clickable} ${input.value === "enterprise" ? styles.selected : ""}`}
                               >
                                 Enterprise
                               </th>
@@ -223,25 +219,19 @@ export const SignUp = ({ open, onClose }) => {
                               <td>Meeting duration</td>
                               <td
                                 onClick={() => input.onChange("basic")}
-                                className={
-                                  input.value === "basic" ? styles.selected : undefined
-                                }
+                                className={`${styles.clickable} ${input.value === "basic" ? styles.selected : ""}`}
                               >
                                 30 min
                               </td>
                               <td
                                 onClick={() => input.onChange("business")}
-                                className={
-                                  input.value === "business" ? styles.selected : undefined
-                                }
+                                className={`${styles.clickable} ${input.value === "business" ? styles.selected : ""}`}
                               >
                                 60 min
                               </td>
                               <td
                                 onClick={() => input.onChange("enterprise")}
-                                className={
-                                  input.value === "enterprise" ? styles.selected : undefined
-                                }
+                                className={`${styles.clickable} ${input.value === "enterprise" ? styles.selected : ""}`}
                               >
                                 Unlimited
                               </td>
@@ -250,25 +240,19 @@ export const SignUp = ({ open, onClose }) => {
                               <td>Number of users</td>
                               <td
                                 onClick={() => input.onChange("basic")}
-                                className={
-                                  input.value === "basic" ? styles.selected : undefined
-                                }
+                                className={`${styles.clickable} ${input.value === "basic" ? styles.selected : ""}`}
                               >
                                 10
                               </td>
                               <td
                                 onClick={() => input.onChange("business")}
-                                className={
-                                  input.value === "business" ? styles.selected : undefined
-                                }
+                                className={`${styles.clickable} ${input.value === "business" ? styles.selected : ""}`}
                               >
                                 100
                               </td>
                               <td
                                 onClick={() => input.onChange("enterprise")}
-                                className={
-                                  input.value === "enterprise" ? styles.selected : undefined
-                                }
+                                className={`${styles.clickable} ${input.value === "enterprise" ? styles.selected : ""}`}
                               >
                                 Unlimited
                               </td>
@@ -277,25 +261,19 @@ export const SignUp = ({ open, onClose }) => {
                               <td>Plug in your IDP</td>
                               <td
                                 onClick={() => input.onChange("basic")}
-                                className={
-                                  input.value === "basic" ? styles.selected : undefined
-                                }
+                                className={`${styles.clickable} ${input.value === "basic" ? styles.selected : ""}`}
                               >
                                 -
                               </td>
                               <td
                                 onClick={() => input.onChange("business")}
-                                className={
-                                  input.value === "business" ? styles.selected : undefined
-                                }
+                                className={`${styles.clickable} ${input.value === "business" ? styles.selected : ""}`}
                               >
                                 Yes
                               </td>
                               <td
                                 onClick={() => input.onChange("enterprise")}
-                                className={
-                                  input.value === "enterprise" ? styles.selected : undefined
-                                }
+                                className={`${styles.clickable} ${input.value === "enterprise" ? styles.selected : ""}`}
                               >
                                 Yes
                               </td>
@@ -304,25 +282,19 @@ export const SignUp = ({ open, onClose }) => {
                               <td>Personalization</td>
                               <td
                                 onClick={() => input.onChange("basic")}
-                                className={
-                                  input.value === "basic" ? styles.selected : undefined
-                                }
+                                className={`${styles.clickable} ${input.value === "basic" ? styles.selected : ""}`}
                               >
                                 Basic
                               </td>
                               <td
                                 onClick={() => input.onChange("business")}
-                                className={
-                                  input.value === "business" ? styles.selected : undefined
-                                }
+                                className={`${styles.clickable} ${input.value === "business" ? styles.selected : ""}`}
                               >
                                 Advanced
                               </td>
                               <td
                                 onClick={() => input.onChange("enterprise")}
-                                className={
-                                  input.value === "enterprise" ? styles.selected : undefined
-                                }
+                                className={`${styles.clickable} ${input.value === "enterprise" ? styles.selected : ""}`}
                               >
                                 Custom
                               </td>
@@ -339,13 +311,20 @@ export const SignUp = ({ open, onClose }) => {
                   <Field name="addons" initialValue={[]}>
                     {({ input }) => (
                       <FormField name="addons" label="Add-ons">
-                        <FormSuite.Control
-                          {...input}
-                          name="checkbox"
-                          accepter={CheckboxGroup}
-                        >
-                          <Checkbox value="teamspace-agent">Teamspace Agent</Checkbox>
-                        </FormSuite.Control>
+                        <div className={styles.addonContainer}>
+                          <div
+                            className={`${styles.addonOption} ${input.value.includes('teamspace-agent') ? styles.addonSelected : ''}`}
+                            onClick={() => {
+                              if (input.value.includes('teamspace-agent')) {
+                                input.onChange(input.value.filter((v) => v !== 'teamspace-agent'));
+                              } else {
+                                input.onChange([...(input.value || []), 'teamspace-agent']);
+                              }
+                            }}
+                          >
+                            Teamspace Agent
+                          </div>
+                        </div>
                       </FormField>
                     )}
                   </Field>
@@ -355,7 +334,6 @@ export const SignUp = ({ open, onClose }) => {
               <FormButtonToolbar
                 submitButtonText={step === 1 ? "Next" : "Sign Up"}
                 submitButtonDisabled={loading}
-                block
                 onCancel={onClose}
               />
               {loading && (

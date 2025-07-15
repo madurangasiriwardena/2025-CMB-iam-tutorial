@@ -9,10 +9,28 @@
     padding: 8px;
     text-align: center;
 }
+.clickable {
+    cursor: pointer;
+}
 .subscriptionTable th {
     background-color: #f7f7f7;
 }
 .selected {
+    border: 2px solid #3498db;
+    background-color: #eef7ff;
+}
+.addonContainer {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+.addonOption {
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.addonSelected {
     border: 2px solid #3498db;
     background-color: #eef7ff;
 }
