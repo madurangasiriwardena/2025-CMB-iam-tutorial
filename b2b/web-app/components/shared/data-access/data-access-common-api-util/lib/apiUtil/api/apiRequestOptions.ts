@@ -18,11 +18,12 @@
 
 import { Session } from "next-auth";
 import RequestMethod from "./requestMethod";
+import { getHostedUrl } from "@pet-management-webapp/util-application-config-util";
 
 /**
- * 
+ *
  * @param session - session object
- * 
+ *
  * @returns header object that can used for IS API calls
  */
 export function apiRequestOptions(session: Session, hostedUrl: string): RequestInit {
@@ -55,4 +56,12 @@ export function apiRequestOptionsWithBody(session: Session, method: RequestMetho
     return request;
 }
 
-export default { apiRequestOptions, apiRequestOptionsWithBody };
+export function requestOptions(session: Session): RequestInit {
+    return apiRequestOptions(session, getHostedUrl());
+}
+
+export function requestOptionsWithBody(session: Session, method: RequestMethod, body: BodyInit): RequestInit {
+    return apiRequestOptionsWithBody(session, method, body, getHostedUrl());
+}
+
+export default { apiRequestOptions, apiRequestOptionsWithBody, requestOptions, requestOptionsWithBody };

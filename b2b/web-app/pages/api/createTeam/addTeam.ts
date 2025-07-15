@@ -1,9 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-<<<<<<<< HEAD:b2b/web-app/apps/business-admin-app/pages/api/organizations/addTeam.ts
-import { getConfig } from "@pet-management-webapp/business-admin-app/util/util-application-config-util";
-========
-import { getConfig, getHostedUrl } from "@pet-management-webapp/util-application-config-util";
->>>>>>>> d1ac4ead778f1f08ac768af16f63ed1af52d6b8f:b2b/web-app/pages/api/createTeam/addTeam.ts
+import { getConfig } from "@pet-management-webapp/util-application-config-util";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== 'POST') {
