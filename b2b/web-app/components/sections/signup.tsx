@@ -5,7 +5,6 @@ import {
   Message,
   Checkbox,
   CheckboxGroup,
-  Radio,
   useToaster,
 } from "rsuite";
 import { Form, Field } from "react-final-form";
@@ -186,69 +185,147 @@ export const SignUp = ({ open, onClose }) => {
 
               {step === 2 && (
                 <>
-                  <Field name="subscription">
+                  <Field name="subscription" initialValue="basic">
                     {({ input, meta }) => (
                       <>
                         <table className={styles.subscriptionTable}>
                           <thead>
                             <tr>
                               <th>Features</th>
-                              <th>Basic</th>
-                              <th>Business</th>
-                              <th>Enterprise</th>
+                              <th
+                                onClick={() => input.onChange("basic")}
+                                className={
+                                  input.value === "basic" ? styles.selected : undefined
+                                }
+                              >
+                                Basic
+                              </th>
+                              <th
+                                onClick={() => input.onChange("business")}
+                                className={
+                                  input.value === "business" ? styles.selected : undefined
+                                }
+                              >
+                                Business
+                              </th>
+                              <th
+                                onClick={() => input.onChange("enterprise")}
+                                className={
+                                  input.value === "enterprise" ? styles.selected : undefined
+                                }
+                              >
+                                Enterprise
+                              </th>
                             </tr>
                           </thead>
                           <tbody>
                             <tr>
-                              <td>Select Plan</td>
-                              <td>
-                                <Radio
-                                  {...input}
-                                  value="basic"
-                                  checked={input.value === "basic"}
-                                  onChange={() => input.onChange("basic")}
-                                />
-                              </td>
-                              <td>
-                                <Radio
-                                  {...input}
-                                  value="business"
-                                  checked={input.value === "business"}
-                                  onChange={() => input.onChange("business")}
-                                />
-                              </td>
-                              <td>
-                                <Radio
-                                  {...input}
-                                  value="enterprise"
-                                  checked={input.value === "enterprise"}
-                                  onChange={() => input.onChange("enterprise")}
-                                />
-                              </td>
-                            </tr>
-                            <tr>
                               <td>Meeting duration</td>
-                              <td>30 min</td>
-                              <td>60 min</td>
-                              <td>Unlimited</td>
+                              <td
+                                onClick={() => input.onChange("basic")}
+                                className={
+                                  input.value === "basic" ? styles.selected : undefined
+                                }
+                              >
+                                30 min
+                              </td>
+                              <td
+                                onClick={() => input.onChange("business")}
+                                className={
+                                  input.value === "business" ? styles.selected : undefined
+                                }
+                              >
+                                60 min
+                              </td>
+                              <td
+                                onClick={() => input.onChange("enterprise")}
+                                className={
+                                  input.value === "enterprise" ? styles.selected : undefined
+                                }
+                              >
+                                Unlimited
+                              </td>
                             </tr>
                             <tr>
                               <td>Number of users</td>
-                              <td>10</td>
-                              <td>100</td>
-                              <td>Unlimited</td>
+                              <td
+                                onClick={() => input.onChange("basic")}
+                                className={
+                                  input.value === "basic" ? styles.selected : undefined
+                                }
+                              >
+                                10
+                              </td>
+                              <td
+                                onClick={() => input.onChange("business")}
+                                className={
+                                  input.value === "business" ? styles.selected : undefined
+                                }
+                              >
+                                100
+                              </td>
+                              <td
+                                onClick={() => input.onChange("enterprise")}
+                                className={
+                                  input.value === "enterprise" ? styles.selected : undefined
+                                }
+                              >
+                                Unlimited
+                              </td>
                             </tr>
                             <tr>
                               <td>Plug in your IDP</td>
-                              <td>-</td>
-                              <td>Yes</td>
-                              <td>Yes</td>
+                              <td
+                                onClick={() => input.onChange("basic")}
+                                className={
+                                  input.value === "basic" ? styles.selected : undefined
+                                }
+                              >
+                                -
+                              </td>
+                              <td
+                                onClick={() => input.onChange("business")}
+                                className={
+                                  input.value === "business" ? styles.selected : undefined
+                                }
+                              >
+                                Yes
+                              </td>
+                              <td
+                                onClick={() => input.onChange("enterprise")}
+                                className={
+                                  input.value === "enterprise" ? styles.selected : undefined
+                                }
+                              >
+                                Yes
+                              </td>
                             </tr>
                             <tr>
                               <td>Personalization</td>
-                              <td>Basic</td>
-                              <td>Advanced</td>
-                              <td>Custom</td>
+                              <td
+                                onClick={() => input.onChange("basic")}
+                                className={
+                                  input.value === "basic" ? styles.selected : undefined
+                                }
+                              >
+                                Basic
+                              </td>
+                              <td
+                                onClick={() => input.onChange("business")}
+                                className={
+                                  input.value === "business" ? styles.selected : undefined
+                                }
+                              >
+                                Advanced
+                              </td>
+                              <td
+                                onClick={() => input.onChange("enterprise")}
+                                className={
+                                  input.value === "enterprise" ? styles.selected : undefined
+                                }
+                              >
+                                Custom
+                              </td>
                             </tr>
                           </tbody>
                         </table>
