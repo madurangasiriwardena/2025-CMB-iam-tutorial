@@ -227,7 +227,7 @@ From `<PROJECT_HOME>/b2b/web-app`:
 
 ```bash
 npm install
-npx nx serve business-admin-app
+npm run dev
 ```
 
 ## Configure Asgardeo
