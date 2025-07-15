@@ -20,7 +20,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { notPostError } from "@pet-management-webapp/shared/data-access/data-access-common-api-util";
 import getToken from "./clientCredentials";
 import validateOrgName from "./createTeam/checkName";
-import deleteTeam from "../../apps/business-admin-app/pages/api/organizations/deleteTeam";
+import { getConfig } from "@pet-management-webapp/util-application-config-util";
 import createOrg from "./createTeam/addTeam";
 import listCurrentApplication from "./settings/application/listCurrentApplication";
 import getRole from "./settings/role/getRole";
@@ -38,33 +38,31 @@ import pollforRolePatching from "./helpers/pollRolePatch";
  */
 async function rollbackOrganization(accessToken: string, orgId: string): Promise<boolean> {
   try {
-    
-    const mockReq = {
-      method: "DELETE",
-      body: { orgId, accessToken }
-    } as unknown as NextApiRequest;
-    
-    const mockRes = {
-      statusCode: 0,
-      responseData: null,
-      status: function(code) {
-        this.statusCode = code;
-        return this;
-      },
-      json: function(data) {
-        this.responseData = data;
-        return this;
+
+    const response = await fetch(
+      `${getConfig().CommonConfig.AuthorizationConfig.BaseOrganizationUrl}/api/server/v1/organizations/${orgId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        }
       }
-    } as unknown as NextApiResponse;
-    
-    await deleteTeam(mockReq, mockRes);
-    
-    const success = mockRes.statusCode === 200 && mockRes.responseData?.success === true;
+    );
+
+    const success = response.status === 204 || response.status === 400 || response.ok;
     
     if (success) {
       console.log("Successfully rolled back organization");
     } else {
-      console.error(`Failed to roll back organization: ${orgId}`, mockRes.responseData);
+      let errorData;
+      try {
+        errorData = await response.json();
+      } catch (e) {
+        errorData = { message: response.statusText };
+      }
+      console.error(`Failed to roll back organization: ${orgId}`, errorData);
     }
     
     return success;
