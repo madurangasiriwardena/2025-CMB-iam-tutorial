@@ -73,3 +73,9 @@
 .shortInput {
     max-width: 260px;
 }
+
+.formFields {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

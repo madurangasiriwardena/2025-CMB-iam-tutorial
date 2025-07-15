@@ -163,7 +163,7 @@ export const SignUp = ({ open, onClose }) => {
               style={{ overflow: "visible" }}
             >
               {step === 1 && (
-                <>
+                <div className={styles.formFields}>
                   <FormField name="email" label="Email" needErrorMessage={true}>
                     <FormSuite.Control name="email" required className={styles.shortInput} />
                   </FormField>
@@ -200,11 +200,11 @@ export const SignUp = ({ open, onClose }) => {
                   <FormField name="organizationName" label="Organization Name" needErrorMessage={true}>
                     <FormSuite.Control name="organizationName" required className={styles.shortInput} />
                   </FormField>
-                </>
+                </div>
               )}
 
               {step === 2 && (
-                <>
+                <div className={styles.formFields}>
                   <Field name="subscription" initialValue="basic">
                     {({ input, meta }) => (
                       <>
@@ -367,16 +367,18 @@ export const SignUp = ({ open, onClose }) => {
                   </Field>
 
                   <div className={styles.totalPrice}>
-                    {calculateTotal(values.subscription, values.addons) === 0
-                      ? "Free"
-                      : `$${calculateTotal(values.subscription, values.addons)}/user/mo`}
+                    {`Total at signup: ${
+                      calculateTotal(values.subscription, values.addons) === 0
+                        ? 'Free'
+                        : `$${calculateTotal(values.subscription, values.addons)}/user/mo`
+                    }`}
                   </div>
-                </>
+                </div>
               )}
 
               <div className={styles.buttonToolbarContainer}>
                 {step === 2 && (
-                  <Button appearance="subtle" onClick={() => setStep(1)}>
+                  <Button appearance="primary" onClick={() => setStep(1)}>
                     Back
                   </Button>
                 )}
