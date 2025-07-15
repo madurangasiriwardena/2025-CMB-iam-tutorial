@@ -42,6 +42,7 @@
 .buttonToolbarContainer {
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 12px;
     margin-top: 20px;
 }
@@ -71,7 +72,14 @@
 }
 
 .shortInput {
-    max-width: 260px;
+    max-width: 320px;
+}
+
+.backButton {
+    height: 50px;
+    font-size: 1rem;
+    border-radius: 22px;
+    padding: 14px 24px;
 }
 
 .formFields {

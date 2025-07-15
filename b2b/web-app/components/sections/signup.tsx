@@ -170,7 +170,11 @@ export const SignUp = ({ open, onClose }) => {
 
                   <Field name="password">
                     {({ input, meta }) => (
-                      <FormField name="password" label="Password">
+                      <FormField
+                        name="password"
+                        label="Password"
+                        needErrorMessage={true}
+                      >
                         <>
                           <FormSuite.Control
                             {...input}
@@ -378,7 +382,12 @@ export const SignUp = ({ open, onClose }) => {
 
               <div className={styles.buttonToolbarContainer}>
                 {step === 2 && (
-                  <Button appearance="primary" onClick={() => setStep(1)}>
+                  <Button
+                    appearance="primary"
+                    size="lg"
+                    className={styles.backButton}
+                    onClick={() => setStep(1)}
+                  >
                     Back
                   </Button>
                 )}
