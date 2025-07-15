@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Modal, Loader, Message, useToaster } from "rsuite";
+import {
+  Modal,
+  Loader,
+  Message,
+  SelectPicker,
+  Checkbox,
+  CheckboxGroup,
+  useToaster,
+} from "rsuite";
 import { Form, Field } from "react-final-form";
 import {
   FormButtonToolbar,
@@ -42,6 +50,10 @@ export const SignUp = ({ open, onClose }) => {
       errors.password = passwordError;
     }
 
+    if (!values.subscription) {
+      errors.subscription = "Subscription is required";
+    }
+
     return errors;
   };
 
@@ -61,6 +73,8 @@ export const SignUp = ({ open, onClose }) => {
           email: values.email,
           password: values.password,
           organizationName: values.organizationName,
+          subscription: values.subscription,
+          addons: values.addons,
           appName:
             getConfig().BusinessAdminAppConfig.ManagementAPIConfig
               .SharedApplicationName,
@@ -140,6 +154,40 @@ export const SignUp = ({ open, onClose }) => {
               <FormField name="organizationName" label="Organization Name">
                 <FormSuite.Control name="organizationName" required />
               </FormField>
+
+              <Field name="subscription">
+                {({ input, meta }) => (
+                  <FormField name="subscription" label="Subscription">
+                    <FormSuite.Control
+                      {...input}
+                      accepter={SelectPicker}
+                      data={[
+                        { label: "Free", value: "free" },
+                        { label: "Premium", value: "premium" },
+                      ]}
+                      style={{ width: "100%" }}
+                      placeholder="Select subscription"
+                      error={meta.touched && meta.error}
+                      errorMessage={meta.touched && meta.error}
+                      required
+                    />
+                  </FormField>
+                )}
+              </Field>
+
+              <Field name="addons" initialValue={[]}> 
+                {({ input }) => (
+                  <FormField name="addons" label="Add-ons">
+                    <FormSuite.Control
+                      {...input}
+                      name="checkbox"
+                      accepter={CheckboxGroup}
+                    >
+                      <Checkbox value="teamspace-agent">Teamspace Agent</Checkbox>
+                    </FormSuite.Control>
+                  </FormField>
+                )}
+              </Field>
 
               <FormButtonToolbar
                 submitButtonText="Sign Up"

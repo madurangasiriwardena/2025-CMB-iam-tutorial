@@ -88,8 +88,16 @@ export default async function handler(
     return notPostError(res);
   }
 
-  const { firstName, lastName, email, password, organizationName, appName } =
-    req.body;
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    organizationName,
+    appName,
+    subscription,
+    addons,
+  } = req.body;
 
   if (!firstName || !lastName || !email || !password || !organizationName) {
     return res.status(400).json({
@@ -339,6 +347,8 @@ export default async function handler(
       organization: orgData,
       user: userData,
       roleAssignment: rolePatchData,
+      subscription,
+      addons,
     });
   } catch (error) {
     console.error("Signup error:", error);
