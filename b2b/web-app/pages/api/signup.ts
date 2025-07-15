@@ -19,9 +19,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { notPostError } from "@pet-management-webapp/shared/data-access/data-access-common-api-util";
 import getToken from "./clientCredentials";
-import validateOrgName from "./organizations/checkName";
-import deleteTeam from "./organizations/deleteTeam";
-import createOrg from "./organizations/addTeam";
+import validateOrgName from "./createTeam/checkName";
+import deleteTeam from "../../apps/business-admin-app/pages/api/organizations/deleteTeam";
+import createOrg from "./createTeam/addTeam";
 import listCurrentApplication from "./settings/application/listCurrentApplication";
 import getRole from "./settings/role/getRole";
 import switchOrg from "./settings/switchOrg";
