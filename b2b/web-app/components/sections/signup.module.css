@@ -38,3 +38,22 @@
     color: red;
     padding: 4px 0;
 }
+
+.buttonToolbarContainer {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+.addonOption span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.addonDescription {
+    font-size: 12px;
+    margin-top: 4px;
+}
+.addonIcon {
+    font-size: 20px;
+}

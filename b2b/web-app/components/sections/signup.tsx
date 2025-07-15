@@ -6,6 +6,7 @@ import {
   Button,
   useToaster,
 } from "rsuite";
+import AndroidIcon from "@rsuite/icons/Android";
 import { Form, Field } from "react-final-form";
 import {
   FormButtonToolbar,
@@ -184,9 +185,6 @@ export const SignUp = ({ open, onClose }) => {
 
               {step === 2 && (
                 <>
-                  <Button appearance="subtle" onClick={() => setStep(1)} style={{ marginBottom: 10 }}>
-                    Back
-                  </Button>
                   <Field name="subscription" initialValue="basic">
                     {({ input, meta }) => (
                       <>
@@ -215,6 +213,18 @@ export const SignUp = ({ open, onClose }) => {
                             </tr>
                           </thead>
                           <tbody>
+                            <tr>
+                              <td>Price</td>
+                              <td onClick={() => input.onChange("basic")} className={`${styles.clickable} ${input.value === "basic" ? styles.selected : ""}`}>
+                                Free
+                              </td>
+                              <td onClick={() => input.onChange("business")} className={`${styles.clickable} ${input.value === "business" ? styles.selected : ""}`}>
+                                $5/user/mo
+                              </td>
+                              <td onClick={() => input.onChange("enterprise")} className={`${styles.clickable} ${input.value === "enterprise" ? styles.selected : ""}`}>
+                                $9/user/mo
+                              </td>
+                            </tr>
                             <tr>
                               <td>Meeting duration</td>
                               <td
@@ -322,7 +332,13 @@ export const SignUp = ({ open, onClose }) => {
                               }
                             }}
                           >
-                            Teamspace Agent
+                            <span>
+                              <AndroidIcon className={styles.addonIcon} />
+                              Teamspace Agent
+                            </span>
+                            <div className={styles.addonDescription}>
+                              Increase productivity with an AI agent
+                            </div>
                           </div>
                         </div>
                       </FormField>
@@ -331,11 +347,18 @@ export const SignUp = ({ open, onClose }) => {
                 </>
               )}
 
-              <FormButtonToolbar
-                submitButtonText={step === 1 ? "Next" : "Sign Up"}
-                submitButtonDisabled={loading}
-                onCancel={onClose}
-              />
+              <div className={styles.buttonToolbarContainer}>
+                {step === 2 && (
+                  <Button appearance="subtle" onClick={() => setStep(1)}>
+                    Back
+                  </Button>
+                )}
+                <FormButtonToolbar
+                  submitButtonText={step === 1 ? "Next" : "Sign Up"}
+                  submitButtonDisabled={loading}
+                  onCancel={onClose}
+                />
+              </div>
               {loading && (
                 <Loader size="sm" backdrop content="Signing you up!" vertical />
               )}
