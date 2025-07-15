@@ -12,3 +12,7 @@
 .subscriptionTable th {
     background-color: #f7f7f7;
 }
+.error {
+    color: red;
+    padding: 4px 0;
+}

@@ -3,11 +3,9 @@ import {
   Modal,
   Loader,
   Message,
-  SelectPicker,
   Checkbox,
   CheckboxGroup,
   Radio,
-  RadioGroup,
   useToaster,
 } from "rsuite";
 import { Form, Field } from "react-final-form";
@@ -188,48 +186,76 @@ export const SignUp = ({ open, onClose }) => {
 
               {step === 2 && (
                 <>
-                  <table className={styles.subscriptionTable}>
-                    <thead>
-                      <tr>
-                        <th>Features</th>
-                        <th>Free</th>
-                        <th>Premium</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>User Limit</td>
-                        <td>5</td>
-                        <td>Unlimited</td>
-                      </tr>
-                      <tr>
-                        <td>Storage</td>
-                        <td>1GB</td>
-                        <td>100GB</td>
-                      </tr>
-                      <tr>
-                        <td>Support</td>
-                        <td>Email</td>
-                        <td>Priority</td>
-                      </tr>
-                    </tbody>
-                  </table>
-
                   <Field name="subscription">
                     {({ input, meta }) => (
-                      <FormField name="subscription" label="Subscription" needErrorMessage={true}>
-                        <FormSuite.Control
-                          {...input}
-                          accepter={RadioGroup}
-                          inline
-                          error={meta.touched && meta.error}
-                          errorMessage={meta.touched && meta.error}
-                          required
-                        >
-                          <Radio value="free">Free</Radio>
-                          <Radio value="premium">Premium</Radio>
-                        </FormSuite.Control>
-                      </FormField>
+                      <>
+                        <table className={styles.subscriptionTable}>
+                          <thead>
+                            <tr>
+                              <th>Features</th>
+                              <th>Basic</th>
+                              <th>Business</th>
+                              <th>Enterprise</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Select Plan</td>
+                              <td>
+                                <Radio
+                                  {...input}
+                                  value="basic"
+                                  checked={input.value === "basic"}
+                                  onChange={() => input.onChange("basic")}
+                                />
+                              </td>
+                              <td>
+                                <Radio
+                                  {...input}
+                                  value="business"
+                                  checked={input.value === "business"}
+                                  onChange={() => input.onChange("business")}
+                                />
+                              </td>
+                              <td>
+                                <Radio
+                                  {...input}
+                                  value="enterprise"
+                                  checked={input.value === "enterprise"}
+                                  onChange={() => input.onChange("enterprise")}
+                                />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Meeting duration</td>
+                              <td>30 min</td>
+                              <td>60 min</td>
+                              <td>Unlimited</td>
+                            </tr>
+                            <tr>
+                              <td>Number of users</td>
+                              <td>10</td>
+                              <td>100</td>
+                              <td>Unlimited</td>
+                            </tr>
+                            <tr>
+                              <td>Plug in your IDP</td>
+                              <td>-</td>
+                              <td>Yes</td>
+                              <td>Yes</td>
+                            </tr>
+                            <tr>
+                              <td>Personalization</td>
+                              <td>Basic</td>
+                              <td>Advanced</td>
+                              <td>Custom</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        {meta.touched && meta.error && (
+                          <div className={styles.error}>{meta.error}</div>
+                        )}
+                      </>
                     )}
                   </Field>
 
