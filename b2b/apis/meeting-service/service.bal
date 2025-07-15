@@ -15,6 +15,7 @@ service / on new http:Listener(9091) {
 
     # Get all meetings
     # + return - List of meetings or error
+    # TODO add scope validation
     resource function get meetings(http:Headers headers) returns Meeting[]|error? {
 
         UserInfo|error userInfo = userInfoResolver.retrieveUserInfo(headers);
