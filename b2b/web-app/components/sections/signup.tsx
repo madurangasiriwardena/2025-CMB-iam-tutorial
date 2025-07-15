@@ -6,6 +6,8 @@ import {
   SelectPicker,
   Checkbox,
   CheckboxGroup,
+  Radio,
+  RadioGroup,
   useToaster,
 } from "rsuite";
 import { Form, Field } from "react-final-form";
@@ -15,10 +17,12 @@ import {
 } from "@pet-management-webapp/shared/ui/ui-basic-components";
 import FormSuite from "rsuite/Form";
 import { getConfig } from "@pet-management-webapp/util-application-config-util";
+import styles from "./signup.module.css";
 
 export const SignUp = ({ open, onClose }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [step, setStep] = useState(1);
 
   const toaster = useToaster();
 
@@ -50,7 +54,22 @@ export const SignUp = ({ open, onClose }) => {
       errors.password = passwordError;
     }
 
-    if (!values.subscription) {
+    if (step === 1) {
+      if (!values.email) {
+        errors.email = "Email is required";
+      }
+      if (!values.firstName) {
+        errors.firstName = "First name is required";
+      }
+      if (!values.lastName) {
+        errors.lastName = "Last name is required";
+      }
+      if (!values.organizationName) {
+        errors.organizationName = "Organization name is required";
+      }
+    }
+
+    if (step === 2 && !values.subscription) {
       errors.subscription = "Subscription is required";
     }
 
@@ -102,95 +121,136 @@ export const SignUp = ({ open, onClose }) => {
     }
   };
 
+  const onFormSubmit = async (values) => {
+    if (step === 1) {
+      setStep(2);
+      return;
+    }
+
+    await handleSignUp(values);
+  };
+
   return (
-    <Modal open={open} onClose={onClose} size="xs">
+    <Modal open={open} onClose={onClose} size="lg">
       <Modal.Header style={{ marginTop: 10, textAlign: "center" }}>
         <Modal.Title>Sign Up</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form
-          onSubmit={handleSignUp}
+          onSubmit={onFormSubmit}
           validate={validate}
-          render={({ handleSubmit }) => (
+          render={() => (
             <FormSuite
               layout="vertical"
-              onSubmit={() => {
-                handleSubmit();
-              }}
+              onSubmit={onFormSubmit}
               fluid
+              style={{ overflow: "visible" }}
             >
-              <FormField name="email" label="Email">
-                <FormSuite.Control name="email" required />
-              </FormField>
-
-              <Field name="password">
-                {({ input, meta }) => (
-                  <FormField name="password" label="Password">
-                    <>
-                      <FormSuite.Control
-                        {...input}
-                        type="password"
-                        error={meta.touched && meta.error}
-                        errorMessage={meta.touched && meta.error}
-                        required
-                      />
-                      <FormSuite.HelpText>
-                        Password must be 8-30 characters with at least one uppercase
-                        letter and digit.
-                      </FormSuite.HelpText>
-                    </>
+              {step === 1 && (
+                <>
+                  <FormField name="email" label="Email" needErrorMessage={true}>
+                    <FormSuite.Control name="email" required />
                   </FormField>
-                )}
-              </Field>
 
-              <FormField name="firstName" label="First Name">
-                <FormSuite.Control name="firstName" required />
-              </FormField>
+                  <Field name="password">
+                    {({ input, meta }) => (
+                      <FormField name="password" label="Password">
+                        <>
+                          <FormSuite.Control
+                            {...input}
+                            type="password"
+                            error={meta.touched && meta.error}
+                            errorMessage={meta.touched && meta.error}
+                            required
+                          />
+                          <FormSuite.HelpText>
+                            Password must be 8-30 characters with at least one uppercase
+                            letter and digit.
+                          </FormSuite.HelpText>
+                        </>
+                      </FormField>
+                    )}
+                  </Field>
 
-              <FormField name="lastName" label="Last Name">
-                <FormSuite.Control name="lastName" required />
-              </FormField>
-
-              <FormField name="organizationName" label="Organization Name">
-                <FormSuite.Control name="organizationName" required />
-              </FormField>
-
-              <Field name="subscription">
-                {({ input, meta }) => (
-                  <FormField name="subscription" label="Subscription">
-                    <FormSuite.Control
-                      {...input}
-                      accepter={SelectPicker}
-                      data={[
-                        { label: "Free", value: "free" },
-                        { label: "Premium", value: "premium" },
-                      ]}
-                      style={{ width: "100%" }}
-                      placeholder="Select subscription"
-                      error={meta.touched && meta.error}
-                      errorMessage={meta.touched && meta.error}
-                      required
-                    />
+                  <FormField name="firstName" label="First Name" needErrorMessage={true}>
+                    <FormSuite.Control name="firstName" required />
                   </FormField>
-                )}
-              </Field>
 
-              <Field name="addons" initialValue={[]}> 
-                {({ input }) => (
-                  <FormField name="addons" label="Add-ons">
-                    <FormSuite.Control
-                      {...input}
-                      name="checkbox"
-                      accepter={CheckboxGroup}
-                    >
-                      <Checkbox value="teamspace-agent">Teamspace Agent</Checkbox>
-                    </FormSuite.Control>
+                  <FormField name="lastName" label="Last Name" needErrorMessage={true}>
+                    <FormSuite.Control name="lastName" required />
                   </FormField>
-                )}
-              </Field>
+
+                  <FormField name="organizationName" label="Organization Name" needErrorMessage={true}>
+                    <FormSuite.Control name="organizationName" required />
+                  </FormField>
+                </>
+              )}
+
+              {step === 2 && (
+                <>
+                  <table className={styles.subscriptionTable}>
+                    <thead>
+                      <tr>
+                        <th>Features</th>
+                        <th>Free</th>
+                        <th>Premium</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>User Limit</td>
+                        <td>5</td>
+                        <td>Unlimited</td>
+                      </tr>
+                      <tr>
+                        <td>Storage</td>
+                        <td>1GB</td>
+                        <td>100GB</td>
+                      </tr>
+                      <tr>
+                        <td>Support</td>
+                        <td>Email</td>
+                        <td>Priority</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <Field name="subscription">
+                    {({ input, meta }) => (
+                      <FormField name="subscription" label="Subscription" needErrorMessage={true}>
+                        <FormSuite.Control
+                          {...input}
+                          accepter={RadioGroup}
+                          inline
+                          error={meta.touched && meta.error}
+                          errorMessage={meta.touched && meta.error}
+                          required
+                        >
+                          <Radio value="free">Free</Radio>
+                          <Radio value="premium">Premium</Radio>
+                        </FormSuite.Control>
+                      </FormField>
+                    )}
+                  </Field>
+
+                  <Field name="addons" initialValue={[]}>
+                    {({ input }) => (
+                      <FormField name="addons" label="Add-ons">
+                        <FormSuite.Control
+                          {...input}
+                          name="checkbox"
+                          accepter={CheckboxGroup}
+                        >
+                          <Checkbox value="teamspace-agent">Teamspace Agent</Checkbox>
+                        </FormSuite.Control>
+                      </FormField>
+                    )}
+                  </Field>
+                </>
+              )}
 
               <FormButtonToolbar
-                submitButtonText="Sign Up"
+                submitButtonText={step === 1 ? "Next" : "Sign Up"}
                 submitButtonDisabled={loading}
                 block
                 onCancel={onClose}
