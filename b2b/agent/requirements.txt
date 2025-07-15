@@ -3,3 +3,6 @@ uvicorn
 openai
 httpx
 crewai
+python-dotenv
+langchain-openai
+tzlocal

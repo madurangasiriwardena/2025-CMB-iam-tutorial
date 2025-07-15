@@ -24,7 +24,7 @@ Add new tool functions in `tools/` and register them in `main.py`.
 
 1. Create a virtual environment (recommended):
    ```bash
-   python3 -m venv .venv
+   python3.10 -m venv .venv
    source .venv/bin/activate
    ```
 2. Install dependencies:
@@ -32,11 +32,7 @@ Add new tool functions in `tools/` and register them in `main.py`.
    pip install -r requirements.txt
    ```
 3. Ensure you are using Python 3.10 or newer.
-4. Add your OpenAI API key as an environment variable:
-   ```bash
-   export OPENAI_API_KEY=your-key-here
-   ```
-5. Run the server:
+4. Run the server:
    ```bash
    uvicorn main:app --reload
    ```

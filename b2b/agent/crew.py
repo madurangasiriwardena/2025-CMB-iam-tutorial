@@ -84,7 +84,7 @@ def create_crew(question, thread_id: str = None):
             - Always check current flow_state before any action
             - Only initiate booking when flow_state includes "BOOKING_PREVIEW_INITIATED"
             - URLs belong only in tool_response, never in chat_response
-            - Any exceptions comeing from the tools should be formatted to nice message to user and presented in chat_response.
+            - Any exceptions coming from the tools should be formatted to nice message to user and presented in chat_response.
 
             ## Action Protocol
 
