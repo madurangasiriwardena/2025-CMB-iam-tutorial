@@ -21,20 +21,62 @@ export const SignUp = ({ open, onClose }) => {
   const [error, setError] = useState(null);
   const [step, setStep] = useState(1);
 
-  const subscriptionPrices = {
-    basic: 0,
-    business: 5,
-    enterprise: 9,
-  };
+  const subscriptionPackages = [
+    {
+      id: "basic",
+      label: "Basic",
+      price: 0,
+      meetingDuration: "30 min",
+      users: "10",
+      idp: "-",
+      personalization: "Basic",
+    },
+    {
+      id: "business",
+      label: "Business",
+      price: 5,
+      meetingDuration: "60 min",
+      users: "100",
+      idp: "Yes",
+      personalization: "Advanced",
+    },
+    {
+      id: "enterprise",
+      label: "Enterprise",
+      price: 9,
+      meetingDuration: "Unlimited",
+      users: "Unlimited",
+      idp: "Yes",
+      personalization: "Custom",
+    },
+  ];
 
-  const addonPrices = {
-    "teamspace-agent": 3,
-  };
+  const subscriptionFeatures = [
+    { key: "price", label: "Price" },
+    { key: "meetingDuration", label: "Meeting duration" },
+    { key: "users", label: "Number of users" },
+    { key: "idp", label: "Plug in your IDP" },
+    { key: "personalization", label: "Personalization" },
+  ];
+
+  const addonOptions = [
+    {
+      id: "teamspace-agent",
+      label: "Teamspace Agent",
+      price: 3,
+      description: "Increase productivity with an AI agent",
+      Icon: AndroidIcon,
+    },
+  ];
 
   const calculateTotal = (subscription: string, addons: string[] = []) => {
-    let total = subscriptionPrices[subscription] || 0;
+    const sub = subscriptionPackages.find((s) => s.id === subscription);
+    let total = sub ? sub.price : 0;
     addons.forEach((addon) => {
-      total += addonPrices[addon] || 0;
+      const opt = addonOptions.find((a) => a.id === addon);
+      if (opt) {
+        total += opt.price;
+      }
     });
     return total;
   };
@@ -342,29 +384,35 @@ export const SignUp = ({ open, onClose }) => {
                     )}
                   </Field>
 
-                  <Field name="addons" initialValue={[]}> 
+                  <Field name="addons" initialValue={[]}>
                     {({ input }) => (
                       <FormField name="addons" label="Add-ons">
                         <div className={styles.addonContainer}>
-                          <div
-                            className={`${styles.addonOption} ${input.value.includes('teamspace-agent') ? styles.addonSelected : ''}`}
-                            onClick={() => {
-                              if (input.value.includes('teamspace-agent')) {
-                                input.onChange(input.value.filter((v) => v !== 'teamspace-agent'));
-                              } else {
-                                input.onChange([...(input.value || []), 'teamspace-agent']);
-                              }
-                            }}
-                          >
-                            <span>
-                              <AndroidIcon className={styles.addonIcon} />
-                              <strong>Teamspace Agent</strong>
-                            </span>
-                            <div className={styles.addonDescription}>
-                              Increase productivity with an AI agent
-                            </div>
-                            <div className={styles.addonPrice}>$3/user/mo</div>
-                          </div>
+                          {addonOptions.map((addon) => {
+                            const Icon = addon.Icon;
+                            return (
+                              <div
+                                key={addon.id}
+                                className={`${styles.addonOption} ${input.value.includes(addon.id) ? styles.addonSelected : ""}`}
+                                onClick={() => {
+                                  if (input.value.includes(addon.id)) {
+                                    input.onChange(input.value.filter((v) => v !== addon.id));
+                                  } else {
+                                    input.onChange([...(input.value || []), addon.id]);
+                                  }
+                                }}
+                              >
+                                <span>
+                                  <Icon className={styles.addonIcon} />
+                                  <strong>{addon.label}</strong>
+                                </span>
+                                <div className={styles.addonDescription}>{addon.description}</div>
+                                <div className={styles.addonPrice}>
+                                  {addon.price === 0 ? 'Free' : `$${addon.price}/user/mo`}
+                                </div>
+                              </div>
+                            );
+                          })}
                         </div>
                       </FormField>
                     )}
