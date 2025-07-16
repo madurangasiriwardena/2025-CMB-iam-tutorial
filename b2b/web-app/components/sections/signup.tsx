@@ -258,123 +258,40 @@ export const SignUp = ({ open, onClose }) => {
                           <thead>
                             <tr>
                               <th>Features</th>
-                              <th
-                                onClick={() => input.onChange("basic")}
-                                className={`${styles.clickable} ${input.value === "basic" ? styles.selected : ""}`}
-                              >
-                                Basic
-                              </th>
-                              <th
-                                onClick={() => input.onChange("business")}
-                                className={`${styles.clickable} ${input.value === "business" ? styles.selected : ""}`}
-                              >
-                                Business
-                              </th>
-                              <th
-                                onClick={() => input.onChange("enterprise")}
-                                className={`${styles.clickable} ${input.value === "enterprise" ? styles.selected : ""}`}
-                              >
-                                Enterprise
-                              </th>
+                              {subscriptionPackages.map((pkg) => (
+                                <th
+                                  key={pkg.id}
+                                  onClick={() => input.onChange(pkg.id)}
+                                  className={`${styles.clickable} ${
+                                    input.value === pkg.id ? styles.selected : ""
+                                  }`}
+                                >
+                                  {pkg.label}
+                                </th>
+                              ))}
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
-                              <td>Price</td>
-                              <td onClick={() => input.onChange("basic")} className={`${styles.clickable} ${input.value === "basic" ? styles.selected : ""}`}>
-                                Free
-                              </td>
-                              <td onClick={() => input.onChange("business")} className={`${styles.clickable} ${input.value === "business" ? styles.selected : ""}`}>
-                                $5/user/mo
-                              </td>
-                              <td onClick={() => input.onChange("enterprise")} className={`${styles.clickable} ${input.value === "enterprise" ? styles.selected : ""}`}>
-                                $9/user/mo
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>Meeting duration</td>
-                              <td
-                                onClick={() => input.onChange("basic")}
-                                className={`${styles.clickable} ${input.value === "basic" ? styles.selected : ""}`}
-                              >
-                                30 min
-                              </td>
-                              <td
-                                onClick={() => input.onChange("business")}
-                                className={`${styles.clickable} ${input.value === "business" ? styles.selected : ""}`}
-                              >
-                                60 min
-                              </td>
-                              <td
-                                onClick={() => input.onChange("enterprise")}
-                                className={`${styles.clickable} ${input.value === "enterprise" ? styles.selected : ""}`}
-                              >
-                                Unlimited
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>Number of users</td>
-                              <td
-                                onClick={() => input.onChange("basic")}
-                                className={`${styles.clickable} ${input.value === "basic" ? styles.selected : ""}`}
-                              >
-                                10
-                              </td>
-                              <td
-                                onClick={() => input.onChange("business")}
-                                className={`${styles.clickable} ${input.value === "business" ? styles.selected : ""}`}
-                              >
-                                100
-                              </td>
-                              <td
-                                onClick={() => input.onChange("enterprise")}
-                                className={`${styles.clickable} ${input.value === "enterprise" ? styles.selected : ""}`}
-                              >
-                                Unlimited
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>Plug in your IDP</td>
-                              <td
-                                onClick={() => input.onChange("basic")}
-                                className={`${styles.clickable} ${input.value === "basic" ? styles.selected : ""}`}
-                              >
-                                -
-                              </td>
-                              <td
-                                onClick={() => input.onChange("business")}
-                                className={`${styles.clickable} ${input.value === "business" ? styles.selected : ""}`}
-                              >
-                                Yes
-                              </td>
-                              <td
-                                onClick={() => input.onChange("enterprise")}
-                                className={`${styles.clickable} ${input.value === "enterprise" ? styles.selected : ""}`}
-                              >
-                                Yes
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>Personalization</td>
-                              <td
-                                onClick={() => input.onChange("basic")}
-                                className={`${styles.clickable} ${input.value === "basic" ? styles.selected : ""}`}
-                              >
-                                Basic
-                              </td>
-                              <td
-                                onClick={() => input.onChange("business")}
-                                className={`${styles.clickable} ${input.value === "business" ? styles.selected : ""}`}
-                              >
-                                Advanced
-                              </td>
-                              <td
-                                onClick={() => input.onChange("enterprise")}
-                                className={`${styles.clickable} ${input.value === "enterprise" ? styles.selected : ""}`}
-                              >
-                                Custom
-                              </td>
-                            </tr>
+                            {subscriptionFeatures.map((feature) => (
+                              <tr key={feature.key}>
+                                <td>{feature.label}</td>
+                                {subscriptionPackages.map((pkg) => (
+                                  <td
+                                    key={pkg.id}
+                                    onClick={() => input.onChange(pkg.id)}
+                                    className={`${styles.clickable} ${
+                                      input.value === pkg.id ? styles.selected : ""
+                                    }`}
+                                  >
+                                    {feature.key === "price"
+                                      ? pkg.price === 0
+                                        ? "Free"
+                                        : `$${pkg.price}/user/mo`
+                                      : (pkg as any)[feature.key]}
+                                  </td>
+                                ))}
+                              </tr>
+                            ))}
                           </tbody>
                         </table>
                         {meta.touched && meta.error && (
