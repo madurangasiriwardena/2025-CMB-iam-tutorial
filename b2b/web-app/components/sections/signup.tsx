@@ -348,7 +348,8 @@ export const SignUp = ({ open, onClose }) => {
               <div className={styles.buttonToolbarContainer}>
                 {step === 2 && (
                   <Button
-                    appearance="primary"
+                    type="button"
+                    appearance="default"
                     size="lg"
                     className={styles.backButton}
                     onClick={() => setStep(1)}
