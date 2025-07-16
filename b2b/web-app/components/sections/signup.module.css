@@ -1,0 +1,97 @@
+.subscriptionTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+.subscriptionTable th,
+.subscriptionTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+.clickable {
+    cursor: pointer;
+}
+.subscriptionTable th {
+    background-color: #f7f7f7;
+}
+.selected {
+    border: 2px solid #3498db;
+    background-color: #eef7ff;
+}
+.addonContainer {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+.addonOption {
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.addonSelected {
+    border: 2px solid #3498db;
+    background-color: #eef7ff;
+}
+.error {
+    color: red;
+    padding: 4px 0;
+}
+
+.buttonToolbarContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+.addonOption span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.addonDescription {
+    font-size: 12px;
+    margin-top: 4px;
+}
+.addonIcon {
+    font-size: 20px;
+}
+
+.addonPrice {
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.totalPrice {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.shortInput {
+    max-width: 360px;
+}
+
+.backButton {
+    height: 50px;
+    font-size: 1rem;
+    border-radius: 22px;
+    padding: 14px 24px;
+    margin-bottom: 10px;
+}
+
+.formFields {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.formFields :global(.rs-form-group) {
+    width: 100%;
+    max-width: 320px;
+}
