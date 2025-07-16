@@ -10,8 +10,8 @@ createRoot(document.getElementById('root')).render(
       config={ {
         signInRedirectURL: 'http://localhost:5173',
         signOutRedirectURL: 'http://localhost:5173',
-        clientID: '3EZyHYogEed9V8kmL_PRH2foESga',
-        baseUrl: 'https://api.asgardeo.io/t/jayangak',
+        clientID: 'Rxzf4BLJUao3_Fr5nq3bWiVmPYEa',
+        baseUrl: 'https://api.asgardeo.io/t/wso2conasia',
         scope: ['openid', 'profile'],
       } }
     >
