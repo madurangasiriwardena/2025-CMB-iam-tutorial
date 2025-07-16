@@ -29,7 +29,7 @@ export const SignUp = ({ open, onClose }) => {
       meetingDuration: "30 min",
       users: "10",
       idp: "-",
-      personalization: "Basic",
+      personalization: "-",
     },
     {
       id: "business",
@@ -37,8 +37,8 @@ export const SignUp = ({ open, onClose }) => {
       price: 5,
       meetingDuration: "60 min",
       users: "100",
-      idp: "Yes",
-      personalization: "Advanced",
+      idp: "-",
+      personalization: "Basic",
     },
     {
       id: "enterprise",
@@ -47,7 +47,7 @@ export const SignUp = ({ open, onClose }) => {
       meetingDuration: "Unlimited",
       users: "Unlimited",
       idp: "Yes",
-      personalization: "Custom",
+      personalization: "Advanced",
     },
   ];
 

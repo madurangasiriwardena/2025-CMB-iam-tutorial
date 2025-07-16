@@ -31,7 +31,7 @@ import pollforRolePatching from "./helpers/pollRolePatch";
 
 /**
  * Helper function to delete an organization (for rollback)
- * 
+ *
  * @param accessToken - Access token with permissions to delete organizations
  * @param orgId - ID of the organization to delete
  * @returns Promise<boolean> - True if deletion was successful
@@ -52,7 +52,7 @@ async function rollbackOrganization(accessToken: string, orgId: string): Promise
     );
 
     const success = response.status === 204 || response.status === 400 || response.ok;
-    
+
     if (success) {
       console.log("Successfully rolled back organization");
     } else {
@@ -64,7 +64,7 @@ async function rollbackOrganization(accessToken: string, orgId: string): Promise
       }
       console.error(`Failed to roll back organization: ${orgId}`, errorData);
     }
-    
+
     return success;
   } catch (error) {
     console.error(`Exception during organization rollback for ${orgId}:`, error);
@@ -347,8 +347,6 @@ export default async function handler(
       organization: orgData,
       user: userData,
       roleAssignment: rolePatchData,
-      subscription,
-      addons,
     });
   } catch (error) {
     console.error("Signup error:", error);
