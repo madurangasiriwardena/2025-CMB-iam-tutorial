@@ -279,7 +279,7 @@ Let’s look at how the sign-up flow implementation works in the Teamspace app.
 Our sign-up flow uses the self-service approach offered by Asgardeo. This approach empowers organizations to take control of the onboarding process by enabling organizations to create their own organizations and onboard administrators.
 
   > **Note:**  
-  > Read more on the [Self-Service Approach.](https://wso2.com/asgardeo/docs/guides/organization-management/onboard-org-admins/self-service)
+  > Read more on the [Self-Service Approach.](https://wso2.com/asgardeo/docs/guides/organization-management/onboard-org-admins/self-service-approach)
 
 Visit Teamspace at `https://localhost:3002` and click “Sign Up”.
 
