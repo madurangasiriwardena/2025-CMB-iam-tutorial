@@ -62,7 +62,6 @@ class ScheduleMeetingPreviewTool(BaseTool):
                 "duration": duration,
                 "timeZone": timeZone
             }
-            frontend_state = FrontendState.BOOKING_PREVIEW
             state_manager.add_state(self.thread_id, FlowState.BOOKING_PREVIEW_INITIATED)
             message = json.dumps(schedule_preview)+ " Please confirm the meeting schedule."
             response = Response(
@@ -72,7 +71,7 @@ class ScheduleMeetingPreviewTool(BaseTool):
                     "authorization_url": authorization_url
                 }
             )
-            return CrewOutput(response=response, frontend_state=frontend_state).model_dump_json()
+            return CrewOutput(response=response).model_dump_json()
 
         except Exception as e:
             print(f"Exception: {e}")
@@ -80,4 +79,4 @@ class ScheduleMeetingPreviewTool(BaseTool):
                 chat_response=f"{str(e)}",
                 tool_response={},
             )
-            return CrewOutput(response=error_response, frontend_state=FrontendState.BOOKING_PREVIEW_ERROR).model_dump_json()
+            return CrewOutput(response=error_response).model_dump_json()
