@@ -1,25 +1,44 @@
-FROM python:3.11-slim
+# Development stage
+FROM python:3.11-alpine AS development
 
-WORKDIR /app
+WORKDIR /python-docker
 
-RUN apt-get update && apt-get install -y \
-    gcc \
-    libpq-dev \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
+# Copy the requirements file and install dependencies
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
 
-COPY requirements.txt .
+# Copy the application code
+COPY . .
 
-RUN pip install --no-cache-dir -r requirements.txt
+# Run tests (optional)
+CMD ["python3", "test_ietf_flows.py", "-v"]
+
+# Production stage
+FROM python:3.11-alpine AS production
+
+WORKDIR /python-docker
+
+# Install system dependencies for PostgreSQL
+RUN apk add --no-cache gcc musl-dev postgresql-dev curl
+
+# Copy only the necessary files for production
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
 
 COPY . .
 
-RUN adduser --disabled-password --gecos '' --uid 10001 appuser && chown -R appuser:appuser /app
-USER 10001
+# Create a new user with UID 10016 (WSO2 Choreo requirement)
+RUN addgroup -g 10016 choreo && \
+    adduser --disabled-password --no-create-home --uid 10016 --ingroup choreo choreouser
+
+# Switch to the new user
+USER 10016
 
 EXPOSE 8000
 
+# Health check
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:8000/health || exit 1
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1"]
+# Start the FastAPI application
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
