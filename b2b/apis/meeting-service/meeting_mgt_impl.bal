@@ -114,26 +114,33 @@ function deleteMeetingById(string org, string meetingId) returns string|()|error
     }
 }
 
-function addMeeting(MeetingItem meetingItem, string org) returns Meeting|error {
+function addMeeting(MeetingItem meetingItem, UserInfo userInfo) returns Meeting|error {
 
     string meetingId = uuid:createType1AsString();
     time:Utc currentUtc = time:utcNow();
     time:Civil currentTime = time:utcToCivil(currentUtc);
     string timeString = civilToIso8601(currentTime);
+    
+    Creator creator = {
+        userId: userInfo.userId,
+        emailAddress: userInfo.emailAddress,
+        actorUserId: userInfo.actorUserId
+    };
 
-    Meeting doctor = {
+    Meeting meeting = {
         id: meetingId,
-        org: org,
+        org: userInfo.organization,
         createdAt: timeString,
-        ...meetingItem
+        ...meetingItem,
+        ...creator
     };
 
     if (useDB) {
-        return dbAddMeeting(doctor);
+        return dbAddMeeting(meeting);
     } else {
-        meetingRecords.put(doctor);
-        Meeting addedDoctor = <Meeting>meetingRecords[org, meetingId];
-        return addedDoctor;
+        meetingRecords.put(meeting);
+        Meeting addedMeeting = <Meeting>meetingRecords[userInfo.organization, meetingId];
+        return addedMeeting;
     }
 }
 

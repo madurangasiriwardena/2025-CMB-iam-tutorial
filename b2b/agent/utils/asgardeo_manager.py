@@ -103,6 +103,9 @@ class AsgardeoManager:
         if not code_entry:
             raise ValueError("No auth code found for user")
         try:
+            print(f"Fetching user token for state: {state}")
+            print(f"Code entry: {code_entry}")
+            print(f"Agent token: {self.agent_tokens[self.get_thread_id_from_state(state)]}")
             response = requests.post(
                 self.token_url,
                 data={
@@ -116,6 +119,7 @@ class AsgardeoManager:
                 },
                 verify=False
             )
+            print(f"Response status code: {response.status_code}")
             data = response.json()
             print(data)
             access_token = data.get("access_token")
@@ -150,7 +154,7 @@ class AsgardeoManager:
                     "response_mode": "direct",
                     "code_challenge": code_challenge,
                     "code_challenge_method": "S256",
-                    "resource": "booking_api"
+                    "resource": "http://localhost:9091"
                 },
                 verify=False
             )
@@ -191,7 +195,7 @@ class AsgardeoManager:
                 "code_verifier": code_verifier,
                 "redirect_uri": self.redirect_uri,
                 "scope": "openid",
-                "resource": "booking_api"
+                "resource": "http://localhost:9091"
             }
 
             # print("\n\nToken Data:", token_data, "\n\n")

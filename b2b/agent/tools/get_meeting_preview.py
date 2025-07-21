@@ -64,10 +64,8 @@ class ScheduleMeetingPreviewTool(BaseTool):
             }
             frontend_state = FrontendState.BOOKING_PREVIEW
             state_manager.add_state(self.thread_id, FlowState.BOOKING_PREVIEW_INITIATED)
-            state_manager.set_flow_status(self.thread_id, FlowState.BOOKING_PREVIEW_INITIATED)
             message = json.dumps(schedule_preview)+ " Please confirm the meeting schedule."
             response = Response(
-                # TODO Add the meeting details to the chat response
                 chat_response=message,
                 tool_response={
                     "schedule_preview": schedule_preview,
@@ -77,6 +75,7 @@ class ScheduleMeetingPreviewTool(BaseTool):
             return CrewOutput(response=response, frontend_state=frontend_state).model_dump_json()
 
         except Exception as e:
+            print(f"Exception: {e}")
             error_response = Response(
                 chat_response=f"{str(e)}",
                 tool_response={},

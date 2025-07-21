@@ -24,10 +24,10 @@ import NextAuth, { Profile } from "next-auth";
 import { JWT } from "next-auth/jwt";
 
 /**
- * 
+ *
  * @param req - request body
  * @param res - response body
- * 
+ *
  * @returns IS provider that will handle the sign in process. Used in `orgSignin()`
  * [Use this method to signin]
  */
@@ -59,15 +59,15 @@ const wso2ISProvider = (req: NextApiRequest, res: NextApiResponse) => NextAuth(r
                 // session.orginalIdToken = token.idToken;
                 session.scope = token?.scope;
                 const profile: Profile = jwtDecode(token.idToken);
-                
+
                 session.expires = false;
                 session.userId = getLoggedUserId(token.idToken as unknown as JWT);
                 session.user = getLoggedUserFromProfile(profile);
                 session.orgId = getOrgId(token.idToken as unknown as JWT);
                 session.orgName = getOrgName(token.idToken as unknown as JWT);
-                
+
                 let rolesList: string[]|string = token.user[ "roles" ];
-                
+
                 if (typeof rolesList === "string") {
                     rolesList = [ rolesList ];
                 }
@@ -89,7 +89,8 @@ const wso2ISProvider = (req: NextApiRequest, res: NextApiResponse) => NextAuth(r
         {
             authorization: {
                 params: {
-                    scope: getConfig().BusinessAdminAppConfig.ApplicationConfig.APIScopes.join(" ")
+                    scope: getConfig().BusinessAdminAppConfig.ApplicationConfig.APIScopes.join(" "),
+                    fidp: "OrganizationSSO"
                 }
             },
             clientId: process.env.CLIENT_ID,

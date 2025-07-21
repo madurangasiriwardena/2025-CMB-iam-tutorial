@@ -36,7 +36,7 @@ service / on new http:Listener(9091) {
             return userInfo;
         }
 
-        Meeting|error meeting = addMeeting(newMeeting, userInfo.organization);
+        Meeting|error meeting = addMeeting(newMeeting, userInfo);
         return meeting;
     }
 

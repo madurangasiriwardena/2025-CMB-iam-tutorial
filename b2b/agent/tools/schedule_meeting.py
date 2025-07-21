@@ -34,12 +34,11 @@ class ScheduleMeetingTool(BaseTool):
     def _run(self, topic: str, date: str, startTime: str, duration: str, timeZone: str) -> str:
         try:
 
-            if FlowState.BOOKING_PREVIEW_INITIATED != state_manager.get_flow_status(self.thread_id):
+            if FlowState.BOOKING_PREVIEW_INITIATED not in state_manager.get_states(self.thread_id):
                 raise Exception("Booking preview not completed")
 
             state_manager.add_state(self.thread_id, FlowState.BOOKING_PREVIEW_COMPLETED)
             state_manager.add_state(self.thread_id, FlowState.BOOKING_INITIATED)
-            state_manager.set_flow_status(self.thread_id, FlowState.BOOKING_INITIATED)
             # Get access token
             user_id = asgardeo_manager.get_user_id_from_thread_id(self.thread_id)
             print(f"User ID: {user_id}")
@@ -72,16 +71,15 @@ class ScheduleMeetingTool(BaseTool):
                 message = f"Meeting successfully scheduled on {date} at {startTime}. Meeting ID: {response_dict['meeting_id']}"
                 frontend_state = FrontendState.BOOKING_COMPLETED
                 state_manager.add_state(self.thread_id, FlowState.BOOKING_COMPLETED)
-                state_manager.set_flow_status(self.thread_id, FlowState.BOOKING_COMPLETED)
+                state_manager.clear_state(self.thread_id)
             else:
                 response_dict = {
                     "error": api_response.json().get("detail", "Meeting scheduling failed"),
                     "status": "failed"
                 }
-                message = f"Failed to schdule meeting: {response_dict['error']}"
+                message = f"Failed to schedule meeting: {response_dict['error']}"
                 frontend_state = FrontendState.BOOKING_COMPLETED_ERROR
                 state_manager.add_state(self.thread_id, FlowState.BOOKING_PREVIEW_INITIATED)
-                state_manager.set_flow_status(self.thread_id, FlowState.BOOKING_PREVIEW_INITIATED)
             response = Response(
                 chat_response=message,
                 tool_response={

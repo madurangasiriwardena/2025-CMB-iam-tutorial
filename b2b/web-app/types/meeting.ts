@@ -25,6 +25,9 @@ export interface Meeting {
     createdAt: string;
     id: string;
     org: string;
+    emailAddress: string;
+    actorUserId: string;
+    isDeleted?: boolean;
 }
 
 export interface MeetingInfo {

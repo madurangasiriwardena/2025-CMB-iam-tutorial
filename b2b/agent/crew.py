@@ -27,7 +27,7 @@ def create_crew(question, thread_id: str = None):
         logging_level=logging.INFO,
         tools=[ScheduleMeetingTool(thread_id), ScheduleMeetingPreviewTool(thread_id)],
     )
-    flow_state = state_manager.get_flow_status(thread_id).name
+    flow_state = state_manager.get_states_as_string(thread_id)
     chat_history_task = Task(
         description=
             f"""
@@ -110,6 +110,7 @@ def create_crew(question, thread_id: str = None):
             - Keep all responses text-based (no images)
             - Minimize tool usage per step
             - Keep URLs in tool_response only
+            - Do not include flow_state in chat_response
             """
         ,
         agent=hotel_agent,

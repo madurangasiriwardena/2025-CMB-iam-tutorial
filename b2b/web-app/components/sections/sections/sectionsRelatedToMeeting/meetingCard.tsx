@@ -41,7 +41,8 @@ function MeetingCard(props: MeetingCardProps) {
     }, [location.pathname === "/manage_meetings", isMeetingEditOpen]);
 
     return (
-        <div className={styles.meetingListItem}>
+        <div className={`${styles.meetingListItem} ${meeting.isDeleted ? styles.deleted : ''}`}>
+            {meeting.isDeleted && <div className={styles.deletedLabel}>DELETED</div>}
             {isLoading ? (
                 <div className={styles.tailSpinDiv}>
                     <TailSpin color="var(--primary-color)" height={80} width={80} />
@@ -56,11 +57,30 @@ function MeetingCard(props: MeetingCardProps) {
                             <span className={styles.meetingId}>{meeting.id}</span>
                         </div>
                     </div>
+                    <div className={styles.meetingCreatorInfo}>
+                        <div className={styles.creatorDetails}>
+                            <span className={styles.meetingEmail}>
+                                {meeting.actorUserId
+                                    ? (<>
+                                        <div><span className={styles.agentLabel}>Teamspace Agent</span> created this meeting</div>
+                                        <div>on behalf of {meeting.emailAddress}</div>
+                                      </>)
+                                    : (<>Meeting created by {meeting.emailAddress}</>)
+                                }
+                            </span>
+                        </div>
+                    </div>
                     <div className={styles.meetingActions}>
-                        <button onClick={() => onStart(meeting.id)}>Start</button>
-                        <button onClick={() => onView(meeting.id)}>View</button>
-                        <button onClick={() => onEdit(meeting.id)}>Edit</button>
-                        <button onClick={() => onDelete(meeting.id)}>Delete</button>
+                        {!meeting.isDeleted ? (
+                            <>
+                                <button onClick={() => onStart(meeting.id)}>Start</button>
+                                <button onClick={() => onView(meeting.id)}>View</button>
+                                <button onClick={() => onEdit(meeting.id)}>Edit</button>
+                                <button onClick={() => onDelete(meeting.id)}>Delete</button>
+                            </>
+                        ) : (
+                            <span style={{ color: '#888', fontStyle: 'italic' }}>Meeting deleted</span>
+                        )}
                     </div>
                 </>
             )}

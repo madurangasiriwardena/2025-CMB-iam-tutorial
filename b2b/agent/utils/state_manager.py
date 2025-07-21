@@ -26,7 +26,6 @@ class StateManager:
         """Initialize the StateManager with an empty dictionary for thread states."""
         self.thread_states: Dict[int, FlowStates] = {}
         self.message_states: Dict[int, FlowStates] = {}
-        self.flow_state1: Dict[int, FlowState] = {}
 
     def add_state(self, thread_id: int, state: FlowState) -> None:
         """Add a state to the flow states for a specific thread."""
@@ -36,14 +35,10 @@ class StateManager:
         self.thread_states[thread_id].add_state(state)
         self.message_states[thread_id].add_state(state)
 
-    def set_flow_status(self, thread_id: int, state: FlowState) -> None:
-        self.flow_state1[thread_id] = state
-
-    def get_flow_status(self, thread_id: int) -> FlowState:
-        logging.info(f"Get state for thread id: {thread_id}")
-        if thread_id in self.flow_state1:
-            return self.flow_state1[thread_id]
-        return None
+    def clear_state(self, thread_id: int) -> None:
+        """Add a state to the flow states for a specific thread."""
+        if thread_id in self.thread_states:
+            self.thread_states[thread_id].states = []
 
     def get_states(self, thread_id: int) -> List[FlowState]:
         """Return the list of states for a specific thread."""
