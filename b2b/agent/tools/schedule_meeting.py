@@ -45,22 +45,22 @@ class ScheduleMeetingTool(BaseTool):
             print(f"User ID: {user_id}")
             access_token = asgardeo_manager.get_user_token(user_id, ["openid", "create_meeting"])
             print(f"Access token: {access_token}")
-            
+
             # Prepare the booking request
             headers = {
                 "Authorization": f"Bearer {access_token}",
                 "Content-Type": "application/json"
             }
-            
+
             meeting_data = {
-                "topic": topic, 
-                "date": date, 
-                "startTime": startTime, 
-                "duration": duration, 
+                "topic": topic,
+                "date": date,
+                "startTime": startTime,
+                "duration": duration,
                 "timeZone": timeZone
             }
 
-            print(f"Scheduling meeting with data: {meeting_data}")  
+            print(f"Scheduling meeting with data: {meeting_data}")
 
             api_response = requests.post("http://localhost:9091/meetings", json=meeting_data, headers=headers)
             print(f"API response status code: {api_response.status_code}")

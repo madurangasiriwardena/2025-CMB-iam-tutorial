@@ -14,7 +14,7 @@ load_dotenv()
 def create_crew(question, thread_id: str = None):
     llm = LLM(model='azure/gpt4-o')
     hotel_agent = Agent(
-        role='Meeting Assistant Agent',
+        role='Teamspace Agent',
         goal=(
             "Answer the given question using your tools without modifying the question itself. Please make sure to follow the instructions in the task description. Do not perform any actions outside the scope of the task."
         ),

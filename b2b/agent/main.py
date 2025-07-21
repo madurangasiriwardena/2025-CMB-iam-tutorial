@@ -72,7 +72,7 @@ class ChatResponse(BaseModel):
 
 @app.post("/chat", response_model=ChatResponse)
 async def chat(
-    request: ChatRequest, 
+    request: ChatRequest,
     user_id: str = Depends(get_user_from_token),
     ThreadID: Optional[str] = Header(None)
 ):
@@ -82,7 +82,8 @@ async def chat(
         thread_id = ThreadID or request.threadId
         if not asgardeo_manager.get_user_id_from_thread_id(thread_id):
             asgardeo_manager.store_user_id_against_thread_id(thread_id, user_id)
-        
+
+        asgardeo_manager.fetch_agent_token(thread_id)
         chat_history_manager.add_user_message(thread_id, user_message)
         crew_response = create_crew(user_message, thread_id)
         crew_dict = crew_response.to_dict()
@@ -121,8 +122,8 @@ async def callback(
         return HTMLResponse(content=f"<html><body><script>window.location.href = '{os.environ['WEBSITE_URL']}/auth_success';</script></body></html>", status_code=200)
     except Exception as e:
         logging.error(f"Error in callback: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))   
-    
+        raise HTTPException(status_code=500, detail=str(e))
+
 @app.get("/state/{thread_id}")
 async def callback(
     thread_id: str
@@ -134,7 +135,7 @@ async def callback(
         return JSONResponse(content=states)
     except Exception as e:
         print(e)
-        raise HTTPException(status_code=500, detail=str(e))    
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/health")
 async def health_check():

@@ -4,6 +4,9 @@ from typing import Dict, List, Optional
 import uuid
 import requests
 from pydantic import BaseModel
+import secrets
+import base64
+import hashlib
 
 logger = logging.getLogger(__name__)
 
@@ -18,6 +21,11 @@ class AuthCode(BaseModel):
     code: Optional[str]
     scopes: List[str]
 
+class AgentConfig(BaseModel):
+    agent_name: str
+    agent_id: str
+    agent_secret: str
+
 class AsgardeoManager:
     """
     Manages OAuth2 authentication flow and token management
@@ -29,10 +37,15 @@ class AsgardeoManager:
         self.client_secret = os.environ['CLIENT_SECRET']
         self.token_url = os.environ['TOKEN_URL']
         self.authorize_url = os.environ['AUTHORIZE_URL']
+        self.authn_url = os.environ['AUTHN_URL']
         self.redirect_uri = os.environ['REDIRECT_URI']
+        self.agent_id=os.environ['AGENT_ID']
+        self.agent_name=os.environ['AGENT_NAME']
+        self.agent_secret=os.environ['AGENT_SECRET']
 
         self.auth_codes: Dict[str, AuthCode] = {}  # Store AuthCode by session_id
         self.auth_tokens: Dict[str, AuthToken] = {}  # Store AuthToken by token_id
+        self.agent_tokens: Dict[str, AuthToken] = {}  # Store AuthToken by token_id
         self.thread_user_map: Dict[str, str] = {}  # Store user_id against thread_id
         self.state_thread_map: Dict[str, str] = {}  # Store thread_id against state
         self.state_mapping: Dict[str, AuthCode] = {}
@@ -48,7 +61,7 @@ class AsgardeoManager:
 
     def get_auth_code(self, user_id: str) -> Optional[AuthCode]:
         """Retrieve the AuthCode for a user_id"""
-        return self.auth_codes.get(user_id)        
+        return self.auth_codes.get(user_id)
 
     def get_authorization_url(self, thread_id: str, user_id: str, scopes: List[str] = ["openid"]) -> str:
             """
@@ -70,6 +83,7 @@ class AsgardeoManager:
                     f"response_type=code&"
                     f"response_mode=query&"
                     f"state={state}&"
+                    f"requested_actor={self.agent_id}&"
                     f"nonce={nonce}"
                 )
                 self.store_thread_id_against_state(thread_id, state)
@@ -80,40 +94,6 @@ class AsgardeoManager:
                 return authorization_url
             except Exception as e:
                 raise
-
-    def get_google_authorization_url(self, thread_id: str, user_id: str, scopes: List[str] = ["openid"],) -> str:
-            """
-            Generate the authorization URL for the OAuth2 flow matching the exact format provided,
-            with scopes passed as a list
-            """
-            try:
-
-                scopes_str = " ".join(scopes)
-                nonce = str(uuid.uuid4())[:16]
-                state = str(uuid.uuid4())
-
-                authorization_url = (
-                    f"{self.authorize_url}?"
-                    f"client_id={self.client_id}&"
-                    f"redirect_uri={self.google_redirect_uri}&"
-                    f"scope={scopes_str}&" 
-                    f"response_type=code&"
-                    f"response_mode=query&"
-                    f"selector=calendar&"
-                    f"reAuth=true&"
-                    f"share_federated_token=true&"
-                    f"federated_token_scope=Google Calendar;https://www.googleapis.com/auth/calendar.events.owned openid&"
-                    f"state={state}&"
-                    f"nonce={nonce}"
-                )
-                self.store_thread_id_against_state(thread_id, state)
-                auth_code = AuthCode(state=state, user_id=user_id, code=None, scopes=scopes)
-                self.state_mapping[state] = auth_code
-                # Store auth code entry
-                self.auth_codes[self.get_token_key(user_id, scopes)] = auth_code
-                return authorization_url
-            except Exception as e:
-                raise            
 
     def fetch_user_token(self, state: str) -> str:
         """
@@ -131,7 +111,8 @@ class AsgardeoManager:
                     "scope": " ".join(code_entry.scopes),
                     "redirect_uri": self.redirect_uri,
                     "client_id": self.client_id,
-                    "client_secret": self.client_secret
+                    "client_secret": self.client_secret,
+                    "actor_token":self.agent_tokens[self.get_thread_id_from_state(state)]
                 },
                 verify=False
             )
@@ -148,42 +129,95 @@ class AsgardeoManager:
             print(e)
             raise
 
-    def fetch_google_token(self, state: str) -> str:
+    def fetch_agent_token(self, thread_id: str) -> str:
         """
         Exchange authorization code for access token
         """
-        code_entry:AuthCode = self.state_mapping.get(state)
-        if not code_entry:
-            raise ValueError("No auth code found for user")
         try:
+            print(f"Fetching agent token")
+
+            code_verifier = self.generate_code_verifier()
+            code_challenge = self.generate_code_challenge(code_verifier)
             response = requests.post(
-                self.token_url,
+                self.authorize_url,
                 data={
-                    "grant_type": "authorization_code",
-                    "code": code_entry.code,
-                    "scope": " ".join(code_entry.scopes),
-                    "redirect_uri": self.google_redirect_uri,
                     "client_id": self.client_id,
-                    "client_secret": self.client_secret
+                    "client_secret": self.client_secret,
+                    "response_type": "code",
+                    "redirect_uri": self.redirect_uri,
+                    "state": "1234",
+                    "scope": "openid",
+                    "response_mode": "direct",
+                    "code_challenge": code_challenge,
+                    "code_challenge_method": "S256",
+                    "resource": "booking_api"
                 },
                 verify=False
             )
-            data = response.json()
-            print(data)
-            access_token = data.get("access_token")
-            token_key = self.get_token_key(code_entry.user_id, code_entry.scopes)
-            token = AuthToken(id=code_entry.user_id, scopes=code_entry.scopes, token=access_token)
-            self.auth_tokens[token_key] = token
-            fed_tokens = data.get("federated_tokens")
-            print(fed_tokens)
-            if fed_tokens:
-                fed_access_token = fed_tokens[0].get("accessToken")
-                token = AuthToken(id=code_entry.user_id, scopes=code_entry.scopes, token=fed_access_token)
-                self.auth_tokens[token_key+"_google"] = token
+            print(f"Response status code: {response.status_code}")
+            resp_json = response.json()
+            print(f"Response: {resp_json}")
+
+            flow_id = resp_json.get("flowId")
+            # idf_authenticator_id = resp_json.get("nextStep", {}).get("authenticators", [{}])[0].get("authenticatorId")
+            # TODO Extract this from the response
+            idf_authenticator_id = "QmFzaWNBdXRoZW50aWNhdG9yOkxPQ0FM"
+
+            # Step 2: Authenticate with IDF
+            idf_body = {
+                "flowId": flow_id,
+                "selectedAuthenticator": {
+                    "authenticatorId": idf_authenticator_id,
+                    "params": {
+                        "username": self.agent_name,
+                        "password": self.agent_secret
+                    }
+                }
+            }
+            resp = requests.post(self.authn_url, json=idf_body, verify=False)
+            resp_json = resp.json()
+            print(f"Response2: {resp_json}")
+
+            code = resp_json.get("authData", {}).get("code")
+            if not code:
+                return None
+
+            # Step 4: Get token
+            token_data = {
+                "grant_type": "authorization_code",
+                "client_id": self.client_id,
+                "client_secret": self.client_secret,
+                "code": code,
+                "code_verifier": code_verifier,
+                "redirect_uri": self.redirect_uri,
+                "scope": "openid",
+                "resource": "booking_api"
+            }
+
+            # print("\n\nToken Data:", token_data, "\n\n")
+
+            headers = {"Content-Type": "application/x-www-form-urlencoded"}
+            resp = requests.post(self.token_url, data=token_data, headers=headers, verify=False)
+
+            resp_json = resp.json()
+            print(f"Response3: {resp_json}")
+
+            access_token = resp_json.get("access_token")
+            print(f"Agent token received: {access_token}")
+
+            self.agent_tokens[thread_id] = access_token
             return access_token
         except Exception as e:
             print(e)
-            raise        
+            raise
+
+    def generate_code_verifier(self, length: int = 64) -> str:
+        return secrets.token_urlsafe(length)[:length]
+
+    def generate_code_challenge(self, code_verifier: str) -> str:
+        sha256_digest = hashlib.sha256(code_verifier.encode('utf-8')).digest()
+        code_challenge = base64.urlsafe_b64encode(sha256_digest).rstrip(b'=').decode('utf-8')
+        return code_challenge
 
     def fetch_app_token(self, scopes: List[str]) -> str:
         """
@@ -203,86 +237,9 @@ class AsgardeoManager:
             data = response.json()
             return data.get("access_token")
         except Exception as e:
-            raise        
+            raise
 
-    def initiate_ciba(self, thread_id: str, scopes: List[str]) -> str:
-        """
-        Initiate CIBA flow
-        """
-        user_id = self.get_user_id_from_thread_id(thread_id)
-        user_claims = self.get_user_claims(user_id)
-        username = user_claims.get("username")
-        try:
-            response = requests.post(
-                self.ciba_url,
-                data={
-                    "login_hint": username,
-                    "binding_message": "UpgradeRoom",
-                    "scope": " ".join(scopes),
-                    "client_id": self.client_id,
-                    "client_secret": self.client_secret
-                },
-                verify=False
-            )
-            data = response.json()
-            print(data)
-            return data.get("auth_req_id")
-        except Exception as e:
-            raise Exception("Failed to initiate CIBA flow")
 
-    def get_ciba_token(self, auth_req_id: str) -> dict:
-        """
-        Get CIBA token and return state with token or error
-        """
-        try:
-            response = requests.post(
-                self.token_url,
-                data={
-                    "grant_type": "urn:openid:params:grant-type:ciba",
-                    "auth_req_id": auth_req_id,
-                    "client_id": self.client_id,
-                    "client_secret": self.client_secret
-                },
-                verify=False
-            )
-            print(response.json())
-            if response.status_code == 200:
-                data = response.json()
-                return {
-                    "state": "success",
-                    "token": data.get("access_token")
-                }
-            else:
-                data = response.json()
-                error = data.get("error")
-                if error == "authorization_pending":
-                    return {
-                        "state": "pending",
-                        "error": "authorization_pending"
-                    }
-                else:
-                    return {
-                        "state": "error",
-                        "error": error or "Unknown error"
-                    }
-        except Exception as e:
-            return {
-                "state": "error",
-                "error": str(e)
-            }
-
-    def get_app_token(self, scopes: List[str]) -> str:
-        """
-        Get valid m2m token.
-        """
-        token_entry:AuthToken = self.auth_tokens.get(self.get_token_key("m2m", scopes))
-        if token_entry:
-            return token_entry.token
-        fetch_token = self.fetch_app_token(scopes)
-        token = AuthToken(id="m2m", scopes=scopes, token=fetch_token)
-        self.auth_tokens[self.get_token_key("m2m", scopes)] = token
-        return fetch_token
-    
     def get_user_token(self, user_id: str, scopes: List[str]) -> str:
         """
         Get valid m2m token.
@@ -293,22 +250,12 @@ class AsgardeoManager:
             return token_entry.token
         return None
 
-    def get_user_google_token(self, user_id: str, scopes: List[str]) -> str:
-        """
-        Get valid m2m token.
-        """
-        token_key = self.get_token_key(user_id, scopes)
-        token_entry:AuthToken = self.auth_tokens.get(token_key+"_google")
-        if token_entry:
-            return token_entry.token
-        return None    
-    
     def get_token_key(self, id: str, scopes: List[str]) -> str:
         """
         Get token key from id and scopes
         """
         return id+'_'+"_".join(scopes)
-    
+
     def store_user_id_against_thread_id(self, thread_id: str, user_id: str):
         """
         Store user_id against thread_id
@@ -319,8 +266,8 @@ class AsgardeoManager:
         """
         Get user_id from thread_id
         """
-        return self.thread_user_map.get(thread_id)    
-        
+        return self.thread_user_map.get(thread_id)
+
     def store_thread_id_against_state(self, thread_id: str, state: str):
         """
         Store thread_id against state
@@ -331,7 +278,7 @@ class AsgardeoManager:
         """
         Get thread_id from state
         """
-        return self.state_thread_map.get(state)   
+        return self.state_thread_map.get(state)
 
     def store_user_claims(self, user_id: str, claims: Dict):
         """
@@ -343,6 +290,6 @@ class AsgardeoManager:
         """
         Get user claims
         """
-        return self.user_claims.get(user_id)     
+        return self.user_claims.get(user_id)
 
 asgardeo_manager = AsgardeoManager()

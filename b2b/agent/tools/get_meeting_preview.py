@@ -33,10 +33,10 @@ class ScheduleMeetingPreviewTool(BaseTool):
 
     def _run(self, topic: str, date: str, startTime: str, duration: str, timeZone: str = None) -> str:
         try:
-            
+
             if not topic:
                 raise Exception("topic is required. If you don't have a topic, you can find them is the chat context or ask the user for the topic.")
-            
+
             if not date:
                 raise Exception("date is required. If you don't have a date, you can find them is the chat context or ask the user for the date.")
 
@@ -50,7 +50,7 @@ class ScheduleMeetingPreviewTool(BaseTool):
             if not timeZone:
                 # Use the system's current timezone if not provided
                 timeZone = str(tzlocal.get_localzone())
-            
+
             user_id = asgardeo_manager.get_user_id_from_thread_id(self.thread_id)
 
             authorization_url = asgardeo_manager.get_authorization_url(self.thread_id, user_id, ["openid", "create_meeting"])

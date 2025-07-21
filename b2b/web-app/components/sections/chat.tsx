@@ -293,7 +293,7 @@ const Chat = ({ session }) => {
               }}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', borderBottom: '1px solid #eee', background: '#f7f7fa' }}>
-              <span style={{ fontWeight: 600 }}>AI Chat</span>
+              <span style={{ fontWeight: 600 }}>Teamspace Agent</span>
               <button
                   onClick={() => setOpen(false)}
                   style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer' }}
