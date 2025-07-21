@@ -5,12 +5,14 @@ A FastAPI-based backend service for the Pizza Shack application with IETF Agent 
 ## 🚀 Features
 
 ### Core Functionality
+
 - **RESTful API** for pizza menu and ordering
 - **PostgreSQL/SQLite** database support
 - **Auto-populated menu data** on startup
 - **CORS enabled** for frontend integration
 
 ### 🏗️ Architecture
+
 - **Public endpoints** (menu access)
 - **Agent-only endpoints** (system operations)
 - **User context endpoints** (OBO token required)
@@ -19,6 +21,7 @@ A FastAPI-based backend service for the Pizza Shack application with IETF Agent 
 ## 📋 API Endpoints
 
 ### Public Endpoints
+
 ```http
 GET /api/menu                    # Get pizza menu (public)
 GET /api/menu/categories         # Get menu categories
@@ -26,11 +29,13 @@ GET /health                      # Health check
 ```
 
 ### Agent Token Required
+
 ```http
 GET /api/system/health           # System health (agent only)
 ```
 
 ### OBO Token Required (User Context)
+
 ```http
 POST /api/orders                 # Create order (requires user context)
 GET /api/orders                  # Get user's orders (with creator info)
@@ -38,6 +43,7 @@ GET /api/orders/{order_id}       # Get specific order
 ```
 
 ### Admin Endpoints
+
 ```http
 GET /api/admin/orders            # Get all orders (admin scope)
 GET /api/admin/stats             # System statistics (admin scope)
@@ -46,6 +52,7 @@ GET /api/admin/stats             # System statistics (admin scope)
 ## 🛠️ Local Development Setup
 
 ### Prerequisites
+
 - Python 3.11+
 - PostgreSQL (optional - defaults to SQLite)
 - WSO2 Asgardeo account
@@ -53,6 +60,7 @@ GET /api/admin/stats             # System statistics (admin scope)
 ### Quick Start
 
 1. **Clone and setup:**
+
 ```bash
 cd pizza-api
 chmod +x start.sh
@@ -60,6 +68,7 @@ chmod +x start.sh
 ```
 
 2. **Manual setup:**
+
 ```bash
 # Create virtual environment
 python -m venv venv
@@ -77,6 +86,7 @@ uvicorn main:app --reload
 ```
 
 3. **Access the API:**
+
 - API Server: http://localhost:8000
 - Interactive Docs: http://localhost:8000/docs
 - ReDoc: http://localhost:8000/redoc
@@ -84,11 +94,13 @@ uvicorn main:app --reload
 ## 🗄️ Database Configuration
 
 ### SQLite (Default for local development)
+
 ```bash
 DATABASE_URL=sqlite:///./pizza_shack.db
 ```
 
 ### PostgreSQL (Production)
+
 ```bash
 DATABASE_URL=postgresql://username:password@localhost:5432/pizzashack
 ```
@@ -96,6 +108,7 @@ DATABASE_URL=postgresql://username:password@localhost:5432/pizzashack
 ## 🔑 Authentication Configuration
 
 ### Asgardeo Setup
+
 ```bash
 ASGARDEO_BASE_URL=https://api.asgardeo.io/t/your-org
 ASGARDEO_CLIENT_ID=your-client-id
@@ -110,17 +123,20 @@ JWT_ISSUER=https://api.asgardeo.io/t/your-org/oauth2/token
 The API automatically detects whether an order was created by a user directly or by an AI agent on behalf of a user:
 
 **User-Created Orders:**
+
 - Standard JWT token with only `sub` claim
-- `token_type` stored as "user" 
+- `token_type` stored as "user"
 - No `agent_id` in the order record
 
 **AI Agent Orders (On-Behalf-Of):**
+
 - JWT token contains `act` claim (Acting Party)
-- `act.sub` contains the agent's identifier  
+- `act.sub` contains the agent's identifier
 - `token_type` stored as "obo"
 - Both `user_id` and `agent_id` are recorded
 
 **Example JWT Token Analysis:**
+
 ```python
 # User token (direct order)
 {
@@ -181,6 +197,7 @@ Response:
 ## 🌐 WSO2 Choreo Deployment
 
 ### Prerequisites
+
 - WSO2 Choreo account
 - PostgreSQL database in Choreo
 
@@ -188,11 +205,12 @@ Response:
 
 1. **Push to Git repository**
 2. **Create component in Choreo:**
+
    - Type: Service
    - Build Pack: Dockerfile
    - Context Path: /pizza-api
-
 3. **Configure environment variables:**
+
 ```yaml
 DATABASE_URL: postgresql://user:pass@postgres:5432/pizzashack
 ASGARDEO_BASE_URL: https://api.asgardeo.io/t/your-org
@@ -203,6 +221,7 @@ ALLOWED_ORIGINS: https://your-frontend.choreoapis.dev
 4. **Deploy and test endpoints**
 
 ### Choreo Configuration Files
+
 - `.choreo/component.yaml` - Component configuration
 - `.choreo/endpoints.yaml` - Endpoint definitions
 - `Dockerfile` - Container build instructions
@@ -210,6 +229,7 @@ ALLOWED_ORIGINS: https://your-frontend.choreoapis.dev
 ## 🧪 Testing the API
 
 ### Manual Testing
+
 ```bash
 # Test public endpoint
 curl http://localhost:8000/api/menu
@@ -220,12 +240,14 @@ curl -H "Authorization: Bearer your-token" \
 ```
 
 ### Using the Interactive Docs
+
 1. Go to http://localhost:8000/docs
 2. Click "Authorize" button
 3. Enter your JWT token
 4. Test endpoints interactively
 
 ### Testing Creator Detection
+
 ```bash
 # Test with user token (no act claim)
 curl -H "Authorization: Bearer user-token" \
@@ -247,6 +269,7 @@ curl -H "Authorization: Bearer user-token" \
 ## 🔍 Database Schema
 
 ### Menu Items
+
 ```sql
 CREATE TABLE menu_items (
     id SERIAL PRIMARY KEY,
@@ -263,6 +286,7 @@ CREATE TABLE menu_items (
 ```
 
 ### Orders
+
 ```sql
 CREATE TABLE orders (
     id SERIAL PRIMARY KEY,
@@ -284,6 +308,7 @@ CREATE TABLE orders (
 ### Common Issues
 
 **Database Connection:**
+
 ```bash
 # Check SQLite file permissions
 ls -la pizza_shack.db
@@ -293,6 +318,7 @@ psql postgresql://username:password@localhost:5432/pizzashack
 ```
 
 **Authentication Issues:**
+
 ```bash
 # Verify JWT token
 python -c "import jwt; print(jwt.decode('your-token', options={'verify_signature': False}))"
@@ -302,12 +328,14 @@ curl -H "Authorization: Bearer token" http://localhost:8000/api/orders
 ```
 
 **CORS Issues:**
+
 ```bash
 # Update ALLOWED_ORIGINS in .env
 ALLOWED_ORIGINS=http://localhost:5173,http://localhost:3000
 ```
 
 ### Logging
+
 ```python
 # Enable debug logging
 LOG_LEVEL=DEBUG
@@ -319,4 +347,3 @@ tail -f logs/api.log
 ## 📚 References
 
 - [FastAPI Documentation](https://fastapi.tiangolo.com/)
-- [WSO2 Asgardeo](https://wso2.com/asgardeo/)
