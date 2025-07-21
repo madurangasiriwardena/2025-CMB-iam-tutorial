@@ -1,6 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import {getConfig} from "@pet-management-webapp/util-application-config-util";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const chatServiceUrl = getConfig().BusinessAdminAppConfig.resourceServerURLs.chatService
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -13,7 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const response = await fetch('http://localhost:8000/chat', {
+    const response = await fetch(`${chatServiceUrl}/chat`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

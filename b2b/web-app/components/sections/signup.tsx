@@ -27,7 +27,6 @@ export const SignUp = ({ open, onClose }) => {
       label: "Basic",
       price: 0,
       meetingDuration: "30 min",
-      users: "10",
       idp: "-",
       personalization: "-",
     },
@@ -36,7 +35,6 @@ export const SignUp = ({ open, onClose }) => {
       label: "Business",
       price: 5,
       meetingDuration: "60 min",
-      users: "100",
       idp: "-",
       personalization: "Basic",
     },
@@ -45,7 +43,6 @@ export const SignUp = ({ open, onClose }) => {
       label: "Enterprise",
       price: 9,
       meetingDuration: "Unlimited",
-      users: "Unlimited",
       idp: "Yes",
       personalization: "Advanced",
     },
@@ -54,32 +51,9 @@ export const SignUp = ({ open, onClose }) => {
   const subscriptionFeatures = [
     { key: "price", label: "Price" },
     { key: "meetingDuration", label: "Meeting duration" },
-    { key: "users", label: "Number of users" },
     { key: "idp", label: "Plug in your IDP" },
     { key: "personalization", label: "Personalization" },
   ];
-
-  const addonOptions = [
-    {
-      id: "teamspace-agent",
-      label: "Teamspace Agent",
-      price: 3,
-      description: "Increase productivity with an AI agent",
-      Icon: AndroidIcon,
-    },
-  ];
-
-  const calculateTotal = (subscription: string, addons: string[] = []) => {
-    const sub = subscriptionPackages.find((s) => s.id === subscription);
-    let total = sub ? sub.price : 0;
-    addons.forEach((addon) => {
-      const opt = addonOptions.find((a) => a.id === addon);
-      if (opt) {
-        total += opt.price;
-      }
-    });
-    return total;
-  };
 
   const toaster = useToaster();
 
@@ -262,9 +236,8 @@ export const SignUp = ({ open, onClose }) => {
                                 <th
                                   key={pkg.id}
                                   onClick={() => input.onChange(pkg.id)}
-                                  className={`${styles.clickable} ${
-                                    input.value === pkg.id ? styles.selected : ""
-                                  }`}
+                                  className={`${styles.clickable} ${input.value === pkg.id ? styles.selected : ""}`}
+                                  style={{ textAlign: "center", verticalAlign: "middle" }}
                                 >
                                   {pkg.label}
                                 </th>
@@ -279,15 +252,24 @@ export const SignUp = ({ open, onClose }) => {
                                   <td
                                     key={pkg.id}
                                     onClick={() => input.onChange(pkg.id)}
-                                    className={`${styles.clickable} ${
-                                      input.value === pkg.id ? styles.selected : ""
-                                    }`}
+                                    className={`${styles.clickable} ${input.value === pkg.id ? styles.selected : ""}`}
+                                    style={{ textAlign: "center", verticalAlign: "middle" }}
                                   >
                                     {feature.key === "price"
-                                      ? pkg.price === 0
-                                        ? "Free"
-                                        : `$${pkg.price}/user/mo`
-                                      : (pkg as any)[feature.key]}
+                                      ? (
+                                          pkg.price === 0 ? (
+                                            <span className={styles.priceMain}>Free</span>
+                                          ) : (
+                                            <>
+                                              <span className={styles.priceMain}>{`$${pkg.price}`}</span><br />
+                                              <span className={styles.priceSub}>/month/user</span>
+                                            </>
+                                          )
+                                        )
+                                      : (
+                                          (pkg as any)[feature.key]
+                                        )
+                                    }
                                   </td>
                                 ))}
                               </tr>
@@ -300,48 +282,6 @@ export const SignUp = ({ open, onClose }) => {
                       </>
                     )}
                   </Field>
-
-                  <Field name="addons" initialValue={[]}>
-                    {({ input }) => (
-                      <FormField name="addons" label="Add-ons">
-                        <div className={styles.addonContainer}>
-                          {addonOptions.map((addon) => {
-                            const Icon = addon.Icon;
-                            return (
-                              <div
-                                key={addon.id}
-                                className={`${styles.addonOption} ${input.value.includes(addon.id) ? styles.addonSelected : ""}`}
-                                onClick={() => {
-                                  if (input.value.includes(addon.id)) {
-                                    input.onChange(input.value.filter((v) => v !== addon.id));
-                                  } else {
-                                    input.onChange([...(input.value || []), addon.id]);
-                                  }
-                                }}
-                              >
-                                <span>
-                                  <Icon className={styles.addonIcon} />
-                                  <strong>{addon.label}</strong>
-                                </span>
-                                <div className={styles.addonDescription}>{addon.description}</div>
-                                <div className={styles.addonPrice}>
-                                  {addon.price === 0 ? 'Free' : `$${addon.price}/user/mo`}
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </FormField>
-                    )}
-                  </Field>
-
-                  <div className={styles.totalPrice}>
-                    {`Total at signup: ${
-                      calculateTotal(values.subscription, values.addons) === 0
-                        ? 'Free'
-                        : `$${calculateTotal(values.subscription, values.addons)}/user/mo`
-                    }`}
-                  </div>
                 </div>
               )}
 

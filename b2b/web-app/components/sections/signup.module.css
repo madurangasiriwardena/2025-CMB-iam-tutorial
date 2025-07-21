@@ -5,9 +5,10 @@
 }
 .subscriptionTable th,
 .subscriptionTable td {
-    border: 1px solid #ddd;
+    border: none;
     padding: 8px;
     text-align: center;
+    width: 140px;
 }
 .clickable {
     cursor: pointer;
@@ -94,4 +95,15 @@
 .formFields :global(.rs-form-group) {
     width: 100%;
     max-width: 320px;
+}
+
+.priceMain {
+  font-size: 1.3em;
+  font-weight: bold;
+  color: #222;
+}
+
+.priceSub {
+  font-size: 0.9em;
+  color: #666;
 }

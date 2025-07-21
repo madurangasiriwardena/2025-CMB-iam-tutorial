@@ -4,6 +4,7 @@ import {MarkdownRenderer} from "./chat/markdown-renderer";
 import {Info, Send} from "lucide-react";
 import {SchedulingConfirmationCard} from "./chat/booking-confirmation-card";
 import {useStateStore} from "./state-store";
+import {getConfig} from "@pet-management-webapp/util-application-config-util";
 
 type MeetingPreview = {
   topic: string
@@ -84,6 +85,7 @@ function StateInfoButton({ threadId, messageStates }: { threadId: string, messag
 }
 
 const Chat = ({ session }) => {
+  const chatServiceUrl = getConfig().BusinessAdminAppConfig.resourceServerURLs.chatService
   const [input, setInput] = useState('');
   const [open, setOpen] = useState(false);
   const [threadId] = useState<string>(Date.now().toString())
@@ -124,7 +126,7 @@ const Chat = ({ session }) => {
     setIsLoading(true)
 
     try {
-      const response = await fetch(`http://localhost:8000/chat`, {
+      const response = await fetch(`${chatServiceUrl}/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -208,7 +210,7 @@ const Chat = ({ session }) => {
     setIsLoading(true)
 
     try {
-      const response = await fetch(`http://localhost:8000/chat`, {
+      const response = await fetch(`${chatServiceUrl}/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

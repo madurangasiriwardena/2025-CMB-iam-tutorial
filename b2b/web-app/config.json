@@ -24,7 +24,7 @@
         },
         "ApplicationConfig": {
             "HostedUrl": "http://localhost:3002",
-            "APIScopes": [                      
+            "APIScopes": [
                 "openid",
                 "email",
                 "profile",
@@ -73,9 +73,9 @@
                 "create_branding",
                 "update_branding",
                 "delete_branding",
-                "internal_org_claim_meta_create", 
-                "internal_org_claim_meta_view", 
-                "internal_org_claim_meta_update", 
+                "internal_org_claim_meta_create",
+                "internal_org_claim_meta_view",
+                "internal_org_claim_meta_update",
                 "internal_org_claim_meta_delete"
             ],
             "Branding": {
@@ -85,7 +85,7 @@
         },
         "resourceServerURLs": {
             "meetingService": "<MEETING_SERVICE_URL>",
-            "petManagementService": "<PET_MANAGEMENT_SERVICE_URL>",
+            "chatService": "<CHAT_SERVICE_URL>",
             "personalizationService": "<PERSONALIZATION_SERVICE_URL>"
         },
         "ManagementAPIConfig": {
