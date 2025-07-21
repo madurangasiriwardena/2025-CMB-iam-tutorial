@@ -39,3 +39,14 @@ export async function controllerCallListCurrentApplication(session: Session): Pr
 
     return data;
 }
+
+export async function controllerCallListCurrentApplicationInRoot(session: Session): Promise<ApplicationList | null> {
+
+    const applicationName = getConfig().BusinessAdminAppConfig.ManagementAPIConfig.SharedApplicationName;
+
+    const data = 
+    (await commonControllerCall(`/api/settings/application/listCurrentApplicationInRoot?appName=${applicationName}`, 
+        session) as ApplicationList | null);
+
+    return data;
+}

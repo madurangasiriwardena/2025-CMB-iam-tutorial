@@ -22,11 +22,22 @@ export interface PatchOperation {
     path?: string,
     value?: {
         users?: UserValue []
+        roles?: RoleValue [];
     } | any
 }
 
 interface UserValue {
     value: string
+}
+
+export interface RoleValue {
+    displayName: string;
+    audience: AudienceValue;
+}
+
+interface AudienceValue {
+    display: string;
+    type: string;
 }
 
 export default PatchOperation;

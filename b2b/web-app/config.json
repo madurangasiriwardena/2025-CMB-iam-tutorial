@@ -76,7 +76,9 @@
                 "internal_org_claim_meta_create",
                 "internal_org_claim_meta_view",
                 "internal_org_claim_meta_update",
-                "internal_org_claim_meta_delete"
+                "internal_org_claim_meta_delete",
+                "internal_shared_application_create",
+                "internal_application_mgt_view"
             ],
             "Branding": {
                 "name": "Teamspace",

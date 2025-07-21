@@ -17,16 +17,21 @@
  */
 
 import { 
+    Application,
+    ApplicationList,
     BrandingPreference 
 } from "@pet-management-webapp/data-access-common-models-util";
 import { 
+    controllerDecodeListAllRoles,
+    controllerDecodeListCurrentApplicationInRoot,
     controllerDecodeRevertBrandingPreference 
 } from "@pet-management-webapp/data-access-controller";
 import { FormButtonToolbar, FormField } from "@pet-management-webapp/shared/ui/ui-basic-components";
 import {
+    errorTypeDialog,
     SettingsTitleComponent
 } from "@pet-management-webapp/shared/ui/ui-components";
-import { checkIfJSONisEmpty } from "@pet-management-webapp/shared/util/util-common";
+import { checkIfJSONisEmpty, PatchMethod } from "@pet-management-webapp/shared/util/util-common";
 import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE } from "@pet-management-webapp/shared/util/util-front-end-util";
 import { deletePersonalization } from "../../../../../APICalls/DeletePersonalization/delete-personalization";
 import { getPersonalization } from "../../../../../APICalls/GetPersonalization/get-personalization";
@@ -34,31 +39,36 @@ import { postPersonalization } from "../../../../../APICalls/UpdatePersonalizati
 import { Personalization } from "../../../../../types/personalization";
 import {
     controllerDecodeGetBrandingPrefrence,
-    controllerDecodeUpdateBrandingPrefrence
+    controllerDecodeUpdateBrandingPrefrence,
+    controllerDecodeUpdateSharedRoles,
+    controllerDecodePatchRole
 } from "@pet-management-webapp/data-access-controller";
 import { Session } from "next-auth";
 import React, { useCallback, useEffect, useState } from "react";
 import { Field, Form } from "react-final-form";
-import { Button, Container, Divider, Toaster, useToaster } from "rsuite";
+import { Button, Container, Divider, Toaster, useToaster, Modal } from "rsuite";
 import FormSuite from "rsuite/Form";
 import personalize from "./personalize";
 import styles from "../../../../../styles/Settings.module.css";
 import { ChromePicker } from 'react-color';
+import { getConfig } from "@pet-management-webapp/util-application-config-util";
+import { signout } from "@pet-management-webapp/util-authorization-config-util";
+import { upgradeTier } from "pages/api/upgrade";
 
+/**
+ *
+ * @param prop - session
+ *
+ * @returns The personalization interface section.
+ */
 interface PersonalizationSectionComponentProps {
     session: Session
 }
 
-/**
- * 
- * @param prop - session
- * 
- * @returns The personalization interface section.
- */
+
 export default function PersonalizationSectionComponent(props: PersonalizationSectionComponentProps) {
-
     const { session } = props;
-
+    const [showUpgradeModal, setShowUpgradeModal] = useState(false);
     const [ loadingDisplay, setLoadingDisplay ] = useState(LOADING_DISPLAY_NONE);
     const toaster: Toaster = useToaster();
 
@@ -68,10 +78,53 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
     const [ favicon, setFavicon ] = useState<string>("");
     const [ primaryColor, setPrimaryColor ] = useState<string>("");
     const [ secondaryColor, setSecondaryColor ] = useState<string>("");
+    const [ allApplications, setAllApplications ] = useState<ApplicationList>(null);
+    const [ applicationId, setApplicationId] = useState<string>("");
 
     const fetchData = useCallback(async () => {
         fetchBrandingPreference();
     }, [ session ]);
+
+
+    useEffect(() => {
+        const fetchApplications = async () => {
+            try {
+                const res: ApplicationList = (await controllerDecodeListCurrentApplicationInRoot(session) as ApplicationList);
+                console.log("Applications fetched:", res);
+                await setAllApplications(res);
+            } catch (error) {
+                console.error("Error fetching applications:", error);
+            }
+        };
+    
+        fetchApplications();
+    }, [session]);
+    
+    useEffect(() => {
+        const fetchApplicationId = async () => {
+            try {
+                if (!checkIfJSONisEmpty(allApplications) && allApplications.totalResults !== 0) {
+                    const appId = allApplications.applications[0]?.id;
+                    if (appId) {
+                        await setApplicationId(appId);
+                        console.log("Application ID fetched:", appId);
+                    } else {
+                        console.error("Application ID is undefined.");
+                    }
+                } else {
+                    console.error("No applications found or applications array is empty.");
+                }
+            } catch (error) {
+                console.error("Error fetching application ID:", error);
+            }
+        };
+    
+        fetchApplicationId();
+    }, [allApplications]);
+
+    const signOutCallback = (): void => {
+        signout(session);
+    };
 
     useEffect(() => {
         fetchData();
@@ -80,6 +133,10 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
 
     const fetchBrandingPreference = async () => {
         const res: BrandingPreference = (await controllerDecodeGetBrandingPrefrence(session) as BrandingPreference);
+        if (!res) {
+            console.debug("Branding response is not retrived.");
+            return;
+        }
         const activeTheme: string = res["preference"]["theme"]["activeTheme"];
 
         setLogoUrl(res["preference"]["theme"][activeTheme]["images"]["logo"]["imgURL"]);
@@ -141,6 +198,31 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
             .finally(() => setLoadingDisplay(LOADING_DISPLAY_NONE));
     };
 
+    const onBusinessTierUpgrade = async (): Promise<void> => {
+        await upgradeTier(
+            session,
+            applicationId,
+            session.orgId,
+            "Business", // Specify the tier
+            toaster,
+            setLoadingDisplay,
+            setShowUpgradeModal
+        );
+    };
+
+    const onEnterpriseTierUpgrade = async (): Promise<void> => {
+        await upgradeTier(
+            session,
+            applicationId,
+            session.orgId,
+            "Enterprise", // Specify the tier
+            toaster,
+            setLoadingDisplay,
+            setShowUpgradeModal
+        );
+    };
+
+
     const ColorPickerField = ({ input, meta, label, helperText }) => (
         <FormSuite.Group>
           <b>{label}</b>
@@ -152,129 +234,269 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
         </FormSuite.Group>
       );
 
+    // Check if the session has the required scope
+    const hasBrandingUpdateScope = session?.scope?.includes("internal_org_branding_preference_update");
+
     return (
         <Container>
-
-            <SettingsTitleComponent
+            {hasBrandingUpdateScope ? (
+                <>
+ <SettingsTitleComponent
+                    title="Personalization"
+                    subtitle="Customize the user interfaces of your application."
+                />
+    
+                <div style={ { margin: "50px" } }>
+                    <Form
+                        onSubmit={ onUpdate }
+                        initialValues={ {
+                            favicon_url: favicon,
+                            logo_alt_text: logoAltText,
+                            logo_url: logoUrl,
+                            primary_color: primaryColor,
+                            secondary_color: secondaryColor
+                        } }
+                        render={ ({ handleSubmit, form, submitting, pristine, errors }) => (
+                            <FormSuite
+                                layout="vertical"
+                                className={ styles.addUserForm }
+                                onSubmit={ () => { handleSubmit().then(form.restart); } }
+                                fluid>
+    
+                                <FormField
+                                    name="logo_url"
+                                    label="Logo URL"
+                                    helperText={
+                                        "Use an image that’s at least 600x600 pixels and " +
+                                        "less than 1mb in size for better performance."
+                                    }
+                                    needErrorMessage={ true }
+                                >
+                                    <FormSuite.Control name="input" value="a" />
+                                </FormField>
+    
+                                <FormField
+                                    name="logo_alt_text"
+                                    label="Logo Alt Text"
+                                    helperText={
+                                        "Add a short description of the logo image to display when " +
+                                        "the image does not load and also for SEO and accessibility."
+                                    }
+                                    needErrorMessage={ true }
+                                >
+                                    <FormSuite.Control name="input" />
+                                </FormField>
+    
+                                <FormField
+                                    name="favicon_url"
+                                    label="Favicon URL"
+                                    helperText={
+                                        "Use an image with a square aspect ratio that’s " +
+                                        "at least 16x16 pixels in size for better results."
+                                    }
+                                    needErrorMessage={ true }
+                                >
+                                    <FormSuite.Control name="input" type="url" />
+                                </FormField>
+    
+                                {/* <FormField
+                                    name="primary_color"
+                                    label="Primary Colour"
+                                    helperText={
+                                        "The main color that is shown in primary action buttons, hyperlinks, etc."
+                                    }
+                                    needErrorMessage={ true }
+                                >
+                                    <FormSuite.Control 
+                                        name="input" 
+                                        accepter={({ value, onChange }) => (
+                                            <ChromePicker
+                                                color={ value } // Default color black if value is undefined
+                                                onChange={(color, event) => onChange(color.hex, event)}
+                                            />
+                                        ) }/>
+                                </FormField> */}
+    
+                                {/* <FormField
+                                    name="secondary_color"
+                                    label="Secondary Colour"
+                                    helperText={
+                                        "The color that is shown in secondary action buttons like cancel buttons, etc."
+                                    }
+                                    needErrorMessage={ true }
+                                >
+                                    <FormSuite.Control 
+                                        name="input" 
+                                        type="color" 
+                                        style={ { height: 40, padding: 3, width: 100 } }
+                                    />
+                                </FormField> */}
+    
+                                <Field 
+                                    name="primary_color" 
+                                    component={ColorPickerField} 
+                                    label="Primary Colour" />
+                                <Field 
+                                    name="secondary_color" 
+                                    component={ColorPickerField} 
+                                    label="Secondary Colour"  />
+    
+                                <FormButtonToolbar
+                                    submitButtonText="Update"
+                                    submitButtonDisabled={ submitting || pristine || !checkIfJSONisEmpty(errors) }
+                                    needCancel={ false }
+                                />
+    
+                            </FormSuite>
+                        )}
+                    />
+                    <Divider style={ { background: "#bebebe" } }/>
+                    <Button
+                        className={ styles["revertButton"] }
+                        size="lg"
+                        appearance="primary"
+                        onClick={ onRevert } >
+                        { "Revert to default" }
+                    </Button>
+                </div>
+                </>
+            ) : (
+                <>
+                {/* Upgrade Message */}
+                <SettingsTitleComponent
                 title="Personalization"
                 subtitle="Customize the user interfaces of your application."
             />
 
-            <div style={ { margin: "50px" } }>
-                <Form
-                    onSubmit={ onUpdate }
-                    initialValues={ {
-                        favicon_url: favicon,
-                        logo_alt_text: logoAltText,
-                        logo_url: logoUrl,
-                        primary_color: primaryColor,
-                        secondary_color: secondaryColor
-                    } }
-                    render={ ({ handleSubmit, form, submitting, pristine, errors }) => (
-                        <FormSuite
-                            layout="vertical"
-                            className={ styles.addUserForm }
-                            onSubmit={ () => { handleSubmit().then(form.restart); } }
-                            fluid>
+            <div style={{ marginBottom: "20px" }}></div>
 
-                            <FormField
-                                name="logo_url"
-                                label="Logo URL"
-                                helperText={
-                                    "Use an image that’s at least 600x600 pixels and " +
-                                    "less than 1mb in size for better performance."
-                                }
-                                needErrorMessage={ true }
-                            >
-                                <FormSuite.Control name="input" value="a" />
-                            </FormField>
-
-                            <FormField
-                                name="logo_alt_text"
-                                label="Logo Alt Text"
-                                helperText={
-                                    "Add a short description of the logo image to display when " +
-                                    "the image does not load and also for SEO and accessibility."
-                                }
-                                needErrorMessage={ true }
-                            >
-                                <FormSuite.Control name="input" />
-                            </FormField>
-
-                            <FormField
-                                name="favicon_url"
-                                label="Favicon URL"
-                                helperText={
-                                    "Use an image with a square aspect ratio that’s " +
-                                    "at least 16x16 pixels in size for better results."
-                                }
-                                needErrorMessage={ true }
-                            >
-                                <FormSuite.Control name="input" type="url" />
-                            </FormField>
-
-                            {/* <FormField
-                                name="primary_color"
-                                label="Primary Colour"
-                                helperText={
-                                    "The main color that is shown in primary action buttons, hyperlinks, etc."
-                                }
-                                needErrorMessage={ true }
-                            >
-                                <FormSuite.Control 
-                                    name="input" 
-                                    accepter={({ value, onChange }) => (
-                                        <ChromePicker
-                                            color={ value } // Default color black if value is undefined
-                                            onChange={(color, event) => onChange(color.hex, event)}
-                                        />
-                                    ) }/>
-                            </FormField> */}
-
-                            {/* <FormField
-                                name="secondary_color"
-                                label="Secondary Colour"
-                                helperText={
-                                    "The color that is shown in secondary action buttons like cancel buttons, etc."
-                                }
-                                needErrorMessage={ true }
-                            >
-                                <FormSuite.Control 
-                                    name="input" 
-                                    type="color" 
-                                    style={ { height: 40, padding: 3, width: 100 } }
-                                />
-                            </FormField> */}
-
-                            <Field 
-                                name="primary_color" 
-                                component={ColorPickerField} 
-                                label="Primary Colour" />
-                            <Field 
-                                name="secondary_color" 
-                                component={ColorPickerField} 
-                                label="Secondary Colour"  />
-
-                            <FormButtonToolbar
-                                submitButtonText="Update"
-                                submitButtonDisabled={ submitting || pristine || !checkIfJSONisEmpty(errors) }
-                                needCancel={ false }
-                            />
-
-                        </FormSuite>
-                    )}
-                />
-                <Divider style={ { background: "#bebebe" } }/>
-                <Button
-                    className={ styles["revertButton"] }
-                    size="lg"
-                    appearance="primary"
-                    onClick={ onRevert } >
-                    { "Revert to default" }
-                </Button>
+            {/* Upgrade Message */}
+            <div
+                style={{
+                    margin: "20px 0",
+                    padding: "10px",
+                    backgroundColor: "#d9d9d9",
+                    borderRadius: "5px",
+                    textAlign: "center",
+                    color: "#272c36",
+                }}
+            >
+                <p>For more advanced customizations, upgrade your tier.</p>
             </div>
+
+            {/* Tier Upgrade Cards */}
+            {(
+                <div style={{ marginBottom: "30px" }}>
+                    <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            gap: "20px",
+                            padding: "20px",
+                            backgroundColor: "#f9f9f9",
+                            borderRadius: "10px",
+                            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                        }}
+                    >
+                        {/* Business Tier */}
+                        <div
+                            style={{
+                                flex: 1,
+                                textAlign: "center",
+                                padding: "20px",
+                                border: "1px solid #ddd",
+                                borderRadius: "10px",
+                                backgroundColor: "#fff",
+                            }}
+                        >
+                            <h3>Business Tier</h3>
+                            <p
+                                style={{
+                                    fontSize: "24px",
+                                    fontWeight: "bold",
+                                    margin: "10px 0",
+                                }}
+                            >
+                                $5/user/mo
+                            </p>
+                            <p>
+                                Personalization: <strong>Advanced</strong>
+                            </p>
+                            <br></br>
+                            <Button
+                                className={ styles.buttonCircular }
+                                appearance="primary" 
+                                onClick={ onBusinessTierUpgrade }
+                            >
+                                Upgrade Now
+                            </Button>
+                        </div>
+
+                        {/* Enterprise Tier */}
+                        <div
+                            style={{
+                                flex: 1,
+                                textAlign: "center",
+                                padding: "20px",
+                                border: "1px solid #ddd",
+                                borderRadius: "10px",
+                                backgroundColor: "#fff",
+                            }}
+                        >
+                            <h3>Enterprise Tier</h3>
+                            <p
+                                style={{
+                                    fontSize: "24px",
+                                    fontWeight: "bold",
+                                    margin: "10px 0",
+                                }}
+                            >
+                                $9/user/mo
+                            </p>
+                            <p>
+                                Personalization: <strong>Custom</strong>
+
+                            </p>
+                            <br></br>
+                            <Button
+                                className={ styles.buttonCircular } 
+                                appearance="primary" 
+                                onClick={ onEnterpriseTierUpgrade }
+                            >
+                                Upgrade Now
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
+                </>
+            )}
+
+            {/* Modal for Upgrade Success */}
+            <Modal open={showUpgradeModal} onClose={() => setShowUpgradeModal(false)} size="sm">
+                <Modal.Header>
+                    <Modal.Title>Plan Upgrade Successful</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>You have successfully upgraded your plan to Business Tier.</p>
+                    <p>Please re-login to make the changes effective.</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        appearance="primary"
+                        onClick={ signOutCallback } // Trigger the sign-out functionality
+                    >
+                        Re-login
+                    </Button>
+                    <Button
+                        appearance="subtle"
+                        onClick={() => setShowUpgradeModal(false)} // Close the modal
+                    >
+                        Cancel
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </Container>
     );
-
 }
-

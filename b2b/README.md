@@ -133,11 +133,12 @@ Navigate to the API Resources section and click the "New API Resources" button.
 2. **Display Name:** Personalization Service
 3. **Permissions:**
 
-    | Scope            | Display name     |
-    | ---------------- | ---------------- |
-    | create_branding  | Create Branding  |
-    | update_branding  | Update Branding  |
-    | delete_branding  | Delete Branding  |
+    | Scope                   | Display name            |
+    | ------------------------| ----------------------- |
+    | create_basic_branding   | Create Basic Branding   |
+    | create_advanced_branding| Create Advanced Branding| 
+    | update_branding         | Update Branding         |
+    | delete_branding         | Delete Branding         |
 
 ## Give access to APIs and create roles
 
@@ -165,13 +166,15 @@ Navigate to the application in the Asgardeo console.
 | API                        | Scopes                                        |
 | -------------------------- | --------------------------------------------- |
 | Organization Management API | Create Organization, View Organization, Update Organizations, Delete Organizations |
+| Application Management API  | View Application |
+| Shared Application Management API | Create Shared Application |
 
 ### Business APIs
 
 | API                        | Scopes                                        |
 | -------------------------- | --------------------------------------------- |
 | Meeting Service            | View Meeting, List Meetings, Create Meetings, Update meeting, Delete Meeting |
-| Personalization Service    | Create Branding, Update Branding, Delete Branding |
+| Personalization Service    | Create Basic Branding, Create Advanced Branding, Update Branding, Delete Branding |
 
 ## Create Roles
 
@@ -184,18 +187,36 @@ Navigate to the Roles section under User Management and create 2 application rol
 | SCIM2 Users API            | All Scope                                     |
 | SCIM2 Roles API            | All Scope                                     |
 | SCIM2 Groups API           | All Scope                                     |
-| Identity Provider Management API | All Scope                              |
+| Identity Provider Management API | View Identity Provider                               |
 | Application Management API | All Scope                                     |
 | Claim Management API       | All Scope                                     |
-| Branding Preference Management API | All Scope                            |
+| Branding Preference Management API | All Scope                             |
 | Meeting Service            | List Meetings, View Meeting, Create Meetings, Update Meeting, Delete Meeting |
-| Personalization Service    | Create Branding, Update Branding, Delete Branding |
+
+### Role name: idp-manager
+
+| API Resource               | Scopes                                        |
+| -------------------------- | --------------------------------------------- |
+| Identity Provider Management API | Create Identity Provider , Update Identity Provider, Delete Identity Provider |
+
+### Role name: basic-branding-editor
+
+| API Resource               | Scopes                                        |
+| -------------------------- | --------------------------------------------- |
+| Personalization Service    | Create Basic Branding, Update Branding, Delete Branding |
+
+### Role name: advanced-branding-editor
+
+| API Resource               | Scopes                                        |
+| -------------------------- | --------------------------------------------- |
+| Personalization Service    | Create Basic Branding, Create Advanced Branding, Update Branding, Delete Branding |
 
 ### Role name: teamspace-user
 
 | API Resource               | Scopes                                        |
 | -------------------------- | --------------------------------------------- |
 | Meeting Service            | List Meetings, View Meeting, Create Meetings, Update Meeting, Delete Meeting |
+
 
 ## Configure Next.js app
 
@@ -218,6 +239,9 @@ SHARED_APP_NAME="Teamspace"
 CLIENT_ID={CLIENT_ID}
 CLIENT_SECRET={CLIENT_SECRET}
 ADMIN_ROLE_NAME=teamspace-admin
+NEXT_PUBLIC_BASIC_BRANDING_CONFIG_EDITOR_ROLE_NAME=basic-branding-editor
+NEXT_PUBLIC_ADVANCED_BRANDING_CONFIG_EDITOR_ROLE_NAME=advanced-branding-editor
+NEXT_PUBLIC_IDP_MANAGER_ROLE_NAME=idp-manager
 NODE_TLS_REJECT_UNAUTHORIZED=0
 ```
 

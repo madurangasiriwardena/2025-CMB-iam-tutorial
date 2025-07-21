@@ -17,13 +17,18 @@
  */
 
 import {
+    ApplicationList,
     IdentityProvider, 
     IdentityProviderTemplate,
     StandardBasedOidcIdentityProvider,
     StandardBasedSAMLIdentityProvider
 } from "@pet-management-webapp/data-access-common-models-util";
 import {
-    controllerDecodeListAllIdentityProviders
+    controllerDecodeListAllIdentityProviders,
+    controllerDecodeListAllRoles,
+    controllerDecodeListCurrentApplicationInRoot,
+    controllerDecodePatchRole,
+    controllerDecodeUpdateSharedRoles
 } from "@pet-management-webapp/data-access-controller";
 import {
     EmptySettingsComponent, SettingsTitleComponent, errorTypeDialog, successTypeDialog
@@ -31,10 +36,15 @@ import {
 import AppSelectIcon from "@rsuite/icons/AppSelect";
 import { Session } from "next-auth";
 import { useCallback, useEffect, useState } from "react";
-import { Button, Container, useToaster } from "rsuite";
+import { Button, Container, Modal, useToaster } from "rsuite";
 import IdentityProviderList from "./otherComponents/identityProviderList";
 import IdpCreate from "./otherComponents/idpCreateModal/idpCreate";
 import SelectIdentityProvider from "./otherComponents/selectIdentityProvider";
+import { checkIfJSONisEmpty, PatchMethod } from "@pet-management-webapp/shared/util/util-common";
+import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE } from "@pet-management-webapp/shared/util/util-front-end-util";
+import { signout } from "@pet-management-webapp/util-authorization-config-util";
+import { getConfig } from "@pet-management-webapp/util-application-config-util";
+import { upgradeTier } from "pages/api/upgrade";
 
 interface IdpSectionComponentProps {
     session: Session
@@ -55,6 +65,11 @@ export default function IdpSectionComponent(props: IdpSectionComponentProps) {
     const [ idpList, setIdpList ] = useState<IdentityProvider[]>([]);
     const [ openSelectModal, setOpenSelectModal ] = useState<boolean>(false);
     const [ selectedTemplate, setSelectedTemplate ] = useState<IdentityProviderTemplate>(undefined);
+    const [ loadingDisplay, setLoadingDisplay ] = useState(LOADING_DISPLAY_NONE);
+    const [ allApplications, setAllApplications ] = useState<ApplicationList>(null);
+    const [ showUpgradeModal, setShowUpgradeModal ] = useState(false);
+    const [ applicationId, setApplicationId] = useState<string>("");
+
 
     const templates: IdentityProviderTemplate[] = [
         StandardBasedOidcIdentityProvider,
@@ -76,6 +91,47 @@ export default function IdpSectionComponent(props: IdpSectionComponentProps) {
     useEffect(() => {
         fetchAllIdPs();
     }, [ fetchAllIdPs ]);
+
+
+    useEffect(() => {
+        const fetchApplications = async () => {
+            try {
+                const res: ApplicationList = (await controllerDecodeListCurrentApplicationInRoot(session) as ApplicationList);
+                console.log("Applications fetched:", res);
+                await setAllApplications(res);
+            } catch (error) {
+                console.error("Error fetching applications:", error);
+            }
+        };
+    
+        fetchApplications();
+    }, [session]);
+    
+    useEffect(() => {
+        const fetchApplicationId = async () => {
+            try {
+                if (!checkIfJSONisEmpty(allApplications) && allApplications.totalResults !== 0) {
+                    const appId = allApplications.applications[0]?.id;
+                    if (appId) {
+                        await setApplicationId(appId);
+                        console.log("Application ID fetched:", appId);
+                    } else {
+                        console.error("Application ID is undefined.");
+                    }
+                } else {
+                    console.error("No applications found or applications array is empty.");
+                }
+            } catch (error) {
+                console.error("Error fetching application ID:", error);
+            }
+        };
+    
+        fetchApplicationId();
+    }, [allApplications]);
+
+    const signOutCallback = (): void => {
+        signout(session);
+    };
 
     const onAddIdentityProviderClick = (): void => {
         setOpenSelectModal(true);
@@ -110,67 +166,177 @@ export default function IdpSectionComponent(props: IdpSectionComponentProps) {
         }
     };
 
+        const onEnterpriseTierUpgrade = async (): Promise<void> => {
+            await upgradeTier(
+                session,
+                applicationId,
+                session.orgId,
+                "Enterprise", // Specify the tier
+                toaster,
+                setLoadingDisplay,
+                setShowUpgradeModal
+            );
+        };
+        
+    // Check if the session has the required scope
+    const hasIdpCreationScope = session?.scope?.includes("internal_org_idp_create");
+
+
     return (
         <Container>
+            {hasIdpCreationScope ? (
+                <>
+                    {/* Identity Provider Management View */}
+                    {idpList?.length === 0 ? (
+                        <SettingsTitleComponent
+                            title="Identity Providers"
+                            subtitle="Manage identity providers to allow users to log in to your application through them."
+                        />
+                    ) : (
+                        <SettingsTitleComponent
+                            title="Identity Providers"
+                            subtitle="Manage identity providers to allow users to log in to your application through them."
+                        >
+                            <Button
+                                appearance="primary"
+                                onClick={onAddIdentityProviderClick}
+                                size="md"
+                                style={{ marginTop: "12px" }}
+                            >
+                                {"+ Identity Provider"}
+                            </Button>
+                        </SettingsTitleComponent>
+                    )}
 
-            {
-                idpList?.length == 0
-                    ? (<SettingsTitleComponent
+                    {idpList ? (
+                        idpList.length === 0 ? (
+                            <EmptySettingsComponent
+                                bodyString="There are no identity providers available at the moment."
+                                buttonString="Add Identity Provider"
+                                icon={<AppSelectIcon style={{ opacity: 0.2 }} width="150px" height="150px" />}
+                                onAddButtonClick={onAddIdentityProviderClick}
+                            />
+                        ) : (
+                            <IdentityProviderList
+                                fetchAllIdPs={fetchAllIdPs}
+                                idpList={idpList}
+                                session={session}
+                            />
+                        )
+                    ) : null}
+
+                    {openSelectModal && (
+                        <SelectIdentityProvider
+                            templates={templates}
+                            onClose={onSelectIdpModalClose}
+                            openModal={openSelectModal}
+                            onTemplateSelected={onTemplateSelect}
+                        />
+                    )}
+                    {selectedTemplate && (
+                        <IdpCreate
+                            session={session}
+                            onIdpCreate={onIdpCreated}
+                            onCancel={onCreationDismiss}
+                            openModal={!!selectedTemplate}
+                            template={selectedTemplate}
+                            orgId={session.orgId}
+                        />
+                    )}
+                </>
+            ) : (
+                <>
+                    {/* Upgrade Now Card for Enterprise Tier */}
+                    <SettingsTitleComponent
                         title="Identity Providers"
                         subtitle="Manage identity providers to allow users to log in to your application through them."
-                    />)
-                    : (<SettingsTitleComponent
-                        title="Identity Providers"
-                        subtitle="Manage identity providers to allow users to log in to your application through them.">
-                        <Button 
-                            appearance="primary"
-                            onClick={ onAddIdentityProviderClick }
-                            size="md"
-                            style={ { marginTop: "12px" } }>
-                            { "+ Identity Provider" }
-                        </Button>
-                    </SettingsTitleComponent>)
-            }
-            
-
-            {
-                idpList
-                    ? idpList.length === 0
-                        ? (<EmptySettingsComponent
-                            bodyString="There are no identity providers available at the moment."
-                            buttonString="Add Identity Provider"
-                            icon={ <AppSelectIcon style={ { opacity: .2 } } width="150px" height="150px" /> }
-                            onAddButtonClick={ onAddIdentityProviderClick }
-                        />)
-                        : (<IdentityProviderList
-                            fetchAllIdPs={ fetchAllIdPs }
-                            idpList={ idpList }
-                            session={ session }
-                        />)
-                    : null
-            }
-
-            {
-                openSelectModal && (
-                    <SelectIdentityProvider
-                        templates={ templates }
-                        onClose={ onSelectIdpModalClose }
-                        openModal={ openSelectModal }
-                        onTemplateSelected={ onTemplateSelect }
                     />
-                )
-            }
-            {
-                selectedTemplate && (
-                    <IdpCreate
-                        session={ session }
-                        onIdpCreate={ onIdpCreated }
-                        onCancel={ onCreationDismiss }
-                        openModal={ !!selectedTemplate }
-                        template={ selectedTemplate }
-                        orgId={ session.orgId } />
-                )
-            }
+                    <div
+                        style={{
+                            margin: "20px 0",
+                            padding: "10px",
+                            backgroundColor: "#d9d9d9",
+                            borderRadius: "5px",
+                            textAlign: "center",
+                            color: "#272c36",
+                        }}
+                    >
+                        <p>To bring your identity provider, upgrade your tier.</p>
+                    </div>
+                    <div style={{ marginBottom: "30px" }}>
+                        <div
+                            style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                gap: "20px",
+                                padding: "20px",
+                                backgroundColor: "#f9f9f9",
+                                borderRadius: "10px",
+                                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                            }}
+                        >
+                            {/* Enterprise Tier */}
+                            <div
+                                style={{
+                                    flex: 1,
+                                    textAlign: "center",
+                                    padding: "20px",
+                                    border: "1px solid #ddd",
+                                    borderRadius: "10px",
+                                    backgroundColor: "#fff",
+                                }}
+                            >
+                                <h3>Enterprise Tier</h3>
+                                <p
+                                    style={{
+                                        fontSize: "24px",
+                                        fontWeight: "bold",
+                                        margin: "10px 0",
+                                    }}
+                                >
+                                    $9/user/mo
+                                </p>
+                                <p>
+                                    Identity Providers: <strong>Advanced</strong>
+                                </p>
+                                <br></br>
+                                <Button
+                                    appearance="primary"
+                                    onClick={ onEnterpriseTierUpgrade }
+                                >
+                                    Upgrade Now
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                </>
+            )}
+
+            {/* Modal for Upgrade Success */}
+            <Modal open={showUpgradeModal} onClose={() => setShowUpgradeModal(false)} size="sm">
+                <Modal.Header>
+                    <Modal.Title>Plan Upgrade Successful</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>You have successfully upgraded your plan to Enterprise Tier.</p>
+                    <p>Please re-login to make the changes effective.</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        appearance="primary"
+                        onClick={ signOutCallback } // Trigger the sign-out functionality
+                    >
+                        Re-login
+                    </Button>
+                    <Button
+                        appearance="subtle"
+                        onClick={() => setShowUpgradeModal(false)} // Close the modal
+                    >
+                        Cancel
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </Container>
     );
 
