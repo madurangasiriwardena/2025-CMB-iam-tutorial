@@ -16,8 +16,5 @@ class CrewOutput(BaseModel):
     ----------
     response : Response
         This should include the response of the crew.
-    frontend_state : str
-        This should include the frontend state come from the tool.
     """
     response: Response = Field(..., description="This should include the response of the crew.")
-    frontend_state: FrontendState = Field(..., description="This should include the frontend state come from the tool.")

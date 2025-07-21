@@ -67,7 +67,6 @@ class Response(BaseModel):
 
 class ChatResponse(BaseModel):
     response: Response
-    frontend_state: str
     message_states: List[str]
 
 @app.post("/chat", response_model=ChatResponse)
@@ -92,7 +91,6 @@ async def chat(
         chat_history_manager.add_assistant_message(thread_id, str(crew_dict))
 
         chat_response = crew_dict.get('response', {})
-        frontend_state = crew_dict.get('frontend_state', {})
         tool_response = chat_response.get("tool_response", {})
         tool_response_dict = tool_response.to_dict() if hasattr(tool_response, 'to_dict') else tool_response
         response = Response(
@@ -101,7 +99,7 @@ async def chat(
         )
         message_states = [state.name for state in state_manager.get_message_states(thread_id)]
         state_manager.clear_message_states(thread_id)
-        return ChatResponse(response=response, frontend_state=frontend_state, message_states=message_states)
+        return ChatResponse(response=response, message_states=message_states)
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail=str(e))

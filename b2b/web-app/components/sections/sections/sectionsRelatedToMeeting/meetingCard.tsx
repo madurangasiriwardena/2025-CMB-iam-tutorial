@@ -48,7 +48,7 @@ function MeetingCard(props: MeetingCardProps) {
                     <TailSpin color="var(--primary-color)" height={80} width={80} />
                 </div>
             ) : (
-                <>
+                <div className={styles.meetingRow}> {/* Flex container for vertical alignment */}
                     <div className={styles.meetingDetails}>
                         <span className={styles.meetingTopic}>{meeting.topic}</span>
                         <div className={styles.meetingInfo}>
@@ -64,9 +64,8 @@ function MeetingCard(props: MeetingCardProps) {
                                     ? (<>
                                         <div><span className={styles.agentLabel}>Teamspace Agent</span> created this meeting</div>
                                         <div>on behalf of {meeting.emailAddress}</div>
-                                      </>)
-                                    : (<>Meeting created by {meeting.emailAddress}</>)
-                                }
+                                    </>)
+                                    : (<div>Meeting created by {meeting.emailAddress}</div>)}
                             </span>
                         </div>
                     </div>
@@ -82,7 +81,7 @@ function MeetingCard(props: MeetingCardProps) {
                             <span style={{ color: '#888', fontStyle: 'italic' }}>Meeting deleted</span>
                         )}
                     </div>
-                </>
+                </div>
             )}
         </div>
     );

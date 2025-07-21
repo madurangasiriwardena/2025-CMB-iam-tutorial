@@ -34,6 +34,7 @@ class ScheduleMeetingTool(BaseTool):
     def _run(self, topic: str, date: str, startTime: str, duration: str, timeZone: str) -> str:
         try:
 
+            print(f"=============Scheduling meeting================")
             if FlowState.BOOKING_PREVIEW_INITIATED not in state_manager.get_states(self.thread_id):
                 raise Exception("Booking preview not completed")
 
@@ -69,7 +70,6 @@ class ScheduleMeetingTool(BaseTool):
                     "meeting_id": meeting_details["id"]
                 }
                 message = f"Meeting successfully scheduled on {date} at {startTime}. Meeting ID: {response_dict['meeting_id']}"
-                frontend_state = FrontendState.BOOKING_COMPLETED
                 state_manager.add_state(self.thread_id, FlowState.BOOKING_COMPLETED)
                 state_manager.clear_state(self.thread_id)
             else:
@@ -78,7 +78,6 @@ class ScheduleMeetingTool(BaseTool):
                     "status": "failed"
                 }
                 message = f"Failed to schedule meeting: {response_dict['error']}"
-                frontend_state = FrontendState.BOOKING_COMPLETED_ERROR
                 state_manager.add_state(self.thread_id, FlowState.BOOKING_PREVIEW_INITIATED)
             response = Response(
                 chat_response=message,
@@ -86,11 +85,11 @@ class ScheduleMeetingTool(BaseTool):
                     "meeting_details": response_dict,
                 }
             )
-            return CrewOutput(response=response, frontend_state=frontend_state).model_dump_json()
+            return CrewOutput(response=response).model_dump_json()
 
         except Exception as e:
             error_response = Response(
                 chat_response=f"An error occurred while scheduling the meeting: {str(e)}",
                 tool_response={"error": str(e), "status": "error"}
             )
-            return CrewOutput(response=error_response, frontend_state=FrontendState.BOOKING_COMPLETED_ERROR).model_dump_json()
+            return CrewOutput(response=error_response).model_dump_json()

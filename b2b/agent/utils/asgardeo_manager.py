@@ -73,6 +73,7 @@ class AsgardeoManager:
                 scopes_str = " ".join(scopes)
                 nonce = str(uuid.uuid4())[:16]
                 state = str(uuid.uuid4())
+                print(f"Fetching user token: {self.get_user_claims(self.get_user_id_from_thread_id(thread_id))['user_org']}")
 
                 # Generate the authorization URL based on the org
                 authorization_url = (
@@ -84,7 +85,9 @@ class AsgardeoManager:
                     f"response_mode=query&"
                     f"state={state}&"
                     f"requested_actor={self.agent_id}&"
-                    f"nonce={nonce}"
+                    f"nonce={nonce}&"
+                    f"orgId={self.get_user_claims(self.get_user_id_from_thread_id(thread_id))['user_org']}&"
+                    f"fidp=OrganizationSSO"
                 )
                 self.store_thread_id_against_state(thread_id, state)
                 auth_code = AuthCode(state=state, user_id=user_id, code=None, scopes=scopes)
@@ -137,6 +140,11 @@ class AsgardeoManager:
         """
         Exchange authorization code for access token
         """
+        print(f"Fetching agent token for thread_id: {thread_id}")
+        if thread_id in self.agent_tokens and self.agent_tokens[thread_id]:
+            # TODO check if the token is still valid.
+            print(f"Agent token already available for thread_id: {thread_id}")
+            return self.agent_tokens[thread_id]
         try:
             print(f"Fetching agent token")
 

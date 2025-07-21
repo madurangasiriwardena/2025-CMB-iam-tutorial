@@ -9,10 +9,7 @@ interface SchedulingConfirmationCardProps {
 export function SchedulingConfirmationCard({ authorizationUrl, onContinueBooking, threadId }: SchedulingConfirmationCardProps) {
   const [hasClicked, setHasClicked] = useState(false)
   const handleAuthorize = async () => {
-    const iframe = document.createElement('iframe');
-    iframe.style.display = 'none';
-    iframe.src = authorizationUrl+"&prompt=none";
-    document.body.appendChild(iframe);
+    window.open(authorizationUrl, "_blank");
     setHasClicked(true)
 
     let attempts = 0;
