@@ -1,4 +1,5 @@
 import { useState } from "react";
+import {getConfig} from "@pet-management-webapp/util-application-config-util";
 
 interface SchedulingConfirmationCardProps {
   authorizationUrl: string
@@ -7,6 +8,7 @@ interface SchedulingConfirmationCardProps {
 }
 
 export function SchedulingConfirmationCard({ authorizationUrl, onContinueBooking, threadId }: SchedulingConfirmationCardProps) {
+  const chatServiceUrl = getConfig().BusinessAdminAppConfig.resourceServerURLs.chatService
   const [hasClicked, setHasClicked] = useState(false)
   const handleAuthorize = async () => {
     window.open(authorizationUrl, "_blank");
@@ -23,7 +25,7 @@ export function SchedulingConfirmationCard({ authorizationUrl, onContinueBooking
       }
 
       try {
-        const response = await fetch(`http://localhost:8000/state/${threadId}`, {
+        const response = await fetch(`${chatServiceUrl}/state/${threadId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

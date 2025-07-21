@@ -44,7 +44,7 @@ interface ConfigObject {
     };
     resourceServerURLs: {
       meetingService?: string;
-      petManagementService?: string;
+      chatService?: string;
       personalizationService?: string;
     };
     ManagementAPIConfig: {
@@ -56,7 +56,7 @@ interface ConfigObject {
 
 
 /**
- * 
+ *
  * get config
  */
 export function getConfig(): ConfigObject {
@@ -94,7 +94,7 @@ export function getConfig(): ConfigObject {
             resourceServerURLs: {
                 meetingService: publicRuntimeConfig.meetingServiceUrl,
                 personalizationService: publicRuntimeConfig.personalizationServiceUrl,
-                petManagementService: publicRuntimeConfig.petManagementServiceUrl
+                chatService: publicRuntimeConfig.chatServiceUrl,
             }
         }
     };
