@@ -14,7 +14,7 @@ load_dotenv()
 def create_crew(question, thread_id: str = None):
     llm = LLM(model='azure/gpt4-o')
     hotel_agent = Agent(
-        role='Meeting Assistant Agent',
+        role='Teamspace Agent',
         goal=(
             "Answer the given question using your tools without modifying the question itself. Please make sure to follow the instructions in the task description. Do not perform any actions outside the scope of the task."
         ),
@@ -89,10 +89,11 @@ def create_crew(question, thread_id: str = None):
             ## Action Protocol
 
             ### 1. Booking Preview
-            When user wants to schedule a meeting:
+            When flow_state is "INITIAL_STATE" or "BOOKING_COMPLETED" and the user wants to schedule a meeting:
             - Use ScheduleMeetingPreviewTool
             - If errors occur, revert and show the meeting preview details
             - Provide a summary of schedule_preview in the chat_response and ask for confirmation. Do not include URLs.
+            - Use concise Markdown (lists, headings, bold) in the chat_response
             - Include authorization_url and schedule_preview in tool_response.
 
             ### 2. Booking Finalization
@@ -101,6 +102,7 @@ def create_crew(question, thread_id: str = None):
             - Call ScheduleMeetingTool to finalize
             - If errors occur, revert to confirmation step
             - Summarize scheduling in chat_response
+            - Use concise Markdown (lists, headings, bold) in the chat_response
             - Include authorization_url in tool_response
 
             ## Formatting Guidelines
@@ -108,6 +110,7 @@ def create_crew(question, thread_id: str = None):
             - Keep all responses text-based (no images)
             - Minimize tool usage per step
             - Keep URLs in tool_response only
+            - Do not include flow_state in chat_response
             """
         ,
         agent=hotel_agent,

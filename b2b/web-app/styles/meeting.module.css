@@ -80,7 +80,7 @@
     height: 80vh;
     min-height: 50vh;
     /* overflow: hidden; */
-} 
+}
 
 .doctorOverviewTitle{
     width: 30%;
@@ -222,7 +222,7 @@
 
 .availabilityInfoGridHeadersInEdit {
     text-align: left;
-    width: 40vw  
+    width: 40vw
 }
 
 .availabilityInfoGridHeaderStyleInEdit{
@@ -244,7 +244,7 @@
 .availabilityPlusButtonStyle {
     height: 5vh;
     width: 5vh;
-    background-color: var(--primary-color); 
+    background-color: var(--primary-color);
     border: none;
     border-radius: 1vh;
     color: white;
@@ -462,7 +462,7 @@
 .plusButtonStyle {
     height: 5vh;
     width: 5vh;
-    background-color: var(--primary-color); 
+    background-color: var(--primary-color);
     border: none;
     border-radius: 1vh;
     color: white;
@@ -493,7 +493,7 @@
 .medicinePlusButtonStyle {
     height: 5vh;
     width: 5vh;
-    background-color: var(--primary-color); 
+    background-color: var(--primary-color);
     border: none;
     border-radius: 1vh;
     color: white;
@@ -554,7 +554,7 @@
 }
 
 .settingsSaveBtn {
-    background-color: var(--primary-color);  
+    background-color: var(--primary-color);
     color: white;
     border: none;
     width: 7vw;
@@ -657,4 +657,54 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+.meetingCreatorInfo {
+    display: flex;
+    flex-direction: column;
+    margin: 0 15px;
+    flex: 1;
+}
+
+.creatorDetails {
+    display: flex;
+    flex-direction: column;
+}
+
+.meetingEmail {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.5;
+    display: flex;
+    flex-direction: column;
+}
+
+.agentLabel {
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #333;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.meetingListItem.deleted {
+    background-color: #f8f8f8;
+    opacity: 0.7;
+    position: relative;
+}
+
+.deletedLabel {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #ff6b6b;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    z-index: 1;
 }

@@ -86,7 +86,17 @@ export default function ManageMeetingsSection(props: ManageMeetingsSectionProps)
 
     const handleDelete = async (meetingId: string) => {
         const accessToken = session.accessToken;
-        await deleteMeeting(accessToken, meetingId);
+        try {
+            // Call the API to delete the meeting
+            await deleteMeeting(accessToken, meetingId);
+
+            // Remove the deleted meeting from the list
+            setMeetingList(prevList =>
+                prevList ? prevList.filter(meeting => meeting.id !== meetingId) : null
+            );
+        } catch (error) {
+            console.error("Failed to delete meeting:", error);
+        }
     };
 
     return (

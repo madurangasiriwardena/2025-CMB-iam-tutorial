@@ -1,13 +1,14 @@
 from dataclasses import dataclass, field
 from typing import List, Dict
 from enum import Enum
+import logging
 
 from utils.constants import FlowState
 
 @dataclass
 class FlowStates:
     states: List[FlowState] = field(default_factory=list)
-    
+
     def add_state(self, state: FlowState) -> None:
         """Add a state to the list of states."""
         self.states.append(state)
@@ -34,6 +35,11 @@ class StateManager:
         self.thread_states[thread_id].add_state(state)
         self.message_states[thread_id].add_state(state)
 
+    def clear_state(self, thread_id: int) -> None:
+        """Add a state to the flow states for a specific thread."""
+        if thread_id in self.thread_states:
+            self.thread_states[thread_id].states = []
+
     def get_states(self, thread_id: int) -> List[FlowState]:
         """Return the list of states for a specific thread."""
         if thread_id in self.thread_states:
@@ -45,13 +51,13 @@ class StateManager:
         if thread_id in self.thread_states:
             return self.thread_states[thread_id].get_states_as_string()
         return ""
-    
+
     def get_message_states(self, thread_id: int) -> List[FlowState]:
         """Return the list of states for a specific message."""
         if thread_id in self.thread_states:
             return self.thread_states[thread_id].get_states()
         return []
-    
+
     def clear_message_states(self, thread_id: int) -> None:
         """Clear the message states for a specific thread."""
         if thread_id in self.message_states:

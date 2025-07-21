@@ -6,6 +6,7 @@ public type UserInfo record {|
     string userId;
     string emailAddress?;
     string[] groups?;
+    string actorUserId?; // Added to hold act.sub if available
 |};
 
 public isolated class UserInfoResolver {
@@ -38,12 +39,19 @@ public isolated class UserInfoResolver {
         string user = self.getUserFromPayload(payload);
         string email = self.getEmail(payload);
         string[] groups = self.getGroups(payload);
-
+        string actorUserId = "";
+        if payload.hasKey("act") {
+            var actClaim = payload["act"];
+            if actClaim is map<json> && actClaim.hasKey("sub") {
+                actorUserId = <string>actClaim["sub"];
+            }
+        }
         UserInfo userInfo = {
             organization: org,
             userId: user,
             emailAddress: email,
-            groups: groups
+            groups: groups,
+            actorUserId: actorUserId != "" ? actorUserId : ()
         };
 
         return userInfo;

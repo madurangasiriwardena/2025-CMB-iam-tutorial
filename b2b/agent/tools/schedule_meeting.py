@@ -34,7 +34,6 @@ class ScheduleMeetingTool(BaseTool):
     def _run(self, topic: str, date: str, startTime: str, duration: str, timeZone: str) -> str:
         try:
 
-            # TODO rename the BOOKING_PREVIEW_INITIATED to MEETING_PREVIEW_INITIATED
             if FlowState.BOOKING_PREVIEW_INITIATED not in state_manager.get_states(self.thread_id):
                 raise Exception("Booking preview not completed")
 
@@ -45,22 +44,22 @@ class ScheduleMeetingTool(BaseTool):
             print(f"User ID: {user_id}")
             access_token = asgardeo_manager.get_user_token(user_id, ["openid", "create_meeting"])
             print(f"Access token: {access_token}")
-            
+
             # Prepare the booking request
             headers = {
                 "Authorization": f"Bearer {access_token}",
                 "Content-Type": "application/json"
             }
-            
+
             meeting_data = {
-                "topic": topic, 
-                "date": date, 
-                "startTime": startTime, 
-                "duration": duration, 
+                "topic": topic,
+                "date": date,
+                "startTime": startTime,
+                "duration": duration,
                 "timeZone": timeZone
             }
 
-            print(f"Scheduling meeting with data: {meeting_data}")  
+            print(f"Scheduling meeting with data: {meeting_data}")
 
             api_response = requests.post("http://localhost:9091/meetings", json=meeting_data, headers=headers)
             print(f"API response status code: {api_response.status_code}")
@@ -72,12 +71,13 @@ class ScheduleMeetingTool(BaseTool):
                 message = f"Meeting successfully scheduled on {date} at {startTime}. Meeting ID: {response_dict['meeting_id']}"
                 frontend_state = FrontendState.BOOKING_COMPLETED
                 state_manager.add_state(self.thread_id, FlowState.BOOKING_COMPLETED)
+                state_manager.clear_state(self.thread_id)
             else:
                 response_dict = {
                     "error": api_response.json().get("detail", "Meeting scheduling failed"),
                     "status": "failed"
                 }
-                message = f"Failed to schdule meeting: {response_dict['error']}"
+                message = f"Failed to schedule meeting: {response_dict['error']}"
                 frontend_state = FrontendState.BOOKING_COMPLETED_ERROR
                 state_manager.add_state(self.thread_id, FlowState.BOOKING_PREVIEW_INITIATED)
             response = Response(

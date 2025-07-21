@@ -34,10 +34,9 @@ export function SchedulingConfirmationCard({ authorizationUrl, onContinueBooking
         });
         if (response.ok) {
           const data = await response.json();
-          const states = data.states;
+          const states = data.states || [];
 
-          // TODO change to SCHEDULING_AUTORIZED
-          if (states.includes('BOOKING_AUTORIZED')) {
+          if (states.includes('BOOKING_AUTHORIZED')) {
             clearInterval(intervalId);
             onContinueBooking();
           }

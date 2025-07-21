@@ -72,18 +72,21 @@ class ChatResponse(BaseModel):
 
 @app.post("/chat", response_model=ChatResponse)
 async def chat(
-    request: ChatRequest, 
+    request: ChatRequest,
     user_id: str = Depends(get_user_from_token),
     ThreadID: Optional[str] = Header(None)
 ):
     try:
-        logging.info(f"Received chat request from user: {user_id} with thread ID: {ThreadID}")
         user_message = request.message
         thread_id = ThreadID or request.threadId
+        logging.info(f"Received chat request from user: {user_id} with thread ID: {thread_id}")
         if not asgardeo_manager.get_user_id_from_thread_id(thread_id):
             asgardeo_manager.store_user_id_against_thread_id(thread_id, user_id)
-        
+
+        asgardeo_manager.fetch_agent_token(thread_id)
         chat_history_manager.add_user_message(thread_id, user_message)
+        logging.info(f"User message added to chat history for thread ID: {thread_id}")
+
         crew_response = create_crew(user_message, thread_id)
         crew_dict = crew_response.to_dict()
         chat_history_manager.add_assistant_message(thread_id, str(crew_dict))
@@ -117,12 +120,12 @@ async def callback(
         asgardeo_manager.state_mapping[state] = auth_code
         token = asgardeo_manager.fetch_user_token(state)
         thread_id = asgardeo_manager.get_thread_id_from_state(state)
-        state_manager.add_state(thread_id, FlowState.BOOKING_AUTORIZED)
+        state_manager.add_state(thread_id, FlowState.BOOKING_AUTHORIZED)
         return HTMLResponse(content=f"<html><body><script>window.location.href = '{os.environ['WEBSITE_URL']}/auth_success';</script></body></html>", status_code=200)
     except Exception as e:
         logging.error(f"Error in callback: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))   
-    
+        raise HTTPException(status_code=500, detail=str(e))
+
 @app.get("/state/{thread_id}")
 async def callback(
     thread_id: str
@@ -134,7 +137,7 @@ async def callback(
         return JSONResponse(content=states)
     except Exception as e:
         print(e)
-        raise HTTPException(status_code=500, detail=str(e))    
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/health")
 async def health_check():
