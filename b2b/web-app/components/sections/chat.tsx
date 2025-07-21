@@ -110,7 +110,7 @@ const Chat = ({ session }) => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleBookConfirmationRetry = async (meeting: any) => {
-    const bookingMessage = `Ok i am ok with booking details you provide. Lets schedule the meeting topic ${meeting.topic} on ${meeting.date} at ${meeting.startTime} for ${meeting.duration} in time zone ${meeting.timeZone}.`;
+    const bookingMessage = `Yes, schedule it!. I am ok with meeting details you provided. Meeting topic ${meeting.topic} on ${meeting.date} at ${meeting.startTime} for ${meeting.duration} in time zone ${meeting.timeZone}.`;
 
     const loadingMessage: Message = {
       id: 'loading',
@@ -153,19 +153,20 @@ const Chat = ({ session }) => {
 
       setMessages((prev) => prev.filter(msg => msg.id !== 'loading').concat(botMessage))
     } catch (error) {
-      console.error("Error booking room:", error)
+      console.error("Error scheduling meeting:", error)
       setMessages(prev => prev.filter(msg => msg.id !== 'loading').concat({
         id: Date.now().toString(),
-        content: "Sorry, I couldn't process your booking request. Please try again.",
+        content: "Sorry, I couldn't process your scheduling request. Please try again.",
         isUser: false
       }))
     } finally {
       setIsLoading(false)
+      setShowPreviewConfirmWidget(true)
     }
   }
 
   const renderToolResponse = (msg: AgentMessage) => {
-    if (msg.response.tool_response?.authorization_url && !msg.response.tool_response.authorization_url.includes('calendar')) {
+    if (msg.response.tool_response?.authorization_url) {
       return (
           showPreviewConfirmWidget &&
           <SchedulingConfirmationCard

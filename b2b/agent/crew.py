@@ -27,7 +27,7 @@ def create_crew(question, thread_id: str = None):
         logging_level=logging.INFO,
         tools=[ScheduleMeetingTool(thread_id), ScheduleMeetingPreviewTool(thread_id)],
     )
-    flow_state = state_manager.get_states_as_string(thread_id)
+    flow_state = state_manager.get_flow_status(thread_id).name
     chat_history_task = Task(
         description=
             f"""
@@ -89,10 +89,11 @@ def create_crew(question, thread_id: str = None):
             ## Action Protocol
 
             ### 1. Booking Preview
-            When user wants to schedule a meeting:
+            When flow_state is "INITIAL_STATE" or "BOOKING_COMPLETED" and the user wants to schedule a meeting:
             - Use ScheduleMeetingPreviewTool
             - If errors occur, revert and show the meeting preview details
             - Provide a summary of schedule_preview in the chat_response and ask for confirmation. Do not include URLs.
+            - Use concise Markdown (lists, headings, bold) in the chat_response
             - Include authorization_url and schedule_preview in tool_response.
 
             ### 2. Booking Finalization
@@ -101,6 +102,7 @@ def create_crew(question, thread_id: str = None):
             - Call ScheduleMeetingTool to finalize
             - If errors occur, revert to confirmation step
             - Summarize scheduling in chat_response
+            - Use concise Markdown (lists, headings, bold) in the chat_response
             - Include authorization_url in tool_response
 
             ## Formatting Guidelines

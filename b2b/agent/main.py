@@ -77,14 +77,19 @@ async def chat(
     ThreadID: Optional[str] = Header(None)
 ):
     try:
-        logging.info(f"Received chat request from user: {user_id} with thread ID: {ThreadID}")
         user_message = request.message
         thread_id = ThreadID or request.threadId
+        logging.info(f"Received chat request from user: {user_id} with thread ID: {thread_id}")
         if not asgardeo_manager.get_user_id_from_thread_id(thread_id):
             asgardeo_manager.store_user_id_against_thread_id(thread_id, user_id)
 
         asgardeo_manager.fetch_agent_token(thread_id)
         chat_history_manager.add_user_message(thread_id, user_message)
+        logging.info(f"User message added to chat history for thread ID: {thread_id}")
+        if state_manager.get_flow_status(thread_id) is None:
+            logging.info(f"Initializing flow state for thread ID: {thread_id}")
+            state_manager.set_flow_status(thread_id, FlowState.INITIAL_STATE)
+        logging.info(f"Creating crew for user message: {user_message} in thread ID: {thread_id}")
         crew_response = create_crew(user_message, thread_id)
         crew_dict = crew_response.to_dict()
         chat_history_manager.add_assistant_message(thread_id, str(crew_dict))
