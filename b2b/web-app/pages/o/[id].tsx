@@ -91,6 +91,10 @@ export default function Org(props : OrgProps) {
                 if (err.response?.status === 404 && session.group === "admin") {
                     const res: BrandingPreference = 
                         (await controllerDecodeGetBrandingPrefrence(session) as BrandingPreference);
+                    if (!res || !res.preference) {
+                        console.debug("Branding response is not retrieved.");
+                        return;
+                    }
                     const activeTheme: string = res["preference"]["theme"]["activeTheme"];
 
                     const newPersonalization: Personalization = {

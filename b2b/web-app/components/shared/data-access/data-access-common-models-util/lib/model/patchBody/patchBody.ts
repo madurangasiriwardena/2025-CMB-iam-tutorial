@@ -20,7 +20,8 @@ import PatchOperation from "./patchOperation";
 
 export interface PatchBody {
     Operations: PatchOperation[],
-    schemas?: string[]
+    schemas?: string[],
+    applicationId?: string
 }
 
 export default PatchBody;

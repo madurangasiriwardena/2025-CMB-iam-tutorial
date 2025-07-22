@@ -103,7 +103,7 @@
             "type": "item",
             "hideBasedOnScope": true,
             "scopes": [
-                "internal_org_branding_preference_update"
+            
             ]
         },
         {
@@ -120,9 +120,6 @@
                     "hideBasedOnScope": true,
                     "scopes": [
                         "internal_org_idp_view",
-                        "internal_org_idp_create",
-                        "internal_org_idp_update",
-                        "internal_org_idp_delete",
                         "internal_org_application_mgt_view",
                         "internal_org_application_mgt_update"
                     ]

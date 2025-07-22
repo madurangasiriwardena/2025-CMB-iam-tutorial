@@ -22,6 +22,9 @@ const nextConfig = {
   },
   publicRuntimeConfig: {
     adminRole: process.env.ADMIN_ROLE_NAME,
+    basicBrandingConfigEditorRole: process.env.NEXT_PUBLIC_BRANDING_CONFIG_EDITOR_ROLE_NAME,
+    advancedBrandingConfigEditorRole: process.env.NEXT_PUBLIC_ADVANCED_BRANDING_CONFIG_EDITOR_ROLE_NAME,
+    idpCreationRole: process.env.NEXT_PUBLIC_IDP_MANAGER_ROLE_NAME,
     baseOrgUrl: process.env.BASE_ORG_URL,
     baseUrl: process.env.BASE_URL,
     meetingServiceUrl: process.env.MEETING_SERVICE_URL,

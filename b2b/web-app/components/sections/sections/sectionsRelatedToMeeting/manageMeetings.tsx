@@ -106,7 +106,7 @@ export default function ManageMeetingsSection(props: ManageMeetingsSectionProps)
                     <h2>{ "Manage Meetings" }</h2>
                     <p>{ "Manage meetings in the organization" }</p>
                 </Stack>
-                <Button className={ styles.buttonCircular } onClick={ onScheduleMeetingClick }>
+                <Button className={ styles.buttonCircular } appearance="primary" onClick={ onScheduleMeetingClick }>
                     Schedule a meeting
                 </Button>
             </Stack>

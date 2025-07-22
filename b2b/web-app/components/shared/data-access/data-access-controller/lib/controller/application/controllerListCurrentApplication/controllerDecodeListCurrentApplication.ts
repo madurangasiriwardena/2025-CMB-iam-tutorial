@@ -19,7 +19,7 @@
 import { ApplicationList } from "@pet-management-webapp/data-access-common-models-util";
 import { commonControllerDecode } from "@pet-management-webapp/shared/data-access/data-access-common-api-util";
 import { Session } from "next-auth";
-import { controllerCallListCurrentApplication } from "./controllerCallListCurrentApplication";
+import { controllerCallListCurrentApplication, controllerCallListCurrentApplicationInRoot } from "./controllerCallListCurrentApplication";
 
 /**
  * 
@@ -37,4 +37,16 @@ export async function controllerDecodeListCurrentApplication(session: Session): 
 
 }
 
-export default controllerDecodeListCurrentApplication;
+/**
+ * 
+ * @param session - session object
+ * @returns get the details of the current logged in application's corresponding root application of the business app,
+ * filtered using the `BusinessAppConfig.ManagementAPIConfig.SharedApplicationName` in the config.json
+ */
+export async function controllerDecodeListCurrentApplicationInRoot(session: Session): Promise<ApplicationList | null> {
+
+    const res = (await commonControllerDecode(() => controllerCallListCurrentApplicationInRoot(session), null) as
+        ApplicationList | null);
+
+    return res;
+}
