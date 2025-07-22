@@ -1,0 +1,7 @@
+{
+  "clientID": "<ASGARDEO_CLIENT_ID>",
+  "baseUrl": "https://api.asgardeo.io/t/<org_name>",
+  "signInRedirectURL": "http://localhost:3002",
+  "signOutRedirectURL": "http://localhost:3002",
+  "scope": ["openid", "profile", "email"]
+}
