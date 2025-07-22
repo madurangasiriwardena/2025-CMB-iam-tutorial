@@ -16,12 +16,12 @@
  * under the License.
  */
 
-import { signout } from "@pet-management-webapp/util-authorization-config-util";
+import { signout } from "@teamspace-app/util-authorization-config-util";
 import dynamic from "next/dynamic";
 
 export default function Custom500() {
     const DynamicCustom500Component = dynamic(() => 
-        import("@pet-management-webapp/shared/ui/ui-components").then((module) => module.Custom500Component));
+        import("@teamspace-app/shared/ui/ui-components").then((module) => module.Custom500Component));
 
     const goBack = async (): Promise<void> => await signout(null);
 

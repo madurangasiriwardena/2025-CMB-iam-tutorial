@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { Role } from "@pet-management-webapp/data-access-common-models-util";
-import { commonControllerDecode } from "@pet-management-webapp/shared/data-access/data-access-common-api-util";
+import { Role } from "@teamspace-app/data-access-common-models-util";
+import { commonControllerDecode } from "@teamspace-app/shared/data-access/data-access-common-api-util";
 import { Session } from "next-auth";
 import { controllerCallGetRole } from "./controllerCallGetRole";
 

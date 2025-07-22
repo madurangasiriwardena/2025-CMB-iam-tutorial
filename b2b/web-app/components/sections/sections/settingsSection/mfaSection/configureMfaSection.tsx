@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { SettingsTitleComponent } from "@pet-management-webapp/shared/ui/ui-components";
-import { EMAIL, SMS, TOTP } from "@pet-management-webapp/shared/util/util-common";
+import { SettingsTitleComponent } from "@teamspace-app/shared/ui/ui-components";
+import { EMAIL, SMS, TOTP } from "@teamspace-app/shared/util/util-common";
 import { Session } from "next-auth";
 import { Container, FlexboxGrid } from "rsuite";
 import EmailAsMFA from "./emailAsMFA";

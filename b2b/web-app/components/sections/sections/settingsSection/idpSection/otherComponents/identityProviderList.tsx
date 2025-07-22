@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityProvider } from "@pet-management-webapp/data-access-common-models-util";
+import { IdentityProvider } from "@teamspace-app/data-access-common-models-util";
 import { Session } from "next-auth";
 import React from "react";
 import { FlexboxGrid, PanelGroup } from "rsuite";

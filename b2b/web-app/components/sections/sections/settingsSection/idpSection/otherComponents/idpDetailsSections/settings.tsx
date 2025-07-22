@@ -17,14 +17,14 @@
  */
 
 import { IdentityProvider, IdentityProviderFederatedAuthenticator } from
-    "@pet-management-webapp/data-access-common-models-util";
+    "@teamspace-app/data-access-common-models-util";
 import { controllerDecodeGetFederatedAuthenticators, controllerDecodeUpdateFederatedAuthenticators } from
-    "@pet-management-webapp/data-access-controller";
-import { FormButtonToolbar } from "@pet-management-webapp/shared/ui/ui-basic-components";
-import { errorTypeDialog, successTypeDialog } from "@pet-management-webapp/shared/ui/ui-components";
-import { checkIfJSONisEmpty } from "@pet-management-webapp/shared/util/util-common";
+    "@teamspace-app/data-access-controller";
+import { FormButtonToolbar } from "@teamspace-app/shared/ui/ui-basic-components";
+import { errorTypeDialog, successTypeDialog } from "@teamspace-app/shared/ui/ui-components";
+import { checkIfJSONisEmpty } from "@teamspace-app/shared/util/util-common";
 import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE } 
-    from "@pet-management-webapp/shared/util/util-front-end-util";
+    from "@teamspace-app/shared/util/util-front-end-util";
 import { Session } from "next-auth";
 import { useCallback, useEffect, useState } from "react";
 import { Form } from "react-final-form";

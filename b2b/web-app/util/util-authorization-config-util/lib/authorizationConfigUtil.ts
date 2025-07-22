@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { getHostedUrl } from "@pet-management-webapp/util-application-config-util";
-import { orgSignout } from "@pet-management-webapp/shared/util/util-authorization-config-util";
+import { getHostedUrl } from "@teamspace-app/util-application-config-util";
+import { orgSignout } from "@teamspace-app/shared/util/util-authorization-config-util";
 import { Session } from "next-auth";
 
 /**

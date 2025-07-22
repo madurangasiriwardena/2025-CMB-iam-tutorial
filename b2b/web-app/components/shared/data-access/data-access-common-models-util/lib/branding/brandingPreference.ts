@@ -18,7 +18,7 @@
 
 import { 
     ControllerCallParam, ControllerCallReturn, ControllerDecodeReturn 
-} from "@pet-management-webapp/shared/data-access/data-access-common-models-util";
+} from "@teamspace-app/shared/data-access/data-access-common-models-util";
 
 export interface BrandingPreference extends ControllerCallParam, ControllerCallReturn, ControllerDecodeReturn {
     type: string,

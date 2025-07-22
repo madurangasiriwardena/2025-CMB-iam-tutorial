@@ -17,10 +17,10 @@
  */
 
 import type { NextApiRequest, NextApiResponse } from "next";
-import { notPostError } from "@pet-management-webapp/shared/data-access/data-access-common-api-util";
+import { notPostError } from "@teamspace-app/shared/data-access/data-access-common-api-util";
 import getToken from "./clientCredentials";
 import validateOrgName from "./createTeam/checkName";
-import { getConfig } from "@pet-management-webapp/util-application-config-util";
+import { getConfig } from "@teamspace-app/util-application-config-util";
 import createOrg from "./createTeam/addTeam";
 import listCurrentApplication from "./settings/application/listCurrentApplication";
 import getRole from "./settings/role/getRole";

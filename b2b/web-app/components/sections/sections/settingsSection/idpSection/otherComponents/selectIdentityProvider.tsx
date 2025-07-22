@@ -17,8 +17,8 @@
  */
 
 import { IdentityProviderTemplate, getImageForTheIdentityProvider } from
-    "@pet-management-webapp/data-access-common-models-util";
-import { ModelHeaderComponent } from "@pet-management-webapp/shared/ui/ui-basic-components";
+    "@teamspace-app/data-access-common-models-util";
+import { ModelHeaderComponent } from "@teamspace-app/shared/ui/ui-basic-components";
 import Image from "next/image";
 import { Avatar, Modal } from "rsuite";
 import styles from "../../../../../../styles/idp.module.css";

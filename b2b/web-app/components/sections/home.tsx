@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { LogoComponent } from "@pet-management-webapp/ui-components";
-import { signout } from "@pet-management-webapp/util-authorization-config-util";
-import { SignOutComponent } from "@pet-management-webapp/shared/ui/ui-components";
+import { LogoComponent } from "@teamspace-app/ui-components";
+import { signout } from "@teamspace-app/util-authorization-config-util";
+import { SignOutComponent } from "@teamspace-app/shared/ui/ui-components";
 import { getPersonalization } from "../../APICalls/GetPersonalization/get-personalization";
 import { Session } from "next-auth";
 import React, { useCallback, useEffect, useState } from "react";
@@ -37,9 +37,9 @@ import personalize from "./sections/settingsSection/personalizationSection/perso
 import RoleManagementSectionComponent from
     "./sections/settingsSection/roleManagementSection/roleManagementSectionComponent";
 import sideNavDataForAdmin
-    from "@pet-management-webapp/ui-assets/lib/data/sideNavDataForAdmin.json";
+    from "@teamspace-app/ui-assets/lib/data/sideNavDataForAdmin.json";
 import { HomeComponentForAdmin }
-    from "@pet-management-webapp/shared/ui/ui-components";
+    from "@teamspace-app/shared/ui/ui-components";
 import Custom500 from "../../pages/500";
 import Chat from "./chat";
 

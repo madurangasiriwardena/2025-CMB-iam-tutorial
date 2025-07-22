@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { IdentityProvider } from "@pet-management-webapp/data-access-common-models-util";
-import { commonControllerCall } from "@pet-management-webapp/shared/data-access/data-access-common-api-util";
+import { IdentityProvider } from "@teamspace-app/data-access-common-models-util";
+import { commonControllerCall } from "@teamspace-app/shared/data-access/data-access-common-api-util";
 import { Session } from "next-auth";
 
 /**

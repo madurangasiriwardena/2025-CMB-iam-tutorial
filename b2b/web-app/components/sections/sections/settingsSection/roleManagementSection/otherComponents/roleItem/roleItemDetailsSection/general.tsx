@@ -16,14 +16,14 @@
  * under the License.
  */
 
-import { Role } from "@pet-management-webapp/data-access-common-models-util";
+import { Role } from "@teamspace-app/data-access-common-models-util";
 import { controllerDecodePatchRole } 
-    from "@pet-management-webapp/data-access-controller";
-import { FormButtonToolbar, FormField } from "@pet-management-webapp/shared/ui/ui-basic-components";
-import { errorTypeDialog, successTypeDialog } from "@pet-management-webapp/shared/ui/ui-components";
-import { PatchMethod, checkIfJSONisEmpty } from "@pet-management-webapp/shared/util/util-common";
+    from "@teamspace-app/data-access-controller";
+import { FormButtonToolbar, FormField } from "@teamspace-app/shared/ui/ui-basic-components";
+import { errorTypeDialog, successTypeDialog } from "@teamspace-app/shared/ui/ui-components";
+import { PatchMethod, checkIfJSONisEmpty } from "@teamspace-app/shared/util/util-common";
 import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE, fieldValidate } 
-    from "@pet-management-webapp/shared/util/util-front-end-util";
+    from "@teamspace-app/shared/util/util-front-end-util";
 import { Session } from "next-auth";
 import { useState } from "react";
 import { Form } from "react-final-form";

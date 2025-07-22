@@ -17,8 +17,8 @@
  */
 
 import { controllerDecodeViewUsers } 
-    from "@pet-management-webapp/data-access-controller";
-import { InternalUser } from "@pet-management-webapp/shared/data-access/data-access-common-models-util";
+    from "@teamspace-app/data-access-controller";
+import { InternalUser } from "@teamspace-app/shared/data-access/data-access-common-models-util";
 import React, { useCallback, useEffect, useState } from "react";
 import { Field, Form } from "react-final-form";
 import { Button, ButtonToolbar, Checkbox, CheckboxGroup } from "rsuite";

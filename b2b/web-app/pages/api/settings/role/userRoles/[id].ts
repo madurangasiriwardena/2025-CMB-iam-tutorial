@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { requestOptions } from "@pet-management-webapp/data-access-common-api-util";
+import { requestOptions } from "@teamspace-app/data-access-common-api-util";
 import { dataNotRecievedError, notPostError } 
-    from "@pet-management-webapp/shared/data-access/data-access-common-api-util";
-import { getOrgUrl } from "@pet-management-webapp/shared/util/util-application-config-util";
+    from "@teamspace-app/shared/data-access/data-access-common-api-util";
+import { getOrgUrl } from "@teamspace-app/shared/util/util-application-config-util";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function userRoles(req: NextApiRequest, res: NextApiResponse) {

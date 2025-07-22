@@ -19,13 +19,13 @@
 import {
     Application, AuthenticationSequence, AuthenticationSequenceModel, AuthenticationSequenceStepOption,
     IdentityProvider
-} from "@pet-management-webapp/data-access-common-models-util";
-import { commonControllerDecode } from "@pet-management-webapp/shared/data-access/data-access-common-api-util";
+} from "@teamspace-app/data-access-common-models-util";
+import { commonControllerDecode } from "@teamspace-app/shared/data-access/data-access-common-api-util";
 import {
     BASIC_ID, EMAIL_OTP_AUTHENTICATOR, 
     OIDC_AUTHENTICATOR_ID, OIDC_IDP, SAML_AUTHENTICATOR_ID, 
     SAML_IDP, SMS_OTP_AUTHENTICATOR, TOTP_OTP_AUTHENTICATOR
-} from "@pet-management-webapp/shared/util/util-common";
+} from "@teamspace-app/shared/util/util-common";
 import { Session } from "next-auth";
 import { controllerCallPatchApplicationAuthSteps } from "./controllerCallPatchApplicationAuthSteps";
 

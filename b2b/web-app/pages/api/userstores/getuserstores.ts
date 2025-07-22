@@ -17,11 +17,11 @@
  */
 
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getOrgUrl } from "@pet-management-webapp/shared/util/util-application-config-util";
+import { getOrgUrl } from "@teamspace-app/shared/util/util-application-config-util";
 import {
   dataNotRecievedError,
   notPostError,
-} from "@pet-management-webapp/shared/data-access/data-access-common-api-util";
+} from "@teamspace-app/shared/data-access/data-access-common-api-util";
 
 /**
  * API handler to list userstores in an organization

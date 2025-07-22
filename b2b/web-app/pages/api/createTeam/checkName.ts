@@ -1,4 +1,4 @@
-import { getConfig } from "@pet-management-webapp/util-application-config-util";
+import { getConfig } from "@teamspace-app/util-application-config-util";
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

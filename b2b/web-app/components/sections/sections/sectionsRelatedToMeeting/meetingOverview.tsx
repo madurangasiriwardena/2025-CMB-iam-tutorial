@@ -17,7 +17,7 @@
  */
 
 import { Grid, Typography } from "@mui/material";
-import { ModelHeaderComponent } from "@pet-management-webapp/shared/ui/ui-basic-components";
+import { ModelHeaderComponent } from "@teamspace-app/shared/ui/ui-basic-components";
 import { Meeting } from "../../../../types/meeting";
 import axios, { AxiosError } from "axios";
 import { Session } from "next-auth";

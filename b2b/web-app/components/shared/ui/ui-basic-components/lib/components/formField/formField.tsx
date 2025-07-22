@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { HelperTextComponent } from "@pet-management-webapp/shared/ui/ui-components";
+import { HelperTextComponent } from "@teamspace-app/shared/ui/ui-components";
 import React from "react";
 import { Field } from "react-final-form";
 import FormSuite from "rsuite/Form";

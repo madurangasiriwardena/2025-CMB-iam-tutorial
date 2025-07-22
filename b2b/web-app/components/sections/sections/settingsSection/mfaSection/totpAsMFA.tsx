@@ -18,12 +18,12 @@
 
 import {
     Application, ApplicationList, checkIfAuthenticatorIsinAuthSequence
-} from "@pet-management-webapp/data-access-common-models-util";
+} from "@teamspace-app/data-access-common-models-util";
 import {
     controllerDecodeGetApplication, controllerDecodeListCurrentApplication
-} from "@pet-management-webapp/data-access-controller";
-import { AccordianItemHeaderComponent } from "@pet-management-webapp/shared/ui/ui-components";
-import { TOTP, TOTP_OTP_AUTHENTICATOR, checkIfJSONisEmpty } from "@pet-management-webapp/shared/util/util-common";
+} from "@teamspace-app/data-access-controller";
+import { AccordianItemHeaderComponent } from "@teamspace-app/shared/ui/ui-components";
+import { TOTP, TOTP_OTP_AUTHENTICATOR, checkIfJSONisEmpty } from "@teamspace-app/shared/util/util-common";
 import { Session } from "next-auth";
 import React, { useCallback, useEffect, useState } from "react";
 import { Button, FlexboxGrid } from "rsuite";

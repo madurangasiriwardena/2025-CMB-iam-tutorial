@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { getConfig } from "@pet-management-webapp/util-application-config-util";
-import { SharedLogoComponent } from "@pet-management-webapp/shared/ui/ui-components";
+import { getConfig } from "@teamspace-app/util-application-config-util";
+import { SharedLogoComponent } from "@teamspace-app/shared/ui/ui-components";
 import logoImage from "../../../../ui-assets/lib/images/teamspace_logo.png";
 import { LogoComponentProps } from "../../models/logoComponent/logoComponent";
 

@@ -20,19 +20,19 @@ import {
     Application,
     ApplicationList,
     BrandingPreference 
-} from "@pet-management-webapp/data-access-common-models-util";
+} from "@teamspace-app/data-access-common-models-util";
 import { 
     controllerDecodeListAllRoles,
     controllerDecodeListCurrentApplicationInRoot,
     controllerDecodeRevertBrandingPreference 
-} from "@pet-management-webapp/data-access-controller";
-import { FormButtonToolbar, FormField } from "@pet-management-webapp/shared/ui/ui-basic-components";
+} from "@teamspace-app/data-access-controller";
+import { FormButtonToolbar, FormField } from "@teamspace-app/shared/ui/ui-basic-components";
 import {
     errorTypeDialog,
     SettingsTitleComponent
-} from "@pet-management-webapp/shared/ui/ui-components";
-import { checkIfJSONisEmpty, PatchMethod } from "@pet-management-webapp/shared/util/util-common";
-import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE } from "@pet-management-webapp/shared/util/util-front-end-util";
+} from "@teamspace-app/shared/ui/ui-components";
+import { checkIfJSONisEmpty, PatchMethod } from "@teamspace-app/shared/util/util-common";
+import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE } from "@teamspace-app/shared/util/util-front-end-util";
 import { deletePersonalization } from "../../../../../APICalls/DeletePersonalization/delete-personalization";
 import { getPersonalization } from "../../../../../APICalls/GetPersonalization/get-personalization";
 import { postPersonalization } from "../../../../../APICalls/UpdatePersonalization/post-personalization";
@@ -42,7 +42,7 @@ import {
     controllerDecodeUpdateBrandingPrefrence,
     controllerDecodeUpdateSharedRoles,
     controllerDecodePatchRole
-} from "@pet-management-webapp/data-access-controller";
+} from "@teamspace-app/data-access-controller";
 import { Session } from "next-auth";
 import React, { useCallback, useEffect, useState } from "react";
 import { Field, Form } from "react-final-form";
@@ -51,8 +51,8 @@ import FormSuite from "rsuite/Form";
 import personalize from "./personalize";
 import styles from "../../../../../styles/Settings.module.css";
 import { ChromePicker } from 'react-color';
-import { getConfig } from "@pet-management-webapp/util-application-config-util";
-import { signout } from "@pet-management-webapp/util-authorization-config-util";
+import { getConfig } from "@teamspace-app/util-application-config-util";
+import { signout } from "@teamspace-app/util-authorization-config-util";
 import { upgradeTier } from "pages/api/upgrade";
 
 /**

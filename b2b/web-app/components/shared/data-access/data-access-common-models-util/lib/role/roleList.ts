@@ -17,7 +17,7 @@
  */
 
 import { ControllerCallParam, ControllerCallReturn } from
-    "@pet-management-webapp/shared/data-access/data-access-common-models-util";
+    "@teamspace-app/shared/data-access/data-access-common-models-util";
 import Role from "./role";
 
 export interface RoleList extends ControllerCallParam, ControllerCallReturn

@@ -16,7 +16,7 @@
  * under the License.
  */
 import { ControllerCallReturn, ControllerDecodeReturn } 
-    from "@pet-management-webapp/shared/data-access/data-access-common-models-util";
+    from "@teamspace-app/shared/data-access/data-access-common-models-util";
 import IdentityProviderFederatedAuthenticator from "./identityProviderFederatedAuthenticator";
 
 interface FederatedAuthenticatorForIdentityProvider {

@@ -17,9 +17,9 @@
  */
 
 import { requestOptionsWithBody } 
-    from "@pet-management-webapp/data-access-common-api-util";
+    from "@teamspace-app/data-access-common-api-util";
 import { RequestMethod, dataNotRecievedError, notPostError } from
-    "@pet-management-webapp/shared/data-access/data-access-common-api-util";
+    "@teamspace-app/shared/data-access/data-access-common-api-util";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function editRole(req: NextApiRequest, res: NextApiResponse) {
