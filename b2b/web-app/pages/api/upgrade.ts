@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { controllerDecodeListAllRoles, controllerDecodePatchRole, controllerDecodeUpdateSharedRoles } from "@pet-management-webapp/data-access-controller";
+import { controllerDecodeListAllRoles, controllerDecodePatchRole, controllerDecodeUpdateSharedRoles } from "@teamspace-app/data-access-controller";
 import { errorTypeDialog } from "@teamspace-app/shared/ui/ui-components";
 import { PatchMethod } from "@teamspace-app/shared/util/util-common";
 import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE } from "@teamspace-app/shared/util/util-front-end-util";

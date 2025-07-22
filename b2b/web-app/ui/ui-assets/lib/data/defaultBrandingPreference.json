@@ -1,0 +1,22 @@
+{
+  "preference": {
+    "theme": {
+      "activeTheme": "default",
+      "default": {
+        "images": {
+          "logo": { "imgURL": "", "altText": "" },
+          "favicon": { "imgURL": "" }
+        },
+        "colors": {
+          "primary": { "main": "" },
+          "secondary": { "main": "" }
+        }
+      }
+    },
+    "configs": {
+      "isBrandingEnabled": false
+    }
+  },
+  "type": "ORG"
+}
+

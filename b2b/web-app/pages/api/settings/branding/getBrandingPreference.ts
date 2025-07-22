@@ -17,31 +17,31 @@
  */
 
 import { requestOptions } from "@teamspace-app/data-access-common-api-util";
-import { dataNotRecievedError, notPostError } 
+import { dataNotRecievedError, notPostError }
     from "@teamspace-app/shared/data-access/data-access-common-api-util";
 import { getBaseUrl } from "@teamspace-app/shared/util/util-application-config-util";
 import { NextApiRequest, NextApiResponse } from "next";
 
 /**
  * backend API call to view current application
- * 
+ *
  * @param req - request
  * @param res - response
- * 
+ *
  * @returns correct data if the call is successful, else an error message
  */
 export default async function getBrandingPreference(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== "POST") {
         notPostError(res);
     }
-    
+
     const body = JSON.parse(req.body);
     const session = body.session;
     const orgId = body.orgId;
 
     try {
         const fetchData = await fetch(
-            `${getBaseUrl(orgId)}/${orgId}/api/server/v1/branding-preference/` 
+            `${getBaseUrl(orgId)}/${orgId}/api/server/v1/branding-preference/`
             + `resolve?locale=en-US&name=${orgId}&type=ORG`,
             requestOptions(session)
         );

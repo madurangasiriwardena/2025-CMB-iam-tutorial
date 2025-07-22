@@ -16,19 +16,16 @@
  * under the License.
  */
 
-import { 
-    Application,
+import {
     ApplicationList,
-    BrandingPreference 
+    BrandingPreference
 } from "@teamspace-app/data-access-common-models-util";
-import { 
-    controllerDecodeListAllRoles,
+import {
     controllerDecodeListCurrentApplicationInRoot,
-    controllerDecodeRevertBrandingPreference 
+    controllerDecodeRevertBrandingPreference
 } from "@teamspace-app/data-access-controller";
 import { FormButtonToolbar, FormField } from "@teamspace-app/shared/ui/ui-basic-components";
 import {
-    errorTypeDialog,
     SettingsTitleComponent
 } from "@teamspace-app/shared/ui/ui-components";
 import { checkIfJSONisEmpty, PatchMethod } from "@teamspace-app/shared/util/util-common";
@@ -39,9 +36,7 @@ import { postPersonalization } from "../../../../../APICalls/UpdatePersonalizati
 import { Personalization } from "../../../../../types/personalization";
 import {
     controllerDecodeGetBrandingPrefrence,
-    controllerDecodeUpdateBrandingPrefrence,
-    controllerDecodeUpdateSharedRoles,
-    controllerDecodePatchRole
+    controllerDecodeUpdateBrandingPrefrence
 } from "@teamspace-app/data-access-controller";
 import { Session } from "next-auth";
 import React, { useCallback, useEffect, useState } from "react";
@@ -51,9 +46,9 @@ import FormSuite from "rsuite/Form";
 import personalize from "./personalize";
 import styles from "../../../../../styles/Settings.module.css";
 import { ChromePicker } from 'react-color';
-import { getConfig } from "@teamspace-app/util-application-config-util";
 import { signout } from "@teamspace-app/util-authorization-config-util";
 import { upgradeTier } from "pages/api/upgrade";
+import defaultBrandingPreference from "ui/ui-assets/lib/data/defaultBrandingPreference.json";
 
 /**
  *
@@ -96,10 +91,10 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                 console.error("Error fetching applications:", error);
             }
         };
-    
+
         fetchApplications();
     }, [session]);
-    
+
     useEffect(() => {
         const fetchApplicationId = async () => {
             try {
@@ -118,7 +113,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                 console.error("Error fetching application ID:", error);
             }
         };
-    
+
         fetchApplicationId();
     }, [allApplications]);
 
@@ -131,10 +126,14 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
         fetchBrandingPreference();
     }, [ fetchData ]);
 
+    useEffect(() => {
+        fetchBrandingPreference();
+    }, []);
+
     const fetchBrandingPreference = async () => {
         const res: BrandingPreference = (await controllerDecodeGetBrandingPrefrence(session) as BrandingPreference);
         if (!res) {
-            console.debug("Branding response is not retrived.");
+            console.debug("Branding response is not retrieved.");
             return;
         }
         const activeTheme: string = res["preference"]["theme"]["activeTheme"];
@@ -149,18 +148,18 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
     };
 
     const onUpdate = async (values: Record<string, string>, form): Promise<void> => {
-
         setLoadingDisplay(LOADING_DISPLAY_BLOCK);
-        const activeTheme: string = brandingPreference["preference"]["theme"]["activeTheme"];
-
-        brandingPreference["preference"]["theme"][activeTheme]["images"]["logo"]["imgURL"] = values["logo_url"];
-        brandingPreference["preference"]["theme"][activeTheme]["images"]["logo"]["altText"] = values["logo_alt_text"];
-        brandingPreference["preference"]["theme"][activeTheme]["images"]["favicon"]["imgURL"] = values["favicon_url"];
-        brandingPreference["preference"]["theme"][activeTheme]["colors"]["primary"]["main"] = values["primary_color"];
-        brandingPreference["preference"]["theme"][activeTheme]["colors"]["secondary"]["main"] = 
-            values["secondary_color"];
-
-        controllerDecodeUpdateBrandingPrefrence(session, brandingPreference)
+        // Use defaultBrandingPreference if brandingPreference is not present
+        const updatedBrandingPreference: BrandingPreference = brandingPreference
+            ? brandingPreference : defaultBrandingPreference;
+        // Now updatedBrandingPreference is guaranteed to have the correct structure
+        const activeTheme: string = updatedBrandingPreference.preference.theme.activeTheme;
+        updatedBrandingPreference.preference.theme[activeTheme].images.logo.imgURL = values.logo_url;
+        updatedBrandingPreference.preference.theme[activeTheme].images.logo.altText = values.logo_alt_text;
+        updatedBrandingPreference.preference.theme[activeTheme].images.favicon.imgURL = values.favicon_url;
+        updatedBrandingPreference.preference.theme[activeTheme].colors.primary.main = values.primary_color;
+        updatedBrandingPreference.preference.theme[activeTheme].colors.secondary.main = values.secondary_color;
+        controllerDecodeUpdateBrandingPrefrence(session, updatedBrandingPreference)
             .then(() => {
                 const newPersonalization: Personalization = {
                     faviconUrl: values["favicon_url"],
@@ -170,7 +169,6 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                     primaryColor: values["primary_color"],
                     secondaryColor: values["secondary_color"]
                 };
-
                 postPersonalization(session.accessToken, newPersonalization)
                     .then(() => {
                         personalize(newPersonalization);
@@ -186,11 +184,23 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
         setLoadingDisplay(LOADING_DISPLAY_BLOCK);
         controllerDecodeRevertBrandingPreference(session)
             .then(() => {
+                // Reset brandingPreference to default after revert
+                setBrandingPreference(JSON.parse(JSON.stringify(defaultBrandingPreference)));
                 deletePersonalization(session.accessToken)
                     .then(() => {
                         getPersonalization(session.orgId)
                             .then((response) => {
-                                personalize(response.data);
+                                if (response?.status !== 404) {
+                                    personalize(response.data);
+                                }
+                                // Do nothing if 404, no error popup
+                            })
+                            .catch((error) => {
+                                if (error?.response?.status !== 404) {
+                                    // Only show error for non-404 errors
+                                    toaster.push("Failed to fetch personalization data.", { type: "error" });
+                                }
+                                // Do nothing for 404
                             });
                     });
                 fetchBrandingPreference();
@@ -245,7 +255,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                     title="Personalization"
                     subtitle="Customize the user interfaces of your application."
                 />
-    
+
                 <div style={ { margin: "50px" } }>
                     <Form
                         onSubmit={ onUpdate }
@@ -262,7 +272,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                 className={ styles.addUserForm }
                                 onSubmit={ () => { handleSubmit().then(form.restart); } }
                                 fluid>
-    
+
                                 <FormField
                                     name="logo_url"
                                     label="Logo URL"
@@ -274,7 +284,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                 >
                                     <FormSuite.Control name="input" value="a" />
                                 </FormField>
-    
+
                                 <FormField
                                     name="logo_alt_text"
                                     label="Logo Alt Text"
@@ -286,7 +296,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                 >
                                     <FormSuite.Control name="input" />
                                 </FormField>
-    
+
                                 <FormField
                                     name="favicon_url"
                                     label="Favicon URL"
@@ -298,7 +308,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                 >
                                     <FormSuite.Control name="input" type="url" />
                                 </FormField>
-    
+
                                 {/* <FormField
                                     name="primary_color"
                                     label="Primary Colour"
@@ -307,8 +317,8 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                     }
                                     needErrorMessage={ true }
                                 >
-                                    <FormSuite.Control 
-                                        name="input" 
+                                    <FormSuite.Control
+                                        name="input"
                                         accepter={({ value, onChange }) => (
                                             <ChromePicker
                                                 color={ value } // Default color black if value is undefined
@@ -316,7 +326,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                             />
                                         ) }/>
                                 </FormField> */}
-    
+
                                 {/* <FormField
                                     name="secondary_color"
                                     label="Secondary Colour"
@@ -325,28 +335,28 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                     }
                                     needErrorMessage={ true }
                                 >
-                                    <FormSuite.Control 
-                                        name="input" 
-                                        type="color" 
+                                    <FormSuite.Control
+                                        name="input"
+                                        type="color"
                                         style={ { height: 40, padding: 3, width: 100 } }
                                     />
                                 </FormField> */}
-    
-                                <Field 
-                                    name="primary_color" 
-                                    component={ColorPickerField} 
+
+                                <Field
+                                    name="primary_color"
+                                    component={ColorPickerField}
                                     label="Primary Colour" />
-                                <Field 
-                                    name="secondary_color" 
-                                    component={ColorPickerField} 
+                                <Field
+                                    name="secondary_color"
+                                    component={ColorPickerField}
                                     label="Secondary Colour"  />
-    
+
                                 <FormButtonToolbar
                                     submitButtonText="Update"
                                     submitButtonDisabled={ submitting || pristine || !checkIfJSONisEmpty(errors) }
                                     needCancel={ false }
                                 />
-    
+
                             </FormSuite>
                         )}
                     />
@@ -426,7 +436,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                             <br></br>
                             <Button
                                 className={ styles.buttonCircular }
-                                appearance="primary" 
+                                appearance="primary"
                                 onClick={ onBusinessTierUpgrade }
                             >
                                 Upgrade Now
@@ -460,8 +470,8 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                             </p>
                             <br></br>
                             <Button
-                                className={ styles.buttonCircular } 
-                                appearance="primary" 
+                                className={ styles.buttonCircular }
+                                appearance="primary"
                                 onClick={ onEnterpriseTierUpgrade }
                             >
                                 Upgrade Now

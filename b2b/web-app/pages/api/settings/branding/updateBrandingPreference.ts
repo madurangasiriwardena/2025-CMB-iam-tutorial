@@ -16,34 +16,34 @@
  * under the License.
  */
 
-import { 
-    requestOptionsWithBody 
+import {
+    requestOptionsWithBody
 } from "@teamspace-app/data-access-common-api-util";
-import { RequestMethod, dataNotRecievedError, notPostError } 
+import { RequestMethod, dataNotRecievedError, notPostError }
     from "@teamspace-app/shared/data-access/data-access-common-api-util";
 import { getOrgUrl } from "@teamspace-app/shared/util/util-application-config-util";
 import { NextApiRequest, NextApiResponse } from "next";
 
 /**
  * backend API call to view current application
- * 
+ *
  * @param req - request
  * @param res - response
- * 
+ *
  * @returns correct data if the call is successful, else an error message
  */
 export default async function updateBrandingPreference(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== "POST") {
         notPostError(res);
     }
-    
+
     const body = JSON.parse(req.body);
     const session = body.session;
     const orgId = body.orgId;
     const brandingPreference = body.param;
 
     let fetchData;
-    
+
     try {
         if (brandingPreference?.preference?.configs?.isBrandingEnabled) {
             fetchData = await fetch(
@@ -51,7 +51,7 @@ export default async function updateBrandingPreference(req: NextApiRequest, res:
                 requestOptionsWithBody(session, RequestMethod.PUT, brandingPreference)
             );
         }
-        if (brandingPreference?.preference?.configs?.isBrandingEnabled === undefined 
+        if (brandingPreference?.preference?.configs?.isBrandingEnabled === undefined
             || brandingPreference?.preference?.configs?.isBrandingEnabled === false
             || fetchData?.status === 404) {
             brandingPreference.preference.configs.isBrandingEnabled = true;
@@ -62,7 +62,6 @@ export default async function updateBrandingPreference(req: NextApiRequest, res:
             );
         }
         const data = await fetchData.json();
-
         res.status(200).json(data);
     } catch (err) {
         return dataNotRecievedError(res);
