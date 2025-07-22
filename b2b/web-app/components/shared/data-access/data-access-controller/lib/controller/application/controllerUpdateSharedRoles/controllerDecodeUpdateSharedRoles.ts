@@ -65,7 +65,6 @@ export function getSharedRolePatchBody(applicationId: string, patchMethod: Patch
     }
 }
 
-
 /**
  * 
  * @param session - session object
@@ -87,8 +86,3 @@ export async function controllerDecodeUpdateSharedRoles(session: Session, applic
     return res;
 
 }
-
-
-
-
-
