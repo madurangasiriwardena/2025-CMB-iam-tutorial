@@ -17,7 +17,7 @@
  */
 
 import { ControllerCallReturn, ControllerDecodeReturn }
-    from "@pet-management-webapp/shared/data-access/data-access-common-models-util";
+    from "@teamspace-app/shared/data-access/data-access-common-models-util";
 import AuthenticationSequence from "./authenticationSequence";
     
 export interface Application extends ControllerCallReturn, ControllerDecodeReturn {

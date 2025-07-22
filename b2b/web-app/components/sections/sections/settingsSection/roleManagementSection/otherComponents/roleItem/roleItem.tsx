@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { Role } from "@pet-management-webapp/data-access-common-models-util";
-import { controllerDecodeGetRole } from "@pet-management-webapp/data-access-controller";
+import { Role } from "@teamspace-app/data-access-common-models-util";
+import { controllerDecodeGetRole } from "@teamspace-app/data-access-controller";
 import { AccordianItemHeaderComponent, JsonDisplayComponent } 
-    from "@pet-management-webapp/shared/ui/ui-components";
+    from "@teamspace-app/shared/ui/ui-components";
 import CodeIcon from "@rsuite/icons/Code";
 import { Session } from "next-auth";
 import { useCallback, useEffect, useState } from "react";

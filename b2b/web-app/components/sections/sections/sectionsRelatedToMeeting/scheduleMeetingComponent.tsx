@@ -17,11 +17,11 @@
  */
 
 import { FormButtonToolbar, FormField, ModelHeaderComponent } 
-    from "@pet-management-webapp/shared/ui/ui-basic-components";
-import { errorTypeDialog, successTypeDialog } from "@pet-management-webapp/shared/ui/ui-components";
-import { checkIfJSONisEmpty } from "@pet-management-webapp/shared/util/util-common";
+    from "@teamspace-app/shared/ui/ui-basic-components";
+import { errorTypeDialog, successTypeDialog } from "@teamspace-app/shared/ui/ui-components";
+import { checkIfJSONisEmpty } from "@teamspace-app/shared/util/util-common";
 import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE, fieldValidate } 
-    from "@pet-management-webapp/shared/util/util-front-end-util";
+    from "@teamspace-app/shared/util/util-front-end-util";
 import { postMeeting } from "../../../../APICalls/ScheduleMeeting/post-meeting";
 import { Meeting, MeetingInfo } from "../../../../types/meeting";
 import { AxiosResponse } from "axios";

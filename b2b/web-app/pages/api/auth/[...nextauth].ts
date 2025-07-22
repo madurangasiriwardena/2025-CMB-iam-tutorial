@@ -15,9 +15,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { getConfig } from "@pet-management-webapp/util-application-config-util";
+import { getConfig } from "@teamspace-app/util-application-config-util";
 import { getLoggedUserFromProfile, getLoggedUserId, getOrgId, getOrgName } from
-    "@pet-management-webapp/shared/util/util-authorization-config-util";
+    "@teamspace-app/shared/util/util-authorization-config-util";
 import { jwtDecode } from "jwt-decode";
 import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth, { Profile } from "next-auth";

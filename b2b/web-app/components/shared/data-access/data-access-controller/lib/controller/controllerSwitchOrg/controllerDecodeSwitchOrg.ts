@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { commonControllerDecode } from "@pet-management-webapp/shared/data-access/data-access-common-api-util";
-import { OrgSession } from "@pet-management-webapp/shared/data-access/data-access-common-models-util";
+import { commonControllerDecode } from "@teamspace-app/shared/data-access/data-access-common-api-util";
+import { OrgSession } from "@teamspace-app/shared/data-access/data-access-common-models-util";
 import { JWT } from "next-auth/jwt";
 import { controllerCallSwitchOrg } from "./controllerCallSwitchOrg";
 

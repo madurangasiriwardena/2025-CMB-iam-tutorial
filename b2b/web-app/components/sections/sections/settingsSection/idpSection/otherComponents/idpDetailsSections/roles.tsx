@@ -20,19 +20,19 @@ import {
     IdentityProvider, 
     IdentityProviderGroupMappings, 
     Role
-} from "@pet-management-webapp/data-access-common-models-util";
+} from "@teamspace-app/data-access-common-models-util";
 import { 
     controllerDecodeGetIdentityProviderGroupMappings, 
     controllerDecodeGetRole, 
     controllerDecodeListAllRoles, 
     controllerDecodePatchRole
 } from
-    "@pet-management-webapp/data-access-controller";
-import { getConfig } from "@pet-management-webapp/util-application-config-util";
-import { FormButtonToolbar, FormField } from "@pet-management-webapp/shared/ui/ui-basic-components";
-import { PatchMethod, checkIfJSONisEmpty } from "@pet-management-webapp/shared/util/util-common";
+    "@teamspace-app/data-access-controller";
+import { getConfig } from "@teamspace-app/util-application-config-util";
+import { FormButtonToolbar, FormField } from "@teamspace-app/shared/ui/ui-basic-components";
+import { PatchMethod, checkIfJSONisEmpty } from "@teamspace-app/shared/util/util-common";
 import { LOADING_DISPLAY_NONE } 
-    from "@pet-management-webapp/shared/util/util-front-end-util";
+    from "@teamspace-app/shared/util/util-front-end-util";
 import { id } from "date-fns/locale";
 import { Session } from "next-auth";
 import { useCallback, useEffect, useState } from "react";

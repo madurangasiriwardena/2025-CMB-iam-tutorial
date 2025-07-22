@@ -19,7 +19,7 @@ import dynamic from "next/dynamic";
 
 export default function Custom404() {
     const DynamicCustom404Component = dynamic(() => 
-        import("@pet-management-webapp/shared/ui/ui-components").then((module) => module.Custom404Component));
+        import("@teamspace-app/shared/ui/ui-components").then((module) => module.Custom404Component));
 
     return (<DynamicCustom404Component />);
 }

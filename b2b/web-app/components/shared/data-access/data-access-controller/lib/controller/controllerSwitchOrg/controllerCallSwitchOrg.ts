@@ -17,9 +17,9 @@
  */
 
 
-import { getHostedUrl } from "@pet-management-webapp/util-application-config-util";
-import { commonControllerCall } from "@pet-management-webapp/shared/data-access/data-access-common-api-util";
-import { OrgSession } from "@pet-management-webapp/shared/data-access/data-access-common-models-util";
+import { getHostedUrl } from "@teamspace-app/util-application-config-util";
+import { commonControllerCall } from "@teamspace-app/shared/data-access/data-access-common-api-util";
+import { OrgSession } from "@teamspace-app/shared/data-access/data-access-common-models-util";
 
 /**
  * call the switch organization API endpoint

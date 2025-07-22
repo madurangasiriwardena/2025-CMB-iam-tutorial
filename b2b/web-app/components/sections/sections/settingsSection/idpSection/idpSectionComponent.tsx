@@ -22,17 +22,17 @@ import {
     IdentityProviderTemplate,
     StandardBasedOidcIdentityProvider,
     StandardBasedSAMLIdentityProvider
-} from "@pet-management-webapp/data-access-common-models-util";
+} from "@teamspace-app/data-access-common-models-util";
 import {
     controllerDecodeListAllIdentityProviders,
     controllerDecodeListAllRoles,
     controllerDecodeListCurrentApplicationInRoot,
     controllerDecodePatchRole,
     controllerDecodeUpdateSharedRoles
-} from "@pet-management-webapp/data-access-controller";
+} from "@teamspace-app/data-access-controller";
 import {
     EmptySettingsComponent, SettingsTitleComponent, errorTypeDialog, successTypeDialog
-} from "@pet-management-webapp/shared/ui/ui-components";
+} from "@teamspace-app/shared/ui/ui-components";
 import AppSelectIcon from "@rsuite/icons/AppSelect";
 import { Session } from "next-auth";
 import { useCallback, useEffect, useState } from "react";
@@ -40,10 +40,10 @@ import { Button, Container, Modal, useToaster } from "rsuite";
 import IdentityProviderList from "./otherComponents/identityProviderList";
 import IdpCreate from "./otherComponents/idpCreateModal/idpCreate";
 import SelectIdentityProvider from "./otherComponents/selectIdentityProvider";
-import { checkIfJSONisEmpty, PatchMethod } from "@pet-management-webapp/shared/util/util-common";
-import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE } from "@pet-management-webapp/shared/util/util-front-end-util";
-import { signout } from "@pet-management-webapp/util-authorization-config-util";
-import { getConfig } from "@pet-management-webapp/util-application-config-util";
+import { checkIfJSONisEmpty, PatchMethod } from "@teamspace-app/shared/util/util-common";
+import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE } from "@teamspace-app/shared/util/util-front-end-util";
+import { signout } from "@teamspace-app/util-authorization-config-util";
+import { getConfig } from "@teamspace-app/util-application-config-util";
 import { upgradeTier } from "pages/api/upgrade";
 
 interface IdpSectionComponentProps {

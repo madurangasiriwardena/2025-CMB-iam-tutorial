@@ -17,7 +17,7 @@
  */
 
 import { dataNotRecievedError, notPostError } 
-    from "@pet-management-webapp/shared/data-access/data-access-common-api-util";
+    from "@teamspace-app/shared/data-access/data-access-common-api-util";
 import { NextApiRequest, NextApiResponse } from "next";
 
 

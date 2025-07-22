@@ -4,7 +4,7 @@ import {MarkdownRenderer} from "./chat/markdown-renderer";
 import {Info, Send} from "lucide-react";
 import {SchedulingConfirmationCard} from "./chat/booking-confirmation-card";
 import {useStateStore} from "./state-store";
-import {getConfig} from "@pet-management-webapp/util-application-config-util";
+import {getConfig} from "@teamspace-app/util-application-config-util";
 
 type MeetingPreview = {
   topic: string

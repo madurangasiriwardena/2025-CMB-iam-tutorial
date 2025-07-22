@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { commonControllerDecode } from "@pet-management-webapp/shared/data-access/data-access-common-api-util";
-import { AddedGroup, SendGroup } from "@pet-management-webapp/shared/data-access/data-access-common-models-util";
+import { commonControllerDecode } from "@teamspace-app/shared/data-access/data-access-common-api-util";
+import { AddedGroup, SendGroup } from "@teamspace-app/shared/data-access/data-access-common-models-util";
 import { Session } from "next-auth";
 import { controllerCallAddGroup } from "./controllerCallAddGroup";
 

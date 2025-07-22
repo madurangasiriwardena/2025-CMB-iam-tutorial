@@ -17,7 +17,7 @@
  */
 
 import { ControllerCallReturn, ControllerDecodeReturn } from
-    "@pet-management-webapp/shared/data-access/data-access-common-models-util";
+    "@teamspace-app/shared/data-access/data-access-common-models-util";
 
 export interface IdentityProviderFederatedAuthenticatorProperty {
     key: string,

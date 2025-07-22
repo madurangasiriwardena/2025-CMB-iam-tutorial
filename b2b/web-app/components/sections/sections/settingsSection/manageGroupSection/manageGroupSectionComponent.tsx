@@ -18,9 +18,9 @@
 
 // eslint-disable-next-line max-len
 import { controllerDecodeViewGroups, controllerDecodeViewUsers } 
-    from "@pet-management-webapp/data-access-controller";
-import { InternalGroup, InternalUser } from "@pet-management-webapp/shared/data-access/data-access-common-models-util";
-import { SettingsTitleComponent } from "@pet-management-webapp/shared/ui/ui-components";
+    from "@teamspace-app/data-access-controller";
+import { InternalGroup, InternalUser } from "@teamspace-app/shared/data-access/data-access-common-models-util";
+import { SettingsTitleComponent } from "@teamspace-app/shared/ui/ui-components";
 import EditIcon from "@rsuite/icons/Edit";
 import TrashIcon from "@rsuite/icons/Trash";
 import { Session } from "next-auth";

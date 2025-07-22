@@ -16,14 +16,14 @@
  * under the License.
  */
 
-import { Role, RoleUsers } from "@pet-management-webapp/data-access-common-models-util";
+import { Role, RoleUsers } from "@teamspace-app/data-access-common-models-util";
 import { controllerDecodePatchRole, controllerDecodeViewUsers } from
-    "@pet-management-webapp/data-access-controller";
-import { InternalUser } from "@pet-management-webapp/shared/data-access/data-access-common-models-util";
-import { FormButtonToolbar, FormField } from "@pet-management-webapp/shared/ui/ui-basic-components";
-import { errorTypeDialog, successTypeDialog } from "@pet-management-webapp/shared/ui/ui-components";
-import { PatchMethod } from "@pet-management-webapp/shared/util/util-common";
-import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE } from "@pet-management-webapp/shared/util/util-front-end-util";
+    "@teamspace-app/data-access-controller";
+import { InternalUser } from "@teamspace-app/shared/data-access/data-access-common-models-util";
+import { FormButtonToolbar, FormField } from "@teamspace-app/shared/ui/ui-basic-components";
+import { errorTypeDialog, successTypeDialog } from "@teamspace-app/shared/ui/ui-components";
+import { PatchMethod } from "@teamspace-app/shared/util/util-common";
+import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE } from "@teamspace-app/shared/util/util-front-end-util";
 import { Session } from "next-auth";
 import { useCallback, useEffect, useState } from "react";
 import { Form } from "react-final-form";
