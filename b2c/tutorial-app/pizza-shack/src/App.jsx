@@ -22,7 +22,7 @@ function App() {
             <span className="username" onClick={toggleDropdown}>Welcome! {state.username}</span>
             {dropdownVisible && (
               <div className="dropdown-content">
-                <a href="https://myaccount.asgardeo.io/t/jayangak" className="account-button">My Account</a>
+                <a href="https://myaccount.asgardeo.io/t/wso2conasia" className="account-button">My Account</a>
                 <button onClick={() => signOut()} className="logout-button">Logout</button>
               </div>
             )}
@@ -31,7 +31,7 @@ function App() {
       </nav>
 
       <header>
-        <p></p>
+        <p>🍕 Delicious Pizza Delivered Fresh to Your Door! 🚚</p>
       </header>
 
       <main>
@@ -40,16 +40,39 @@ function App() {
           <h2>Our Menu</h2>
           <ul>
             <li>
-              <img src="/images/margherita.jpg" alt="Margherita" />
-              Margherita - $10
+              <img src="/images/margherita.jpg" alt="Margherita Pizza" />
+              <div className="pizza-info">
+                <h3>Margherita Classic</h3>
+                <span className="pizza-price">$10.99</span>
+              </div>
             </li>
             <li>
-              <img src="/images/4-cheese.jpg" alt="4 Cheese" />
-              4 Cheese - $12
+              <img src="/images/4-cheese.jpg" alt="Four Cheese Pizza" />
+              <div className="pizza-info">
+                <h3>Four Cheese Deluxe</h3>
+                <span className="pizza-price">$12.99</span>
+              </div>
             </li>
             <li>
               <img src="/images/pizza-marinara.jpg" alt="Pizza Marinara" />
-              Pizza Marinara - $11
+              <div className="pizza-info">
+                <h3>Marinara Special</h3>
+                <span className="pizza-price">$11.49</span>
+              </div>
+            </li>
+            <li>
+              <img src="/images/pepperoni.jpg" alt="Pepperoni Pizza" />
+              <div className="pizza-info">
+                <h3>Pepperoni Supreme</h3>
+                <span className="pizza-price">$13.99</span>
+              </div>
+            </li>
+            <li>
+              <img src="/images/veggie.jpg" alt="Veggie Pizza" />
+              <div className="pizza-info">
+                <h3>Veggie Garden</h3>
+                <span className="pizza-price">$11.99</span>
+              </div>
             </li>
           </ul>
         </section>
@@ -57,20 +80,47 @@ function App() {
         {/* Order Form Section */}
         <section className="order">
           <h2>Place Your Order</h2>
-          <form onSubmit={(e) => { e.preventDefault(); alert('Order placed!'); }}>
-            <div>
-              <label htmlFor="pizzaSelect">Select Pizza:</label>
-              <select id="pizzaSelect" name="pizza">
-                <option value="margherita">Margherita</option>
-                <option value="pepperoni">Pepperoni</option>
-                <option value="veggie">Veggie</option>
+          <form onSubmit={(e) => { e.preventDefault(); alert('Order placed successfully! 🍕'); }}>
+            <div className="form-group">
+              <label htmlFor="pizzaSelect">Choose Your Pizza:</label>
+              <select id="pizzaSelect" name="pizza" required>
+                <option value="">-- Select a pizza --</option>
+                <option value="margherita-classic">Margherita Classic ($10.99)</option>
+                <option value="four-cheese-deluxe">Four Cheese Deluxe ($12.99)</option>
+                <option value="marinara-special">Marinara Special ($11.49)</option>
+                <option value="pepperoni-supreme">Pepperoni Supreme ($13.99)</option>
+                <option value="veggie-garden">Veggie Garden ($11.99)</option>
               </select>
             </div>
-            <div>
+            
+            <div className="form-group">
               <label htmlFor="quantity">Quantity:</label>
-              <input type="number" id="quantity" name="quantity" min="1" defaultValue="1" />
+              <div className="quantity-controls">
+                <button type="button" className="qty-btn" onClick={(e) => {
+                  const input = e.target.nextElementSibling;
+                  if (input.value > 1) input.value = parseInt(input.value) - 1;
+                }}>-</button>
+                <input type="number" id="quantity" name="quantity" min="1" max="10" defaultValue="1" />
+                <button type="button" className="qty-btn" onClick={(e) => {
+                  const input = e.target.previousElementSibling;
+                  if (input.value < 10) input.value = parseInt(input.value) + 1;
+                }}>+</button>
+              </div>
             </div>
-            <button type="submit">Order Now</button>
+            
+            <div className="form-group">
+              <label htmlFor="specialInstructions">Special Instructions:</label>
+              <textarea 
+                id="specialInstructions" 
+                name="instructions" 
+                placeholder="Any special requests?"
+                rows="2"
+              ></textarea>
+            </div>
+            
+            <button type="submit" className="order-btn">
+              Place Order Now
+            </button>
           </form>
         </section>
       </main>
@@ -80,12 +130,14 @@ function App() {
       </footer>
     </div>
   ) : (
-    <div className="login-box">
-      <img src="/images/logo.jpg" alt="Pizza Shack Logo" className="login-logo" />
-      <h1>Pizza Shack</h1>
-      <p>Your favorite pizza delivery app!</p>
-      <p>Please login</p>
-      <button onClick={() => signIn()}>Login</button>
+    <div className="login-background">
+      <div className="login-box">
+        <img src="/images/logo.jpg" alt="Pizza Shack Logo" className="login-logo" />
+        <h1>Pizza Shack</h1>
+        <p>Your favorite pizza delivery app!</p>
+        <p>Please login</p>
+        <button onClick={() => signIn()}>Login</button>
+      </div>
     </div>
   )}
   </>
