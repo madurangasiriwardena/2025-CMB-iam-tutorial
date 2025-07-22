@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import { requestOptionsWithBody } from "@pet-management-webapp/data-access-common-api-util";
+import { requestOptionsWithBody } from "@teamspace-app/data-access-common-api-util";
 import {
   RequestMethod,
   dataNotRecievedError,
   notPostError,
-} from "@pet-management-webapp/shared/data-access/data-access-common-api-util";
-import { getOrgUrl } from "@pet-management-webapp/shared/util/util-application-config-util";
+} from "@teamspace-app/shared/data-access/data-access-common-api-util";
+import { getOrgUrl } from "@teamspace-app/shared/util/util-application-config-util";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function patchRole(

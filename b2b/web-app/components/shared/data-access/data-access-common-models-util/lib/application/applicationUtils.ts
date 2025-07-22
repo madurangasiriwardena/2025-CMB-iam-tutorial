@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { OIDC_IDP, SAML_IDP } from "@pet-management-webapp/shared/util/util-common";
+import { OIDC_IDP, SAML_IDP } from "@teamspace-app/shared/util/util-common";
 import Application from "./application";
 import enterpriseOIDCFederatedAuthenticators 
     from "../identityProvider/data/templates/standard-based-oidc-identity-provider.json";

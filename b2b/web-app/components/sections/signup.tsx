@@ -11,9 +11,9 @@ import { Form, Field } from "react-final-form";
 import {
   FormButtonToolbar,
   FormField,
-} from "@pet-management-webapp/shared/ui/ui-basic-components";
+} from "@teamspace-app/shared/ui/ui-basic-components";
 import FormSuite from "rsuite/Form";
-import { getConfig } from "@pet-management-webapp/util-application-config-util";
+import { getConfig } from "@teamspace-app/util-application-config-util";
 import styles from "./signup.module.css";
 
 export const SignUp = ({ open, onClose }) => {

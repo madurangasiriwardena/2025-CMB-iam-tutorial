@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { getConfig } from "@pet-management-webapp/util-application-config-util";
+import { getConfig } from "@teamspace-app/util-application-config-util";
 import InternalUser from "./internalUser";
 import User from "./user";
 

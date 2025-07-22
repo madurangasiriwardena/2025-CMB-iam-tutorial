@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { commonControllerDecode } from "@pet-management-webapp/shared/data-access/data-access-common-api-util";
+import { commonControllerDecode } from "@teamspace-app/shared/data-access/data-access-common-api-util";
 import { Session } from "next-auth";
 import { controllerCallDeleteGroup } from "./controllerCallDeleteGroup";
 

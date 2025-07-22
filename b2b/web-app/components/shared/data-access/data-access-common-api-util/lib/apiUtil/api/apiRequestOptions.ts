@@ -18,7 +18,7 @@
 
 import { Session } from "next-auth";
 import RequestMethod from "./requestMethod";
-import { getHostedUrl } from "@pet-management-webapp/util-application-config-util";
+import { getHostedUrl } from "@teamspace-app/util-application-config-util";
 
 /**
  *

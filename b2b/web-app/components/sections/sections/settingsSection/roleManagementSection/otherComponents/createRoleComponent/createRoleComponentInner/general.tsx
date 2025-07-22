@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { HelperTextComponent } from "@pet-management-webapp/shared/ui/ui-components";
-import { checkIfJSONisEmpty } from "@pet-management-webapp/shared/util/util-common";
+import { HelperTextComponent } from "@teamspace-app/shared/ui/ui-components";
+import { checkIfJSONisEmpty } from "@teamspace-app/shared/util/util-common";
 import React from "react";
 import { Field, Form } from "react-final-form";
 import { Button, ButtonToolbar } from "rsuite";

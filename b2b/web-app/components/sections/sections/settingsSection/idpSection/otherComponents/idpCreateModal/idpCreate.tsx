@@ -17,11 +17,11 @@
  */
 
 import { IdentityProvider, IdentityProviderTemplate, getIdPCallbackUrl } from
-    "@pet-management-webapp/data-access-common-models-util";
-import { ModelHeaderComponent } from "@pet-management-webapp/shared/ui/ui-basic-components";
-import { infoTypeDialog } from "@pet-management-webapp/shared/ui/ui-components";
+    "@teamspace-app/data-access-common-models-util";
+import { ModelHeaderComponent } from "@teamspace-app/shared/ui/ui-basic-components";
+import { infoTypeDialog } from "@teamspace-app/shared/ui/ui-components";
 import { CopyTextToClipboardCallback, OIDC_IDP, SAML_IDP, copyTheTextToClipboard }
-    from "@pet-management-webapp/shared/util/util-common";
+    from "@teamspace-app/shared/util/util-common";
 import CopyIcon from "@rsuite/icons/Copy";
 import InfoRoundIcon from "@rsuite/icons/InfoRound";
 import { Session } from "next-auth";

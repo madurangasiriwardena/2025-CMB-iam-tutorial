@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { Role } from "@pet-management-webapp/data-access-common-models-util";
+import { Role } from "@teamspace-app/data-access-common-models-util";
 import { controllerDecodeCreateRole } 
-    from "@pet-management-webapp/data-access-controller";
-import { errorTypeDialog, successTypeDialog } from "@pet-management-webapp/shared/ui/ui-components";
-import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE } from "@pet-management-webapp/shared/util/util-front-end-util";
+    from "@teamspace-app/data-access-controller";
+import { errorTypeDialog, successTypeDialog } from "@teamspace-app/shared/ui/ui-components";
+import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE } from "@teamspace-app/shared/util/util-front-end-util";
 import { Session } from "next-auth";
 import React, { useState } from "react";
 import { Loader, Modal, Panel, Steps, useToaster } from "rsuite";

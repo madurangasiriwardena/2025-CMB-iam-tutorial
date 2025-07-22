@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { commonControllerCall } from "@pet-management-webapp/shared/data-access/data-access-common-api-util";
+import { commonControllerCall } from "@teamspace-app/shared/data-access/data-access-common-api-util";
 import { Session } from "next-auth";
 
 

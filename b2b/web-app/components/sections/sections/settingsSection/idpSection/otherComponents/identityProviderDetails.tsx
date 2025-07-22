@@ -17,11 +17,11 @@
  */
 
 import { IdentityProvider, getImageForTheIdentityProvider, selectedTemplateBaesedonTemplateId } from
-    "@pet-management-webapp/data-access-common-models-util";
+    "@teamspace-app/data-access-common-models-util";
 import { controllerDecodeGetDetailedIdentityProvider } from
-    "@pet-management-webapp/data-access-controller";
-import { AccordianItemHeaderComponent, JsonDisplayComponent } from "@pet-management-webapp/shared/ui/ui-components";
-import { SAML_IDP } from "@pet-management-webapp/shared/util/util-common";
+    "@teamspace-app/data-access-controller";
+import { AccordianItemHeaderComponent, JsonDisplayComponent } from "@teamspace-app/shared/ui/ui-components";
+import { SAML_IDP } from "@teamspace-app/shared/util/util-common";
 import CodeIcon from "@rsuite/icons/Code";
 import { Session } from "next-auth";
 import React, { useCallback, useEffect, useState } from "react";

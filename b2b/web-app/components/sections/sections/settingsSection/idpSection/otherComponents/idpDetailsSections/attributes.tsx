@@ -18,17 +18,17 @@
 
 import {
     IdentityProvider, IdentityProviderGroupMappings, LocalClaim
-} from "@pet-management-webapp/data-access-common-models-util";
+} from "@teamspace-app/data-access-common-models-util";
 import { 
     controllerDecodeGetIdentityProviderGroupMappings, 
     controllerDecodeGetLocalClaims, 
     controllerDecodePatchIdpClaims 
 }
-    from "@pet-management-webapp/data-access-controller";
-import { FormButtonToolbar, FormField } from "@pet-management-webapp/shared/ui/ui-basic-components";
-import { checkIfJSONisEmpty } from "@pet-management-webapp/shared/util/util-common";
+    from "@teamspace-app/data-access-controller";
+import { FormButtonToolbar, FormField } from "@teamspace-app/shared/ui/ui-basic-components";
+import { checkIfJSONisEmpty } from "@teamspace-app/shared/util/util-common";
 import { LOADING_DISPLAY_NONE }
-    from "@pet-management-webapp/shared/util/util-front-end-util";
+    from "@teamspace-app/shared/util/util-front-end-util";
 import AddOutlineIcon from "@rsuite/icons/AddOutline";
 import CloseIcon from "@rsuite/icons/Close";
 import { id } from "date-fns/locale";

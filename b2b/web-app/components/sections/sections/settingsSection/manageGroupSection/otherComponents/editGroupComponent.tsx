@@ -20,15 +20,15 @@ import {
     controllerDecodePatchGroupMembers,
     controllerDecodePatchGroupName,
     controllerDecodeViewUsersInGroup
-} from "@pet-management-webapp/data-access-controller";
+} from "@teamspace-app/data-access-controller";
 import { Group, InternalGroup, InternalUser, Member, sendMemberList } 
-    from "@pet-management-webapp/shared/data-access/data-access-common-models-util";
+    from "@teamspace-app/shared/data-access/data-access-common-models-util";
 import { FormButtonToolbar, FormField, ModelHeaderComponent } 
-    from "@pet-management-webapp/shared/ui/ui-basic-components";
-import { errorTypeDialog, successTypeDialog, warningTypeDialog } from "@pet-management-webapp/shared/ui/ui-components";
-import { PatchMethod, checkIfJSONisEmpty } from "@pet-management-webapp/shared/util/util-common";
+    from "@teamspace-app/shared/ui/ui-basic-components";
+import { errorTypeDialog, successTypeDialog, warningTypeDialog } from "@teamspace-app/shared/ui/ui-components";
+import { PatchMethod, checkIfJSONisEmpty } from "@teamspace-app/shared/util/util-common";
 import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE, fieldValidate } 
-    from "@pet-management-webapp/shared/util/util-front-end-util";
+    from "@teamspace-app/shared/util/util-front-end-util";
 import { Session } from "next-auth";
 import { useCallback, useEffect, useState } from "react";
 import { Form } from "react-final-form";

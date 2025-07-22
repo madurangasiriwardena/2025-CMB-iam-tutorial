@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { SideNavItem } from "@pet-management-webapp/shared/data-access/data-access-common-models-util";
+import { SideNavItem } from "@teamspace-app/shared/data-access/data-access-common-models-util";
 import AdminIcon from "@rsuite/icons/Admin";
 import CalendarIcon from "@rsuite/icons/Calendar";
 import EditIcon from "@rsuite/icons/Edit";

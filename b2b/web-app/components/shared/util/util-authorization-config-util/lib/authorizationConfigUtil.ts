@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { getConfig } from "@pet-management-webapp/util-application-config-util";
-import { User } from "@pet-management-webapp/shared/data-access/data-access-common-models-util";
+import { getConfig } from "@teamspace-app/util-application-config-util";
+import { User } from "@teamspace-app/shared/data-access/data-access-common-models-util";
 import { getManagementAPIServerBaseUrl, getTenantDomain } 
-    from "@pet-management-webapp/shared/util/util-application-config-util";
+    from "@teamspace-app/shared/util/util-application-config-util";
 import { Profile, Session } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import { signIn, signOut } from "next-auth/react";

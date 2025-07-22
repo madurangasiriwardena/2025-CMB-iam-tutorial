@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {getConfig} from "@pet-management-webapp/util-application-config-util";
+import {getConfig} from "@teamspace-app/util-application-config-util";
 
 interface SchedulingConfirmationCardProps {
   authorizationUrl: string

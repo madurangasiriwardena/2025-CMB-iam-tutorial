@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { LogoComponent } from "@pet-management-webapp/ui-components";
+import { LogoComponent } from "@teamspace-app/ui-components";
 import PagePreviousIcon from "@rsuite/icons/PagePrevious";
 import Image from "next/image";
 import { Button, Panel, Stack } from "rsuite";

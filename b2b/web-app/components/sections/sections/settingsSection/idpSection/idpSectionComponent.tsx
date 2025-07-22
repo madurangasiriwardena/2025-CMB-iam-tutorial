@@ -21,13 +21,13 @@ import {
     IdentityProviderTemplate,
     StandardBasedOidcIdentityProvider,
     StandardBasedSAMLIdentityProvider
-} from "@pet-management-webapp/data-access-common-models-util";
+} from "@teamspace-app/data-access-common-models-util";
 import {
     controllerDecodeListAllIdentityProviders
-} from "@pet-management-webapp/data-access-controller";
+} from "@teamspace-app/data-access-controller";
 import {
     EmptySettingsComponent, SettingsTitleComponent, errorTypeDialog, successTypeDialog
-} from "@pet-management-webapp/shared/ui/ui-components";
+} from "@teamspace-app/shared/ui/ui-components";
 import AppSelectIcon from "@rsuite/icons/AppSelect";
 import { Session } from "next-auth";
 import { useCallback, useEffect, useState } from "react";

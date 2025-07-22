@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { Role } from "@pet-management-webapp/data-access-common-models-util";
-import { commonControllerDecode } from "@pet-management-webapp/shared/data-access/data-access-common-api-util";
-import { PatchBody } from "@pet-management-webapp/shared/data-access/data-access-common-models-util";
-import { PatchMethod } from "@pet-management-webapp/shared/util/util-common";
+import { Role } from "@teamspace-app/data-access-common-models-util";
+import { commonControllerDecode } from "@teamspace-app/shared/data-access/data-access-common-api-util";
+import { PatchBody } from "@teamspace-app/shared/data-access/data-access-common-models-util";
+import { PatchMethod } from "@teamspace-app/shared/util/util-common";
 import { Session } from "next-auth";
 import { controllerCallPatchRole } from "./controllerCallPatchRole";
 

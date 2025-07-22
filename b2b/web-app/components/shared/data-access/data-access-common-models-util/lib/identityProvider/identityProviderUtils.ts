@@ -17,11 +17,11 @@
  */
 
 import { getBaseUrl, getOrgUrl } 
-    from "@pet-management-webapp/shared/util/util-application-config-util";
-import { EMPTY_STRING, OIDC_IDP, SAML_IDP } from "@pet-management-webapp/shared/util/util-common";
+    from "@teamspace-app/shared/util/util-application-config-util";
+import { EMPTY_STRING, OIDC_IDP, SAML_IDP } from "@teamspace-app/shared/util/util-common";
 import IdentityProviderDiscoveryUrl from "./identityProviderDiscoveryUrl";
 import IdentityProviderTemplateModel from "./identityProviderTemplateModel";
-import enterpriseImage from "@pet-management-webapp/ui-assets/lib/images/enterprise.svg";
+import enterpriseImage from "@teamspace-app/ui-assets/lib/images/enterprise.svg";
 
 /**
  * @param templateId - template id of the identity provider

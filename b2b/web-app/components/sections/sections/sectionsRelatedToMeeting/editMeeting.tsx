@@ -17,7 +17,7 @@
  */
 
 import { Grid, Typography } from "@mui/material";
-import { ModelHeaderComponent } from "@pet-management-webapp/shared/ui/ui-basic-components";
+import { ModelHeaderComponent } from "@teamspace-app/shared/ui/ui-basic-components";
 import { putMeeting } from "../../../../APICalls/UpdateMeeting/put-meeting";
 import { Meeting } from "../../../../types/meeting";
 import { Session } from "next-auth";

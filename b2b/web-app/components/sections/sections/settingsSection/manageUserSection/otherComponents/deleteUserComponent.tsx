@@ -18,11 +18,11 @@
 
 import {
     controllerDecodeDeleteUser
-} from "@pet-management-webapp/data-access-controller";
-import { InternalUser } from "@pet-management-webapp/shared/data-access/data-access-common-models-util";
-import { FormButtonToolbar, ModelHeaderComponent } from "@pet-management-webapp/shared/ui/ui-basic-components";
-import { errorTypeDialog, successTypeDialog } from "@pet-management-webapp/shared/ui/ui-components";
-import { LOADING_DISPLAY_NONE } from "@pet-management-webapp/shared/util/util-front-end-util";
+} from "@teamspace-app/data-access-controller";
+import { InternalUser } from "@teamspace-app/shared/data-access/data-access-common-models-util";
+import { FormButtonToolbar, ModelHeaderComponent } from "@teamspace-app/shared/ui/ui-basic-components";
+import { errorTypeDialog, successTypeDialog } from "@teamspace-app/shared/ui/ui-components";
+import { LOADING_DISPLAY_NONE } from "@teamspace-app/shared/util/util-front-end-util";
 import { deleteMeeting } from "../../../../../../APICalls/DeleteMeeting/delete-meeting";
 import { Session } from "next-auth";
 import { useState } from "react";
