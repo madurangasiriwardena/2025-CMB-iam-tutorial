@@ -18,28 +18,44 @@
 import { getConfig } from "@pet-management-webapp/util-application-config-util";
 import { SessionProvider } from "next-auth/react";
 import Head from "next/head";
+import React, { useEffect, useState } from "react";
+import { AuthProvider } from "@asgardeo/auth-react";
+import { ConfigProvider } from "../ConfigContext";
+import { loadConfig, AsgardeoConfig } from "../config-loader";
 import "rsuite/dist/rsuite.min.css";
 import "../styles/custom-theme.less";
 import "../styles/globals.css";
 
 function MyApp(prop) {
-
     const { Component, pageProps } = prop;
+    const [ config, setConfig ] = useState<AsgardeoConfig | null>(null);
+
+    useEffect(() => {
+        loadConfig().then(setConfig).catch((err) => console.error(err));
+    }, []);
+
+    if (!config) {
+        return null;
+    }
 
     return (
         <SessionProvider session={ pageProps ? pageProps.session : null }>
-            <Head>
-                <link rel="shortcut icon" href="./favicon.png" />
-                <meta httpEquiv="cache-control" content="no-cache" />
-                <meta httpEquiv="expires" content="0" />
-                <meta httpEquiv="pragma" content="no-cache" />
-                <title>{ getConfig().BusinessAdminAppConfig.ApplicationConfig.Branding.name }</title>
-                <meta
-                    name="description" 
-                    content={ getConfig().BusinessAdminAppConfig.ApplicationConfig.Branding.name } />
-            </Head>
+            <ConfigProvider config={ config }>
+                <AuthProvider config={ config }>
+                    <Head>
+                        <link rel="shortcut icon" href="./favicon.png" />
+                        <meta httpEquiv="cache-control" content="no-cache" />
+                        <meta httpEquiv="expires" content="0" />
+                        <meta httpEquiv="pragma" content="no-cache" />
+                        <title>{ getConfig().BusinessAdminAppConfig.ApplicationConfig.Branding.name }</title>
+                        <meta
+                            name="description"
+                            content={ getConfig().BusinessAdminAppConfig.ApplicationConfig.Branding.name } />
+                    </Head>
 
-            <Component { ...pageProps } />
+                    <Component { ...pageProps } />
+                </AuthProvider>
+            </ConfigProvider>
         </SessionProvider>
     );
 }

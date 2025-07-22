@@ -17,7 +17,7 @@
  */
 import { LogoComponent } from "@pet-management-webapp/ui-components";
 import { SigninRedirectComponent } from "@pet-management-webapp/shared/ui/ui-components";
-import { orgSignin } from "@pet-management-webapp/shared/util/util-authorization-config-util";
+import { useAuthContext } from "@asgardeo/auth-react";
 import React, { useEffect, useState } from "react";
 import "rsuite/dist/rsuite.min.css";
 
@@ -29,6 +29,7 @@ export default function Signin() {
 
     const moveTime = 40;
     const [ redirectSeconds, setRedirectSeconds ] = useState<number>(moveTime);
+    const { signIn } = useAuthContext();
 
     const getOrgIdFromUrl = (): string => {
         const currentUrl = window.location.href;
@@ -41,19 +42,20 @@ export default function Signin() {
 
     useEffect(() => {
         if (redirectSeconds <= 1) {
-            if (getOrgIdFromUrl()) {
-                orgSignin(true, getOrgIdFromUrl());
+            const orgId = getOrgIdFromUrl();
+            if (orgId) {
+                signIn({ orgId });
             } else {
-                orgSignin(true);
+                signIn();
             }
 
             return;
         }
 
         setTimeout(() => {
-            setRedirectSeconds((redirectSeconds) => redirectSeconds - 1);
+            setRedirectSeconds((prev) => prev - 1);
         }, moveTime);
-    }, [ redirectSeconds ]);
+    }, [ redirectSeconds, signIn ]);
 
     return (
         <SigninRedirectComponent

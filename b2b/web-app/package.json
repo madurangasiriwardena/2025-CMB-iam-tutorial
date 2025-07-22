@@ -59,6 +59,7 @@
     "react-markdown": "^10.1.0",
     "react-syntax-highlighter": "^15.6.1",
     "remark-gfm": "^4.0.1",
+    "@asgardeo/auth-react": "^2.0.4",
     "rsuite": "^5.22.2",
     "rsuite-color-picker": "^0.2.0",
     "styled-components": "^5.3.10",
