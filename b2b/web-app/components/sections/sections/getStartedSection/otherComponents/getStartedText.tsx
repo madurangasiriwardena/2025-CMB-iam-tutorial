@@ -33,16 +33,6 @@ export default function GetStartedText() {
                         <p><strong>Welcome to</strong></p>
                         <LogoComponent imageSize="medium" />
                     </Stack>
-
-                    <Stack direction="column" spacing={ 20 } justifyContent="center">
-                        <h4>Select one of the settings to get started</h4>
-                        <Button appearance="ghost" size="lg" className={ styles.getStartedButton }>
-                            <Stack spacing={ 3 } justifyContent="center" alignItems="center">
-                                <PagePreviousIcon />
-                                <p>Get Started</p>
-                            </Stack>
-                        </Button>
-                    </Stack>
                 </Stack>
 
             </Panel>

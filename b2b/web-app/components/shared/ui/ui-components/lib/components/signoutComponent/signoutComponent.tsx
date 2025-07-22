@@ -18,7 +18,7 @@
 
 import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE } from "@pet-management-webapp/shared/util/util-front-end-util";
 import React, { useState } from "react";
-import { Button, ButtonToolbar, Loader, Modal, Stack } from "rsuite";
+import { Button, Loader, Modal } from "rsuite";
 import { SignOutComponentProps } from "../../models/signoutComponent/signoutComponent";
 
 export function SignOutComponent(prop: SignOutComponentProps) {
@@ -34,36 +34,30 @@ export function SignOutComponent(prop: SignOutComponentProps) {
     };
 
     return (
-        <Modal backdrop="static" role="alertdialog" open={ open } onClose={ onClose } size="xs">
+        <Modal backdrop="static" role="alertdialog" open={ open } onClose={ onClose } size="sm">
             <Modal.Header>
                 <Modal.Title>
                     <b>You are about to logout</b>
                     <br />
                 </Modal.Title>
             </Modal.Header>
-            <Modal.Body>
-                <Stack direction="column" alignItems="flex-start" spacing={ 20 }>
-                    <p>Are you sure you want to logout, from your account ?</p>
-                    <Stack>
-                        <ButtonToolbar>
-                            <Button
-                                size="lg"
-                                appearance="primary"
-                                type="submit"
-                                onClick={ signOut }>
-                                Submit
-                            </Button>
-
-                            <Button
-                                size="lg"
-                                appearance="ghost"
-                                type="button"
-                            >Cancel
-                            </Button>
-                        </ButtonToolbar>
-                    </Stack>
-                </Stack>
-            </Modal.Body>
+            <Modal.Body>Are you sure you want to logout, from your account ?</Modal.Body>
+            <Modal.Footer>
+                <Button
+                    size="lg"
+                    appearance="primary"
+                    type="submit"
+                    onClick={ signOut }>
+                    Submit
+                </Button>
+                <Button
+                    size="lg"
+                    appearance="ghost"
+                    type="button"
+                    onClick={ onClose }
+                >Cancel
+                </Button>
+            </Modal.Footer>
 
             <div style={ loadingDisplay }>
                 <Loader size="lg" backdrop content="User is logging out" vertical />
