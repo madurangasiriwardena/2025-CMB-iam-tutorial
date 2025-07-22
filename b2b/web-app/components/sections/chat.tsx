@@ -253,6 +253,7 @@ const Chat = ({ session }) => {
       {/* Floating chat button */}
       {!open && (
           <button
+              type="button"
               onClick={() => setOpen(true)}
               style={{
                 position: 'fixed',
@@ -268,10 +269,14 @@ const Chat = ({ session }) => {
                 fontSize: 28,
                 boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
                 cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: 0,
               }}
               aria-label="Open chat"
           >
-            💬
+            <img src="/agent-icon.png" alt="Chat" style={{ width: 45, height: 45 }} />
           </button>
       )}
       {/* Popup chat box */}
@@ -348,11 +353,6 @@ const Chat = ({ session }) => {
                             )}
                             {!msg.isUser && msg.toolResponse && renderToolResponse(msg.toolResponse)}
                           </>
-                          // <>
-                          //   <span>{msg.content}</span>
-                          //   {/* Render SchedulingConfirmationCard/tool response if present and not loading */}
-                          //   {!msg.isUser && !msg.isLoading && msg.toolResponse && renderToolResponse(msg.toolResponse)}
-                          // </>
                       )}
                     </div>
                   </div>
