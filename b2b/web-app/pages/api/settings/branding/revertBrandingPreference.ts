@@ -16,38 +16,37 @@
  * under the License.
  */
 
-import { 
-    requestOptionsWithBody 
+import {
+    requestOptionsWithBody
 } from "@teamspace-app/data-access-common-api-util";
-import { RequestMethod, dataNotRecievedError, notPostError } 
+import { RequestMethod, dataNotRecievedError, notPostError }
     from "@teamspace-app/shared/data-access/data-access-common-api-util";
 import { getOrgUrl } from "@teamspace-app/shared/util/util-application-config-util";
 import { NextApiRequest, NextApiResponse } from "next";
 
 /**
  * backend API call to view current application
- * 
+ *
  * @param req - request
  * @param res - response
- * 
+ *
  * @returns correct data if the call is successful, else an error message
  */
 export default async function revertBrandingPreference(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== "POST") {
         notPostError(res);
     }
-    
+
     const body = JSON.parse(req.body);
     const session = body.session;
     const orgId = body.orgId;
-    
+
     try {
         const fetchData = await fetch(
-            `${getOrgUrl(orgId)}/api/server/v1/branding-preference` 
+            `${getOrgUrl(orgId)}/api/server/v1/branding-preference`
             + `?locale=en-US&name=${orgId}&type=ORG`,
             requestOptionsWithBody(session, RequestMethod.DELETE, null)
         );
-
         res.status(200).json(fetchData);
     } catch (err) {
 

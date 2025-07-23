@@ -19,9 +19,8 @@
 import { LogoComponent } from "@teamspace-app/ui-components";
 import { signout } from "@teamspace-app/util-authorization-config-util";
 import { SignOutComponent } from "@teamspace-app/shared/ui/ui-components";
-import { getPersonalization } from "../../APICalls/GetPersonalization/get-personalization";
 import { Session } from "next-auth";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 import "rsuite/dist/rsuite.min.css";
 import GetStartedSectionComponent from "./sections/getStartedSection/getStartedSectionComponent";
 import GetStartedSectionComponentForAdmin from "./sections/getStartedSection/getStartedSectionForAdmin";
@@ -33,7 +32,6 @@ import ManageUserSectionComponent from "./sections/settingsSection/manageUserSec
 import ConfigureMFASection from "./sections/settingsSection/mfaSection/configureMfaSection";
 import PersonalizationSectionComponent
     from "./sections/settingsSection/personalizationSection/personalizationSectionComponent";
-import personalize from "./sections/settingsSection/personalizationSection/personalize";
 import RoleManagementSectionComponent from
     "./sections/settingsSection/roleManagementSection/roleManagementSectionComponent";
 import sideNavDataForAdmin
@@ -62,23 +60,7 @@ export default function Home(props: HomeProps): JSX.Element {
     const [ activeKeySideNav, setActiveKeySideNav ] = useState("1");
     const [ signOutModalOpen, setSignOutModalOpen ] = useState(false);
 
-    const fetchData = useCallback(async () => {
-        fetchBrandingPreference();
-    }, [ session ]);
-
-    useEffect(() => {
-        fetchData();
-        fetchBrandingPreference();
-    }, [ fetchData ]);
-
-    const fetchBrandingPreference = async () => {
-        // getPersonalization(session.accessToken, session.orgId)
-        //     .then((response) => {
-        //         personalize(response.data);
-        //     });
-    };
-
-    const mainPanelComponenet = (activeKey): JSX.Element => {
+    const mainPanelComponent = (activeKey): JSX.Element => {
         switch (activeKey) {
             case "1":
 
@@ -145,7 +127,7 @@ export default function Home(props: HomeProps): JSX.Element {
                 ) }
             >
 
-                { mainPanelComponenet(activeKeySideNav) }
+                { mainPanelComponent(activeKeySideNav) }
 
             </HomeComponentForAdmin>)
         ;
@@ -166,7 +148,6 @@ export default function Home(props: HomeProps): JSX.Element {
             <div style={{ marginTop: 32, display: 'flex', justifyContent: 'center' }}>
               <Chat session={session} />
             </div>
-            {/*<ChatButton />*/}
         </div>
     );
 }

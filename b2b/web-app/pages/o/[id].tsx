@@ -16,16 +16,13 @@
  * under the License.
  */
 
-import { 
-    BrandingPreference 
+import {
+    BrandingPreference
 } from "@teamspace-app/data-access-common-models-util";
 import { orgSignin, redirect } from "@teamspace-app/shared/util/util-authorization-config-util";
-import { postMeeting } from "../../APICalls/ScheduleMeeting/post-meeting";
-import { getMeeting } from "../../APICalls/getMeetings/get-meeting";
 import { getPersonalization } from "../../APICalls/GetPersonalization/get-personalization";
 import { postPersonalization } from "../../APICalls/UpdatePersonalization/post-personalization";
 import personalize from "../../components/sections/sections/settingsSection/personalizationSection/personalize";
-import { MeetingInfo } from "../../types/meeting";
 import { Personalization } from "../../types/personalization";
 import { controllerDecodeGetBrandingPrefrence } from "@teamspace-app/data-access-controller";
 import { Session } from "next-auth";
@@ -64,9 +61,9 @@ interface OrgProps {
 }
 
 /**
- * 
+ *
  * @param prop - session, routerQuery (orgId)
- * 
+ *
  * @returns Organization distinct interace
  */
 export default function Org(props : OrgProps) {
@@ -82,14 +79,14 @@ export default function Org(props : OrgProps) {
     }, [ routerQuery ]);
 
     useEffect(() => {
-        
+
         getPersonalization(session.orgId)
             .then((response) => {
                 personalize(response.data);
             })
             .catch(async (err) => {
                 if (err.response?.status === 404 && session.group === "admin") {
-                    const res: BrandingPreference = 
+                    const res: BrandingPreference =
                         (await controllerDecodeGetBrandingPrefrence(session) as BrandingPreference);
                     if (!res || !res.preference) {
                         console.debug("Branding response is not retrieved.");
@@ -105,7 +102,7 @@ export default function Org(props : OrgProps) {
                         primaryColor: res["preference"]["theme"][activeTheme]["colors"]["primary"]["main"],
                         secondaryColor: res["preference"]["theme"][activeTheme]["colors"]["secondary"]["main"]
                     };
-    
+
                     postPersonalization(session.accessToken, newPersonalization);
                 }
             });

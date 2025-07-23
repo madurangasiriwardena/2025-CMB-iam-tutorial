@@ -18,17 +18,14 @@
 
 import {
     ApplicationList,
-    IdentityProvider, 
+    IdentityProvider,
     IdentityProviderTemplate,
     StandardBasedOidcIdentityProvider,
     StandardBasedSAMLIdentityProvider
 } from "@teamspace-app/data-access-common-models-util";
 import {
     controllerDecodeListAllIdentityProviders,
-    controllerDecodeListAllRoles,
-    controllerDecodeListCurrentApplicationInRoot,
-    controllerDecodePatchRole,
-    controllerDecodeUpdateSharedRoles
+    controllerDecodeListCurrentApplicationInRoot
 } from "@teamspace-app/data-access-controller";
 import {
     EmptySettingsComponent, SettingsTitleComponent, errorTypeDialog, successTypeDialog
@@ -41,9 +38,8 @@ import IdentityProviderList from "./otherComponents/identityProviderList";
 import IdpCreate from "./otherComponents/idpCreateModal/idpCreate";
 import SelectIdentityProvider from "./otherComponents/selectIdentityProvider";
 import { checkIfJSONisEmpty, PatchMethod } from "@teamspace-app/shared/util/util-common";
-import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE } from "@teamspace-app/shared/util/util-front-end-util";
+import { LOADING_DISPLAY_NONE } from "@teamspace-app/shared/util/util-front-end-util";
 import { signout } from "@teamspace-app/util-authorization-config-util";
-import { getConfig } from "@teamspace-app/util-application-config-util";
 import { upgradeTier } from "pages/api/upgrade";
 
 interface IdpSectionComponentProps {
@@ -51,9 +47,9 @@ interface IdpSectionComponentProps {
 }
 
 /**
- * 
+ *
  * @param prop - session
- * 
+ *
  * @returns The idp interface section.
  */
 export default function IdpSectionComponent(props: IdpSectionComponentProps) {
@@ -103,10 +99,10 @@ export default function IdpSectionComponent(props: IdpSectionComponentProps) {
                 console.error("Error fetching applications:", error);
             }
         };
-    
+
         fetchApplications();
     }, [session]);
-    
+
     useEffect(() => {
         const fetchApplicationId = async () => {
             try {
@@ -125,7 +121,7 @@ export default function IdpSectionComponent(props: IdpSectionComponentProps) {
                 console.error("Error fetching application ID:", error);
             }
         };
-    
+
         fetchApplicationId();
     }, [allApplications]);
 
@@ -177,7 +173,7 @@ export default function IdpSectionComponent(props: IdpSectionComponentProps) {
                 setShowUpgradeModal
             );
         };
-        
+
     // Check if the session has the required scope
     const hasIdpCreationScope = session?.scope?.includes("internal_org_idp_create");
 
