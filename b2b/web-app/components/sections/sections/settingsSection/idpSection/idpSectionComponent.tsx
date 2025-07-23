@@ -242,7 +242,7 @@ export default function IdpSectionComponent(props: IdpSectionComponentProps) {
                 </>
             ) : (
                 <>
-                    {/* Upgrade Now Card for Enterprise Tier */}
+                    {/* Upgrade Now Card for Enterprise Plan */}
                     <SettingsTitleComponent
                         title="Identity Providers"
                         subtitle="Manage identity providers to allow users to log in to your application through them."
@@ -257,7 +257,7 @@ export default function IdpSectionComponent(props: IdpSectionComponentProps) {
                             color: "#272c36",
                         }}
                     >
-                        <p>To bring your identity provider, upgrade your tier.</p>
+                        <p>To bring your identity provider, upgrade your plan.</p>
                     </div>
                     <div style={{ marginBottom: "30px" }}>
                         <div
@@ -272,7 +272,7 @@ export default function IdpSectionComponent(props: IdpSectionComponentProps) {
                                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
                             }}
                         >
-                            {/* Enterprise Tier */}
+                            {/* Enterprise Plan */}
                             <div
                                 style={{
                                     flex: 1,
@@ -283,7 +283,7 @@ export default function IdpSectionComponent(props: IdpSectionComponentProps) {
                                     backgroundColor: "#fff",
                                 }}
                             >
-                                <h3>Enterprise Tier</h3>
+                                <h3>Enterprise Plan</h3>
                                 <p
                                     style={{
                                         fontSize: "24px",
@@ -315,8 +315,9 @@ export default function IdpSectionComponent(props: IdpSectionComponentProps) {
                     <Modal.Title>Plan Upgrade Successful</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>You have successfully upgraded your plan to Enterprise Tier.</p>
-                    <p>Please re-login to make the changes effective.</p>
+                    <p>Your subscription plan has been successfully upgraded.</p>
+                    <p>The new subscription cost will be reflected in your next billing cycle.</p>
+                    <p>Please log out and log back in to apply the changes to your account.</p>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button

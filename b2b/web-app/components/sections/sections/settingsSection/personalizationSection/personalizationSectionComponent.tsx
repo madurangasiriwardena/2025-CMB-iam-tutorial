@@ -386,7 +386,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                         $9/user/mo
                                     </p>
                                     <p>
-                                        Personalization: <strong>Custom</strong>
+                                        Personalization: <strong>Advanced</strong>
                                     </p>
                                     <br></br>
                                     <Button
@@ -459,7 +459,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                     $5/user/mo
                                 </p>
                                 <p>
-                                    Personalization: <strong>Advanced</strong>
+                                    Personalization: <strong>Basic</strong>
                                 </p>
                                 <br></br>
                                 <Button
@@ -493,7 +493,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                     $9/user/mo
                                 </p>
                                 <p>
-                                    Personalization: <strong>Custom</strong>
+                                    Personalization: <strong>Advanced</strong>
                                 </p>
                                 <br></br>
                                 <Button
@@ -515,8 +515,9 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                     <Modal.Title>Plan Upgrade Successful</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>You have successfully upgraded your plan to Business Tier.</p>
-                    <p>Please re-login to make the changes effective.</p>
+                    <p>Your subscription plan has been successfully upgraded.</p>
+                    <p>The new subscription cost will be reflected in your next billing cycle.</p>
+                    <p>Please log out and log back in to apply the changes to your account.</p>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
