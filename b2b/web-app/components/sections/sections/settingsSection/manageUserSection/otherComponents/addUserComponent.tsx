@@ -16,14 +16,14 @@
  * under the License.
  */
 
-import { InviteConst, controllerDecodeAddUser, controllerDecodeListAllRoles, controllerDecodePatchRole } 
+import { InviteConst, controllerDecodeAddUser, controllerDecodeListAllRoles, controllerDecodePatchRole }
     from "@teamspace-app/data-access-controller";
 import { User } from "@teamspace-app/shared/data-access/data-access-common-models-util";
-import { FormButtonToolbar, FormField, ModelHeaderComponent } 
+import { FormButtonToolbar, FormField, ModelHeaderComponent }
     from "@teamspace-app/shared/ui/ui-basic-components";
 import { errorTypeDialog, successTypeDialog } from "@teamspace-app/shared/ui/ui-components";
 import { PatchMethod, checkIfJSONisEmpty } from "@teamspace-app/shared/util/util-common";
-import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE, fieldValidate } 
+import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE, fieldValidate }
     from "@teamspace-app/shared/util/util-front-end-util";
 import EmailFillIcon from "@rsuite/icons/EmailFill";
 import { postMeeting } from "../../../../../../APICalls/ScheduleMeeting/post-meeting";
@@ -45,9 +45,9 @@ interface AddUserComponentProps {
 }
 
 /**
- * 
+ *
  * @param prop - session, open (whether modal open or close), onClose (on modal close)
- * 
+ *
  * @returns Modal to add a user.
  */
 export default function AddUserComponent(props: AddUserComponentProps) {
@@ -72,13 +72,6 @@ export default function AddUserComponent(props: AddUserComponentProps) {
         if (inviteSelect === InviteConst.PWD) {
             errors = fieldValidate("password", values.password, errors);
         }
-
-        // if (userTypeSelect === "DOCTOR") {
-        //     errors = fieldValidate("DateOfBirth", values.DateOfBirth, errors);
-        //     errors = fieldValidate("Gender", values.Gender, errors);
-        //     errors = fieldValidate("Specialty", values.Specialty, errors);
-        //     errors = fieldValidate("Address", values.Address, errors);
-        // }
 
         return errors;
     };
@@ -142,15 +135,6 @@ export default function AddUserComponent(props: AddUserComponentProps) {
         }
     };
 
-    const onDoctorSubmit = (response: AxiosResponse<Meeting>, form): void => {
-        if (response) {
-            // successTypeDialog(toaster, "Changes Saved Successfully", "Meeting add to the organization successfully.");
-            form.restart();
-            onClose();
-        } else {
-            // errorTypeDialog(toaster, "Error Occured", "Error occured while adding the doctor. Try again.");
-        }
-    };
 
     const onRoleSubmit = (response) => {
         if (response) {
@@ -186,7 +170,7 @@ export default function AddUserComponent(props: AddUserComponentProps) {
             })
             .finally(() => setLoadingDisplay(LOADING_DISPLAY_NONE));
 
-        
+
 
     };
 

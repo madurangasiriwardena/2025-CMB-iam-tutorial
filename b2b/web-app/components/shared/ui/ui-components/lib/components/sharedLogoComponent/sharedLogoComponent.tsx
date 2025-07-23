@@ -22,10 +22,10 @@ import { SharedLogoComponentProps, SharedLogoImageStyle, SharedLogoProps } from
     "../../models/sharedLogoComponent/sharedLogoComponent";
 
 /**
- * 
+ *
  * @param prop - name (org name), imageSize `small` | `medium` | `large` | `x-large`
  *
- * @returns 
+ * @returns
  */
 export function SharedLogoComponent(prop: SharedLogoComponentProps) {
 
@@ -51,9 +51,9 @@ export function SharedLogoComponent(prop: SharedLogoComponentProps) {
 }
 
 /**
- * 
+ *
  * @param prop - imageSize `small` | `medium` | `large` | `x-large`
- * 
+ *
  * @returns Logo component
  */
 function Logo(prop: SharedLogoProps) {
@@ -97,7 +97,7 @@ function Logo(prop: SharedLogoProps) {
 
     return (
         <Image
-            className="pet-care-logo"
+            className="teamspace-logo"
             src={ image }
             alt="404 image"
             style={ getImageStyle(imageSize, white) } />

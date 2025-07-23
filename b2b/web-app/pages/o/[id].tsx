@@ -80,6 +80,7 @@ export default function Org(props : OrgProps) {
 
     useEffect(() => {
 
+        // document.documentElement.style.setProperty("--rs-sidenav-inverse-text", session.primaryColor);
         getPersonalization(session.orgId)
             .then((response) => {
                 personalize(response.data);

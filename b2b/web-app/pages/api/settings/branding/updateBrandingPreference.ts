@@ -60,10 +60,15 @@ export default async function updateBrandingPreference(req: NextApiRequest, res:
                 `${getOrgUrl(orgId)}/api/server/v1/branding-preference`,
                 requestOptionsWithBody(session, RequestMethod.POST, brandingPreference)
             );
+            console.log(fetchData.status);
+            console.log(fetchData.body);
         }
+        console.log(fetchData.status);
+        console.log(fetchData.body);
         const data = await fetchData.json();
         res.status(200).json(data);
     } catch (err) {
+        console.error(res);
         return dataNotRecievedError(res);
     }
 }

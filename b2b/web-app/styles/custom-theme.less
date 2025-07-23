@@ -17,16 +17,19 @@
  */
 
 @import "~rsuite/styles/index.less";
-@import "custom-theme.less"; 
+@import "custom-theme.less";
 @import url('https://fonts.googleapis.com/css2?family=Montserrat');
 
-@primary-color: #9ec6ff;
-@primary-color-dark: #35c2ff;
-@primary-color-high-contrast: #ffff00;
-body{ 
+@primary-color: #6672c6;
+@primary-color-dark: #aed3f6;
+@primary-color-high-contrast: #00ffb2;
+:root {
+  --rs-sidenav-inverse-text: #1A1A1A;
+}
+body{
   font-family: 'Montserrat', sans-serif;
 }
-@apply bg-[#06202A] text-gray-100; 
+@apply bg-[#06202A] text-gray-100;
 .button {
   border-radius: 22px;
 }

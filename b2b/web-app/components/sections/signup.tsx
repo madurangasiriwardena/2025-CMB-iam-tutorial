@@ -77,8 +77,8 @@ export const SignUp = ({ open, onClose }) => {
     return undefined;
   };
 
-  const validate = (values) => {
-    const errors = {};
+  const validate = (values: { password?: string; email?: string; firstName?: string; lastName?: string; organizationName?: string; subscription?: string }) => {
+    const errors: { password?: string; email?: string; firstName?: string; lastName?: string; organizationName?: string; subscription?: string } = {};
 
     const passwordError = validatePassword(values.password);
     if (passwordError) {

@@ -31,6 +31,9 @@
       "@teamspace-app/ui-assets": [
         "ui/ui-assets"
       ],
+      "@teamspace-app/ui-assets/*": [
+        "ui/ui-assets/*"
+      ],
       "@teamspace-app/ui-components": [
         "ui/ui-components/main.ts"
       ],

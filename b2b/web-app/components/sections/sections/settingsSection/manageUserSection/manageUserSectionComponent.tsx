@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { controllerDecodeViewUsers } 
+import { controllerDecodeViewUsers }
     from "@teamspace-app/data-access-controller";
 import { InternalUser } from "@teamspace-app/shared/data-access/data-access-common-models-util";
 import { SettingsTitleComponent } from "@teamspace-app/shared/ui/ui-components";
@@ -36,9 +36,9 @@ interface ManageUserSectionComponentProps {
 }
 
 /**
- * 
+ *
  * @param prop - orgName, orgId, session
- * 
+ *
  * @returns A component that will show the users in a table view
  */
 export default function ManageUserSectionComponent(props: ManageUserSectionComponentProps) {
@@ -125,8 +125,7 @@ export default function ManageUserSectionComponent(props: ManageUserSectionCompo
             <AddUserComponent
                 session={ session }
                 open={ addUserOpen }
-                onClose={ closeAddUserDialog } 
-                isDoctor={ false } />
+                onClose={ closeAddUserDialog } />
 
             <SettingsTitleComponent
                 title="Manage Users"
