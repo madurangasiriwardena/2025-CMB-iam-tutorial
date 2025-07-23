@@ -150,13 +150,16 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
         // Use defaultBrandingPreference if brandingPreference is not present
         const updatedBrandingPreference: BrandingPreference = brandingPreference
             ? brandingPreference : defaultBrandingPreference;
-        // Now updatedBrandingPreference is guaranteed to have the correct structure
         const activeTheme: string = updatedBrandingPreference.preference.theme.activeTheme;
+        const defaultPrimaryColor = defaultBrandingPreference.preference.theme[activeTheme].colors.primary.main;
+        const defaultSecondaryColor = defaultBrandingPreference.preference.theme[activeTheme].colors.secondary.main;
+        
+        // Now updatedBrandingPreference is guaranteed to have the correct structure
         updatedBrandingPreference.preference.theme[activeTheme].images.logo.imgURL = values.logo_url;
         updatedBrandingPreference.preference.theme[activeTheme].images.logo.altText = values.logo_alt_text;
         updatedBrandingPreference.preference.theme[activeTheme].images.favicon.imgURL = values.favicon_url;
-        updatedBrandingPreference.preference.theme[activeTheme].colors.primary.main = values.primary_color;
-        updatedBrandingPreference.preference.theme[activeTheme].colors.secondary.main = values.secondary_color;
+        updatedBrandingPreference.preference.theme[activeTheme].colors.primary.main = values.primary_color || defaultPrimaryColor; // Fallback to default if empty
+        updatedBrandingPreference.preference.theme[activeTheme].colors.secondary.main = values.secondary_color || defaultSecondaryColor; // Fallback to default if empty
         updatedBrandingPreference.name = session.orgId;
         delete updatedBrandingPreference.resolvedFrom;
         controllerDecodeUpdateBrandingPrefrence(session, updatedBrandingPreference)

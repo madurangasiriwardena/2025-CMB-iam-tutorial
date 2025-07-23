@@ -20,6 +20,7 @@ export const SignUp = ({ open, onClose }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [step, setStep] = useState(1);
+  const [step1Values,  setStep1Values] = useState({});
 
   const subscriptionPackages = [
     {
@@ -80,12 +81,11 @@ export const SignUp = ({ open, onClose }) => {
   const validate = (values: { password?: string; email?: string; firstName?: string; lastName?: string; organizationName?: string; subscription?: string }) => {
     const errors: { password?: string; email?: string; firstName?: string; lastName?: string; organizationName?: string; subscription?: string } = {};
 
-    const passwordError = validatePassword(values.password);
-    if (passwordError) {
-      errors.password = passwordError;
-    }
-
     if (step === 1) {
+      const passwordError = validatePassword(values.password);
+      if (passwordError) {
+        errors.password = passwordError;
+      }
       if (!values.email) {
         errors.email = "Email is required";
       }
@@ -154,11 +154,14 @@ export const SignUp = ({ open, onClose }) => {
 
   const onFormSubmit = async (values) => {
     if (step === 1) {
+      setStep1Values(values)
       setStep(2);
       return;
     }
 
-    await handleSignUp(values);
+    // Merge Step 1 values with Step 2 values
+    const mergedValues = { ...step1Values, ...values };
+    await handleSignUp(mergedValues);
   };
 
   return (

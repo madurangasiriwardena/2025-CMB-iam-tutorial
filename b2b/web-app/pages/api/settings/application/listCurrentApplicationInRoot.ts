@@ -26,10 +26,8 @@ export default async function listCurrentApplicationInRoot(req: NextApiRequest, 
         notPostError(res);
     }
     
-    const body = JSON.parse(req.body);
     const tokenData = await getToken();
     const rootAccessToken = tokenData.access_token;
-    const session = body.session;
 
     const appName = req.query.appName;
     const decodedAppName = appName.toString().replace(/%20/g, "");
