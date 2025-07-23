@@ -15,6 +15,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+import logoImage from "../../../../../ui/ui-assets/lib/images/teamspace_logo.png";
+import favicon from "../../../../../public/favicon.png";
 const { useThemeStore } = require("../../../theme-store");
 
 function changeFavicon(newFaviconUrl) {
@@ -64,6 +67,12 @@ export function personalize(personalization) {
     changeColorTheme(personalization.primaryColor, personalization.secondaryColor);
     changeFavicon(personalization.faviconUrl);
     updateOrganizationLogo(personalization.logoUrl, personalization.logoAltText);
+}
+
+export function resetPersonalization() {
+    useThemeStore.getState().resetColors();
+    changeFavicon(favicon.src);
+    updateOrganizationLogo(logoImage.src, "TeamSpace Logo");
 }
 
 export default personalize;
