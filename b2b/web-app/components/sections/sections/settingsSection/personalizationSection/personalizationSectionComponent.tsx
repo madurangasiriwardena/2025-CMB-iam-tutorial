@@ -31,7 +31,6 @@ import {
 import {checkIfJSONisEmpty, PatchMethod} from "@teamspace-app/shared/util/util-common";
 import {LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE} from "@teamspace-app/shared/util/util-front-end-util";
 import {deletePersonalization} from "../../../../../APICalls/DeletePersonalization/delete-personalization";
-import {getPersonalization} from "../../../../../APICalls/GetPersonalization/get-personalization";
 import {postPersonalization} from "../../../../../APICalls/UpdatePersonalization/post-personalization";
 import {Personalization} from "../../../../../types/personalization";
 import {
@@ -43,13 +42,12 @@ import React, {useCallback, useEffect, useState} from "react";
 import {Field, Form} from "react-final-form";
 import {Button, Container, Divider, Toaster, useToaster, Modal} from "rsuite";
 import FormSuite from "rsuite/Form";
-import personalize from "./personalize";
+import {personalize, resetPersonalization} from "./personalize";
 import styles from "../../../../../styles/Settings.module.css";
 import {ChromePicker} from 'react-color';
 import {signout} from "@teamspace-app/util-authorization-config-util";
 import {upgradeTier} from "pages/api/upgrade";
 import defaultBrandingPreference from "ui/ui-assets/lib/data/defaultBrandingPreference.json";
-import {useThemeStore} from "../../../theme-store";
 
 /**
  *
@@ -190,7 +188,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                 setBrandingPreference(JSON.parse(JSON.stringify(defaultBrandingPreference)));
                 deletePersonalization(session.accessToken)
                     .then(() => {
-                        useThemeStore.getState().resetColors();
+                        resetPersonalization();
                     });
                 fetchBrandingPreference();
             })
@@ -321,13 +319,12 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                         <Divider style={{background: "#bebebe"}}/>
                         <div style={{
                             display: "flex",
-                            justifyContent: "flex-end",
+                            justifyContent: "space-between",
                             alignItems: "center",
                             marginTop: "24px",
                             gap: "12px"
                         }}>
-
-                            <span style={{display: "flex", flexDirection: "column"}}>
+                            <span style={{display: "flex", flexDirection: "column", textAlign: "left", flex: 1}}>
                                 <span style={{color: "red", fontSize: "16px", fontWeight: 600}}>
                                     Revert to default
                                 </span>
