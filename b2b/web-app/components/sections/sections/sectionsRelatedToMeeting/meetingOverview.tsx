@@ -81,10 +81,10 @@ export default function MeetingOverview(props: MeetingOverviewProps) {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={handleEdit} appearance="primary">
+                    <Button onClick={handleEdit} appearance="default">
                         Edit
                     </Button>
-                    <Button onClick={onClose} appearance="subtle">
+                    <Button onClick={onClose} appearance="ghost">
                         Cancel
                     </Button>
                 </Modal.Footer>

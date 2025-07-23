@@ -16,15 +16,15 @@
  * under the License.
  */
 
-import { 
-    Application, ApplicationList, checkIfAuthenticatorIsinAuthSequence 
+import {
+    Application, ApplicationList, checkIfAuthenticatorIsinAuthSequence
 } from "@teamspace-app/data-access-common-models-util";
-import { 
-    controllerDecodeGetApplication, controllerDecodeListCurrentApplication 
+import {
+    controllerDecodeGetApplication, controllerDecodeListCurrentApplication
 } from "@teamspace-app/data-access-controller";
 import { AccordianItemHeaderComponent } from "@teamspace-app/shared/ui/ui-components";
 import { EMAIL, EMAIL_OTP_AUTHENTICATOR, checkIfJSONisEmpty } from "@teamspace-app/shared/util/util-common";
-import { 
+import {
     LOADING_DISPLAY_NONE} from "@teamspace-app/shared/util/util-front-end-util";
 import { Session } from "next-auth";
 import React, { useCallback, useEffect, useState } from "react";
@@ -38,9 +38,9 @@ interface EmailAsMFAProps {
 }
 
 /**
- * 
+ *
  * @param prop - session, id (idp id), fetchAllIdPs (function to fetch all Idps)
- * 
+ *
  * @returns idp item details component
  */
 export default function EmailAsMFA(props: EmailAsMFAProps) {
@@ -55,15 +55,15 @@ export default function EmailAsMFA(props: EmailAsMFAProps) {
 
     const fetchData = useCallback(async () => {
         const res : ApplicationList = ( await controllerDecodeListCurrentApplication(session) as ApplicationList );
-        
+
         await setAllApplications(res);
     }, [ session, openListAppicationModal ]);
 
     const fetchApplicatioDetails = useCallback(async () => {
         if (!checkIfJSONisEmpty(allApplications) && allApplications.totalResults !== 0) {
-            const res : Application = ( 
+            const res : Application = (
                 await controllerDecodeGetApplication(session, allApplications.applications[0].id) as Application );
-            
+
             await setApplicationDetail(res);
         }
     }, [ session, allApplications ]);
@@ -101,25 +101,25 @@ export default function EmailAsMFA(props: EmailAsMFAProps) {
                         title={ "Email OTP" }
                         description={ "Configure Email as multi-factor authentication." } />
                 </FlexboxGrid.Item>
-                
+
                 {
                     idpIsinAuthSequence === null
                         ? null
                         : idpIsinAuthSequence
                             ? (
                                 <FlexboxGrid.Item colspan={ 6 }>
-                                    <Button 
-                                        style={ { width: "125%" } } 
-                                        appearance="ghost" 
+                                    <Button
+                                        style={ { width: "125%" } }
+                                        appearance="ghost"
                                         onClick={ onAddToLoginFlowClick }>
                                         Remove from Login Flow
                                     </Button>
                                 </FlexboxGrid.Item>)
                             : (
                                 <FlexboxGrid.Item colspan={ 6 }>
-                                    <Button 
-                                        style={ { width: "125%", opacity:"0.9", borderRadius: "22px" } } 
-                                        appearance="primary" 
+                                    <Button
+                                        style={ { width: "125%", opacity:"0.9", borderRadius: "22px" } }
+                                        appearance="default"
                                         onClick={ onAddToLoginFlowClick }>
                                         Add to the Login Flow
                                     </Button>
@@ -130,7 +130,7 @@ export default function EmailAsMFA(props: EmailAsMFAProps) {
                     openModal={ openListAppicationModal }
                     onModalClose={ onCloseListAllApplicaitonModal }
                     applicationDetail={ applicationDetail }
-                    idpIsinAuthSequence={ idpIsinAuthSequence } 
+                    idpIsinAuthSequence={ idpIsinAuthSequence }
                     authenticator={ EMAIL_OTP_AUTHENTICATOR } />
             </FlexboxGrid>
         </div>

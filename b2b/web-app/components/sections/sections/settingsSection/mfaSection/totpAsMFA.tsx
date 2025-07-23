@@ -101,18 +101,18 @@ export default function TotpAsMFA(props: TotpAsMFAProps) {
                         : idpIsinAuthSequence
                             ? (
                                 <FlexboxGrid.Item colspan={ 6 }>
-                                    <Button 
-                                        style={ { width: "125%" } } 
-                                        appearance="ghost" 
+                                    <Button
+                                        style={ { width: "125%" } }
+                                        appearance="ghost"
                                         onClick={ onAddToLoginFlowClick }>
                                         Remove from Login Flow
                                     </Button>
                                 </FlexboxGrid.Item>)
                             : (
                                 <FlexboxGrid.Item colspan={ 6 }>
-                                    <Button 
-                                        style={ { width: "125%", opacity:"0.9", borderRadius: "22px" } } 
-                                        appearance="primary" 
+                                    <Button
+                                        style={ { width: "125%", opacity:"0.9", borderRadius: "22px" } }
+                                        appearance="default"
                                         onClick={ onAddToLoginFlowClick }>
                                         Add to the Login Flow
                                     </Button>

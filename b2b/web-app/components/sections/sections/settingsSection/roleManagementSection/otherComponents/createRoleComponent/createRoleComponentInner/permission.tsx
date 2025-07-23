@@ -24,9 +24,9 @@ import styles from "../../../../../../../../styles/Settings.module.css";
 import orgRolesData from "../../../data/orgRolesData.json";
 
 /**
- * 
+ *
  * @param prop - `permissions`, `setPermissions`, `onNext`, `onPrevious`
- * 
+ *
  * @returns The permission section of create role modal
  */
 export default function Permission(prop) {
@@ -86,7 +86,7 @@ export default function Permission(prop) {
                                         <Button
                                             className={ styles.addUserButton }
                                             size="lg"
-                                            appearance="primary"
+                                            appearance="default"
                                             type="submit">
                                             Next
                                         </Button>

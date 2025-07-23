@@ -38,9 +38,9 @@ interface ButtonGroupIdentityProviderDetailsProps {
 }
 
 /**
- * 
+ *
  * @param prop - session, idpDetails, fetchAllIdPs, id (idp id)
- * 
+ *
  * @returns Add/Remove button and delete button group in an Idp
  */
 export default function ButtonGroupIdentityProviderDetails(props : ButtonGroupIdentityProviderDetailsProps) {
@@ -56,15 +56,15 @@ export default function ButtonGroupIdentityProviderDetails(props : ButtonGroupId
 
     const fetchData = useCallback(async () => {
         const res : ApplicationList = ( await controllerDecodeListCurrentApplication(session) as ApplicationList );
-        
+
         await setAllApplications(res);
     }, [ session, openListAppicationModal ]);
 
     const fetchApplicatioDetails = useCallback(async () => {
         if (!checkIfJSONisEmpty(allApplications) && allApplications.totalResults !== 0) {
-            const res : Application = ( 
+            const res : Application = (
                 await controllerDecodeGetApplication(session, allApplications.applications[0].id) as Application );
-                      
+
             await setApplicationDetail(res);
         }
     }, [ session, allApplications ]);
@@ -116,7 +116,7 @@ export default function ButtonGroupIdentityProviderDetails(props : ButtonGroupId
                     ? null
                     : idpIsinAuthSequence
                         ? <Button appearance="ghost" onClick={ onAddToLoginFlowClick }>Remove from Login Flow</Button>
-                        : <Button appearance="primary" onClick={ onAddToLoginFlowClick }>Add to the Login Flow</Button>
+                        : <Button appearance="default" onClick={ onAddToLoginFlowClick }>Add to the Login Flow</Button>
             }
 
             <ConfirmAddRemoveLoginFlowModal
@@ -135,7 +135,7 @@ export default function ButtonGroupIdentityProviderDetails(props : ButtonGroupId
                         icon={ <Trash /> }
                         style={ { marginLeft: "10px" } }
                         onClick={ () => onIdPDeleteClick(id) }
-                        appearance="subtle" />)
+                        appearance="ghost" />)
             }
 
         </Stack>

@@ -194,7 +194,7 @@ export default function IdpSectionComponent(props: IdpSectionComponentProps) {
                             subtitle="Manage identity providers to allow users to log in to your application through them."
                         >
                             <Button
-                                appearance="primary"
+                                appearance="default"
                                 onClick={onAddIdentityProviderClick}
                                 size="md"
                                 style={{ marginTop: "12px" }}
@@ -298,7 +298,7 @@ export default function IdpSectionComponent(props: IdpSectionComponentProps) {
                                 </p>
                                 <br></br>
                                 <Button
-                                    appearance="primary"
+                                    appearance="default"
                                     onClick={ onEnterpriseTierUpgrade }
                                 >
                                     Upgrade Now
@@ -320,13 +320,13 @@ export default function IdpSectionComponent(props: IdpSectionComponentProps) {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
-                        appearance="primary"
+                        appearance="default"
                         onClick={ signOutCallback } // Trigger the sign-out functionality
                     >
                         Re-login
                     </Button>
                     <Button
-                        appearance="subtle"
+                        appearance="ghost"
                         onClick={() => setShowUpgradeModal(false)} // Close the modal
                     >
                         Cancel

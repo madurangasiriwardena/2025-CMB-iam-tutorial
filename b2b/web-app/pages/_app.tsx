@@ -19,8 +19,8 @@ import { getConfig } from "@teamspace-app/util-application-config-util";
 import { SessionProvider } from "next-auth/react";
 import Head from "next/head";
 import "rsuite/dist/rsuite.min.css";
-import "../styles/custom-theme.less";
 import "../styles/globals.css";
+import ThemeProvider from "../components/sections/theme-provider";
 
 function MyApp(prop) {
 
@@ -28,6 +28,7 @@ function MyApp(prop) {
 
     return (
         <SessionProvider session={ pageProps ? pageProps.session : null }>
+            <ThemeProvider>
             <Head>
                 <link rel="shortcut icon" href="./favicon.png" />
                 <meta httpEquiv="cache-control" content="no-cache" />
@@ -40,6 +41,7 @@ function MyApp(prop) {
             </Head>
 
             <Component { ...pageProps } />
+            </ThemeProvider>
         </SessionProvider>
     );
 }

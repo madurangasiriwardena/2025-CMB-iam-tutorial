@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { controllerDecodeViewUsers } 
+import { controllerDecodeViewUsers }
     from "@teamspace-app/data-access-controller";
 import { InternalUser } from "@teamspace-app/shared/data-access/data-access-common-models-util";
 import React, { useCallback, useEffect, useState } from "react";
@@ -26,9 +26,9 @@ import FormSuite from "rsuite/Form";
 import styles from "../../../../../../../../styles/Settings.module.css";
 
 /**
- * 
+ *
  * @param prop - `setAssignedUsers` - function , `assignedUsers`, `session`, `onNext`, `onPrevious`
- * 
+ *
  * @returns The users section of create role modal
  */
 export default function Users(prop) {
@@ -105,7 +105,7 @@ export default function Users(prop) {
                                                 <Button
                                                     className={ styles.addUserButton }
                                                     size="lg"
-                                                    appearance="primary"
+                                                    appearance="default"
                                                     type="submit">
                                                     Create
                                                 </Button>

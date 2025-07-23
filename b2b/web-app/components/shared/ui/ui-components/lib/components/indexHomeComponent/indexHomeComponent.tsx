@@ -22,7 +22,7 @@ import { IndexHomeComponentProps } from "../../models/indexHomeComponent/indexHo
 
 /**
  * First page component
- * 
+ *
  * @param prop - tagText, signinOnClick
  */
 export function IndexHomeComponent(prop: IndexHomeComponentProps) {
@@ -38,7 +38,7 @@ export function IndexHomeComponent(prop: IndexHomeComponentProps) {
                     <Button
                         className={ styles["signInDivButton"] }
                         size="md"
-                        appearance="primary"
+                        appearance="default"
                         onClick={ signinOnClick }>
                         Sign In
                     </Button>

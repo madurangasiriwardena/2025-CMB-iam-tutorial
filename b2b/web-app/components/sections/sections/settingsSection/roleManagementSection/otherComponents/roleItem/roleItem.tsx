@@ -119,7 +119,7 @@ function RoleItemNav(props: RoleItemNavProps) {
     const { activeKeyNav, activeKeyNavSelect } = props;
 
     return (
-        <Nav appearance="subtle" activeKey={ activeKeyNav } style={ { marginBottom: 10, marginTop: 15 } }>
+        <Nav appearance="ghost" activeKey={ activeKeyNav } style={ { marginBottom: 10, marginTop: 15 } }>
             <div
                 style={ {
                     alignItems: "stretch",
