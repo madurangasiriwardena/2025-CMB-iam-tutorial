@@ -36,7 +36,7 @@ export function FormButtonToolbar(props: FormButtonToolbarProps ) {
 
             <ButtonToolbar>
                 <Button
-                    className={ styles["addUserButton"] }
+                    className={styles.buttonCircular}
                     size="lg"
                     appearance="primary"
                     type="submit"

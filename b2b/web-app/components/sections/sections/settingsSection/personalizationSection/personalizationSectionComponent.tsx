@@ -231,19 +231,20 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
         </FormSuite.Group>
     );
 
-    // Check if the session has the required scope
-    const hasBrandingUpdateScope = session?.scope?.includes("internal_org_branding_preference_update");
+    // Check if the session has the basic branding or advanced branding scope
+    const hasBasicBrandingUpdateScope = session?.scope?.includes("create_basic_branding");
+    const hasAdvancedBrandingUpdateScope = session?.scope?.includes("create_advanced_branding");
 
     return (
         <Container>
-            {hasBrandingUpdateScope ? (
+            {hasBasicBrandingUpdateScope || hasAdvancedBrandingUpdateScope ? (
                 <>
                     <SettingsTitleComponent
                         title="Personalization"
                         subtitle="Customize the user interfaces of your application."
                     />
 
-                    <div style={{margin: "50px"}}>
+                    <div style={{ margin: "50px" }}>
                         <Form
                             onSubmit={onUpdate}
                             initialValues={{
@@ -253,123 +254,104 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                 primary_color: primaryColor,
                                 secondary_color: secondaryColor
                             }}
-                            render={({handleSubmit, form, submitting, pristine, errors}) => (
+                            render={({ handleSubmit, form, submitting, pristine, errors }) => (
                                 <FormSuite
                                     layout="vertical"
                                     className={styles.addUserForm}
                                     onSubmit={() => {
                                         handleSubmit().then(form.restart);
                                     }}
-                                    fluid>
-
+                                    fluid
+                                >
+                                    {/* Logo URL Field */}
                                     <FormField
                                         name="logo_url"
                                         label="Logo URL"
                                         helperText={
-                                            "Use an image that’s at least 600x600 pixels and " +
-                                            "less than 1mb in size for better performance."
+                                            "Use an image that’s at least 600x600 pixels and less than 1mb in size for better performance."
                                         }
                                         needErrorMessage={true}
                                     >
-                                        <FormSuite.Control name="input" value="a"/>
+                                        <FormSuite.Control name="input" value="a" />
                                     </FormField>
 
+                                    {/* Logo Alt Text Field */}
                                     <FormField
                                         name="logo_alt_text"
                                         label="Logo Alt Text"
                                         helperText={
-                                            "Add a short description of the logo image to display when " +
-                                            "the image does not load and also for SEO and accessibility."
+                                            "Add a short description of the logo image to display when the image does not load and also for SEO and accessibility."
                                         }
                                         needErrorMessage={true}
                                     >
-                                        <FormSuite.Control name="input"/>
+                                        <FormSuite.Control name="input" />
                                     </FormField>
 
+                                    {/* Favicon URL Field */}
                                     <FormField
                                         name="favicon_url"
                                         label="Favicon URL"
                                         helperText={
-                                            "Use an image with a square aspect ratio that’s " +
-                                            "at least 16x16 pixels in size for better results."
+                                            "Use an image with a square aspect ratio that’s at least 16x16 pixels in size for better results."
                                         }
                                         needErrorMessage={true}
                                     >
-                                        <FormSuite.Control name="input" type="url"/>
+                                        <FormSuite.Control name="input" type="url" />
                                     </FormField>
 
-                                    <Field
-                                        name="primary_color"
-                                        component={ColorPickerField}
-                                        label="Primary Colour"/>
-                                    <Field
-                                        name="secondary_color"
-                                        component={ColorPickerField}
-                                        label="Button Colour"/>
+                                    {/* Show Primary and Secondary Color Pickers if Advanced Branding Scope is True */}
+                                    {hasAdvancedBrandingUpdateScope && (
+                                        <>
+                                            <Field
+                                                name="primary_color"
+                                                component={ColorPickerField}
+                                                label="Primary Colour"
+                                            />
+                                            <Field
+                                                name="secondary_color"
+                                                component={ColorPickerField}
+                                                label="Secondary Colour"
+                                            />
+                                        </>
+                                    )}
 
                                     <FormButtonToolbar
                                         submitButtonText="Update"
-                                        submitButtonDisabled={submitting || pristine || !checkIfJSONisEmpty(errors)}
+                                        submitButtonDisabled={
+                                            submitting || pristine || !checkIfJSONisEmpty(errors)
+                                        }
                                         needCancel={false}
                                     />
-
                                 </FormSuite>
                             )}
                         />
-                        <Divider style={{background: "#bebebe"}}/>
-                        <div style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            marginTop: "24px",
-                            gap: "12px"
-                        }}>
-                            <span style={{display: "flex", flexDirection: "column", textAlign: "left", flex: 1}}>
-                                <span style={{color: "red", fontSize: "16px", fontWeight: 600}}>
-                                    Revert to default
-                                </span>
-                                <span style={{color: "black", fontSize: "14px"}}>
-                                    Once the branding preferences are reverted, they can't be recovered and your users will see Asgardeo's default branding.
-                                </span>
-                            </span>
-                            <Button
-                                className={styles["revertButton"]}
-                                size="lg"
-                                appearance="default"
-                                onClick={onRevert}
+                        <Divider style={{ background: "#bebebe" }} />
+                        <Button
+                            className={styles["revertButton"]}
+                            size="lg"
+                            appearance="default"
+                            onClick={onRevert}
+                        >
+                            {"Revert to default"}
+                        </Button>
+                    </div>
+
+                    {/* Show Enterprise Plan Upgrade if Advanced Branding Scope is False */}
+                    {!hasAdvancedBrandingUpdateScope && (
+                        <div style={{ marginBottom: "30px" }}>
+                             <div
+                                style={{
+                                    margin: "20px 0",
+                                    padding: "10px",
+                                    backgroundColor: "#d9d9d9",
+                                    borderRadius: "5px",
+                                    textAlign: "center",
+                                    color: "#272c36"
+                                }}
                             >
-                                Revert
-                            </Button>
-                        </div>
-                    </div>
-                </>
-            ) : (
-                <>
-                    {/* Upgrade Message */}
-                    <SettingsTitleComponent
-                        title="Personalization"
-                        subtitle="Customize the user interfaces of your application."
-                    />
+                                <p>Upgrade your plan for advanced personalizations.</p>
+                            </div>
 
-                    <div style={{marginBottom: "20px"}}></div>
-
-                    {/* Upgrade Message */}
-                    <div
-                        style={{
-                            margin: "20px 0",
-                            padding: "10px",
-                            backgroundColor: "#d9d9d9",
-                            borderRadius: "5px",
-                            textAlign: "center",
-                            color: "#272c36",
-                        }}
-                    >
-                        <p>For more advanced customizations, upgrade your tier.</p>
-                    </div>
-
-                    {/* Tier Upgrade Cards */}
-                    {(
-                        <div style={{marginBottom: "30px"}}>
                             <div
                                 style={{
                                     display: "flex",
@@ -379,10 +361,10 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                     padding: "20px",
                                     backgroundColor: "#f9f9f9",
                                     borderRadius: "10px",
-                                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)"
                                 }}
                             >
-                                {/* Business Tier */}
+                                {/* Enterprise Plan */}
                                 <div
                                     style={{
                                         flex: 1,
@@ -390,56 +372,21 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                         padding: "20px",
                                         border: "1px solid #ddd",
                                         borderRadius: "10px",
-                                        backgroundColor: "#fff",
+                                        backgroundColor: "#fff"
                                     }}
                                 >
-                                    <h3>Business Tier</h3>
+                                    <h3>Enterprise Plan</h3>
                                     <p
                                         style={{
                                             fontSize: "24px",
                                             fontWeight: "bold",
-                                            margin: "10px 0",
-                                        }}
-                                    >
-                                        $5/user/mo
-                                    </p>
-                                    <p>
-                                        Personalization: <strong>Advanced</strong>
-                                    </p>
-                                    <br></br>
-                                    <Button
-                                        className={styles.buttonCircular}
-                                        appearance="default"
-                                        onClick={onBusinessTierUpgrade}
-                                    >
-                                        Upgrade Now
-                                    </Button>
-                                </div>
-
-                                {/* Enterprise Tier */}
-                                <div
-                                    style={{
-                                        flex: 1,
-                                        textAlign: "center",
-                                        padding: "20px",
-                                        border: "1px solid #ddd",
-                                        borderRadius: "10px",
-                                        backgroundColor: "#fff",
-                                    }}
-                                >
-                                    <h3>Enterprise Tier</h3>
-                                    <p
-                                        style={{
-                                            fontSize: "24px",
-                                            fontWeight: "bold",
-                                            margin: "10px 0",
+                                            margin: "10px 0"
                                         }}
                                     >
                                         $9/user/mo
                                     </p>
                                     <p>
                                         Personalization: <strong>Custom</strong>
-
                                     </p>
                                     <br></br>
                                     <Button
@@ -453,6 +400,112 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                             </div>
                         </div>
                     )}
+                </>
+            ) : (
+                <>
+                    {/* Show Upgrade Cards if No Branding Scopes */}
+                    <SettingsTitleComponent
+                        title="Personalization"
+                        subtitle="Customize the user interfaces of your application."
+                    />
+
+                    <div style={{ marginBottom: "20px" }}></div>
+
+                    <div
+                        style={{
+                            margin: "20px 0",
+                            padding: "10px",
+                            backgroundColor: "#d9d9d9",
+                            borderRadius: "5px",
+                            textAlign: "center",
+                            color: "#272c36"
+                        }}
+                    >
+                        <p>Upgrade your plan for basic and advanced personalizations.</p>
+                    </div>
+
+                    <div style={{ marginBottom: "30px" }}>
+                        <div
+                            style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                gap: "20px",
+                                padding: "20px",
+                                backgroundColor: "#f9f9f9",
+                                borderRadius: "10px",
+                                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)"
+                            }}
+                        >
+                            {/* Business Plan */}
+                            <div
+                                style={{
+                                    flex: 1,
+                                    textAlign: "center",
+                                    padding: "20px",
+                                    border: "1px solid #ddd",
+                                    borderRadius: "10px",
+                                    backgroundColor: "#fff"
+                                }}
+                            >
+                                <h3>Business Plan</h3>
+                                <p
+                                    style={{
+                                        fontSize: "24px",
+                                        fontWeight: "bold",
+                                        margin: "10px 0"
+                                    }}
+                                >
+                                    $5/user/mo
+                                </p>
+                                <p>
+                                    Personalization: <strong>Advanced</strong>
+                                </p>
+                                <br></br>
+                                <Button
+                                    className={styles.buttonCircular}
+                                    appearance="default"
+                                    onClick={onBusinessTierUpgrade}
+                                >
+                                    Upgrade Now
+                                </Button>
+                            </div>
+
+                            {/* Enterprise Plan */}
+                            <div
+                                style={{
+                                    flex: 1,
+                                    textAlign: "center",
+                                    padding: "20px",
+                                    border: "1px solid #ddd",
+                                    borderRadius: "10px",
+                                    backgroundColor: "#fff"
+                                }}
+                            >
+                                <h3>Enterprise Plan</h3>
+                                <p
+                                    style={{
+                                        fontSize: "24px",
+                                        fontWeight: "bold",
+                                        margin: "10px 0"
+                                    }}
+                                >
+                                    $9/user/mo
+                                </p>
+                                <p>
+                                    Personalization: <strong>Custom</strong>
+                                </p>
+                                <br></br>
+                                <Button
+                                    className={styles.buttonCircular}
+                                    appearance="default"
+                                    onClick={onEnterpriseTierUpgrade}
+                                >
+                                    Upgrade Now
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
                 </>
             )}
 
