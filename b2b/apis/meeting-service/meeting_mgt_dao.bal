@@ -10,8 +10,8 @@ function dbGetMeetingsByOrg(string org) returns Meeting[]|error {
     }
 
     do {
-        sql:ParameterizedQuery query = `SELECT d.id, d.org, d.createdAt, d.topic, d.date, d.startTime, d.duration, 
-        d.timeZone FROM Meeting WHERE org = ${org}`;
+        sql:ParameterizedQuery query = `SELECT id, org, createdAt, topic, date, startTime, duration,
+        timeZone, userId, emailAddress, actorUserId FROM Meeting WHERE org = ${org}`;
         stream<Meeting, sql:Error?> meetingStream = dbClient->query(query);
 
         map<Meeting> meetingList = check getMeetingsFromStream(meetingStream);
@@ -31,8 +31,8 @@ function dbGetMeetingByIdAndOrg(string org, string meetingId) returns Meeting|()
     }
 
     do {
-        sql:ParameterizedQuery query = `SELECT d.id, d.org, d.createdAt, d.topic, d.date, d.startTime, d.duration, 
-        d.timeZone FROM Meeting WHERE org = ${org} and id = ${meetingId}`;
+        sql:ParameterizedQuery query = `SELECT id, org, createdAt, topic, date, startTime, duration,
+        timeZone, userId, emailAddress, actorUserId FROM Meeting WHERE org = ${org} and id = ${meetingId}`;
         stream<Meeting, sql:Error?> meetingStream = dbClient->query(query);
 
         map<Meeting> meetingList = check getMeetingsFromStream(meetingStream);
@@ -55,8 +55,8 @@ function dbGetMeetingByMeetingId(string meetingId) returns Meeting|()|error {
     }
 
     do {
-        sql:ParameterizedQuery query = `SELECT d.id, d.org, d.createdAt, d.topic, d.date, d.startTime, d.duration, 
-        d.timeZone FROM Meeting WHERE id = ${meetingId}`;
+        sql:ParameterizedQuery query = `SELECT id, org, createdAt, topic, date, startTime, duration,
+        timeZone, userId, emailAddress, actorUserId FROM Meeting WHERE id = ${meetingId}`;
         stream<Meeting, sql:Error?> meetingStream = dbClient->query(query);
 
         map<Meeting> meetingList = check getMeetingsFromStream(meetingStream);
@@ -101,9 +101,10 @@ function dbAddMeeting(Meeting meeting) returns Meeting|error {
 
     transaction {
         log:printInfo("Starting transaction");
-        sql:ParameterizedQuery query = `INSERT INTO Meeting (id, org, createdAt, topic, date, startTime, 
-        duration, timeZone) VALUES (${meeting.id}, ${meeting.org}, ${meeting.createdAt}, 
-        ${meeting.topic}, ${meeting.date}, ${meeting.startTime}, ${meeting.duration}, ${meeting.timeZone});`;
+        sql:ParameterizedQuery query = `INSERT INTO Meeting (id, org, createdAt, topic, date, startTime,
+        duration, timeZone, userId, emailAddress, actorUserId) VALUES (${meeting.id}, ${meeting.org}, ${meeting.createdAt},
+        ${meeting.topic}, ${meeting.date}, ${meeting.startTime}, ${meeting.duration}, ${meeting.timeZone},
+        ${meeting.userId}, ${meeting.emailAddress}, ${meeting.actorUserId});`;
 
         log:printInfo("executing query");
 
@@ -173,7 +174,10 @@ function getMeetingsFromStream(stream<Meeting, sql:Error?> meetingStream) return
                 duration: entry.duration,
                 startTime: entry.startTime,
                 timeZone: entry.timeZone,
-                org: entry.org
+                org: entry.org,
+                userId: entry.userId,
+                emailAddress: entry.emailAddress,
+                actorUserId: entry.actorUserId
             };
 
             meetings[meeting.id] = meeting;
