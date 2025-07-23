@@ -47,6 +47,7 @@ export default async function revertBrandingPreference(req: NextApiRequest, res:
             + `?locale=en-US&name=${orgId}&type=ORG`,
             requestOptionsWithBody(session, RequestMethod.DELETE, null)
         );
+        console.log(fetchData.status);
         res.status(200).json(fetchData);
     } catch (err) {
 

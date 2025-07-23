@@ -29,7 +29,7 @@ export const upgradeTier = async (
     organizationId: string,
     tier: "Business" | "Enterprise", // Tier type
     toaster: any,
-    setLoadingDisplay: (display: string) => void,
+    setLoadingDisplay?: Dispatch<SetStateAction<{ display: string }>>,
     setShowUpgradeModal: (show: boolean) => void
 ): Promise<void> => {
     setLoadingDisplay(LOADING_DISPLAY_BLOCK.display);

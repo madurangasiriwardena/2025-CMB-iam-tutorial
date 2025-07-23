@@ -49,6 +49,8 @@ import { ChromePicker } from 'react-color';
 import { signout } from "@teamspace-app/util-authorization-config-util";
 import { upgradeTier } from "pages/api/upgrade";
 import defaultBrandingPreference from "ui/ui-assets/lib/data/defaultBrandingPreference.json";
+import logoImage from "@teamspace-app/ui-assets/lib/images/teamspace_logo.png";
+import favicon from "@teamspace-app/ui-assets/lib/images/teamspace_favicon.png";
 
 /**
  *
@@ -85,7 +87,6 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
         const fetchApplications = async () => {
             try {
                 const res: ApplicationList = (await controllerDecodeListCurrentApplicationInRoot(session) as ApplicationList);
-                console.log("Applications fetched:", res);
                 await setAllApplications(res);
             } catch (error) {
                 console.error("Error fetching applications:", error);
@@ -159,6 +160,8 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
         updatedBrandingPreference.preference.theme[activeTheme].images.favicon.imgURL = values.favicon_url;
         updatedBrandingPreference.preference.theme[activeTheme].colors.primary.main = values.primary_color;
         updatedBrandingPreference.preference.theme[activeTheme].colors.secondary.main = values.secondary_color;
+        updatedBrandingPreference.name = session.orgId;
+        delete updatedBrandingPreference.resolvedFrom;
         controllerDecodeUpdateBrandingPrefrence(session, updatedBrandingPreference)
             .then(() => {
                 const newPersonalization: Personalization = {

@@ -22,9 +22,13 @@ import { getPersonalizationInstance } from "../GetPersonalization/personalizatio
 
 export async function postPersonalization(accessToken: string, payload?: Personalization) {
     const headers = createHeaders(accessToken);
-    const response = await getPersonalizationInstance().post("personalization" , payload, {
-        headers: headers
-    });
-
-    return response;
+    try {
+        const response = await getPersonalizationInstance().post("personalization" , payload, {
+            headers: headers
+        });
+        return response;
+    } catch (error) {
+        // Ignore error responses
+        return undefined;
+    }
 }

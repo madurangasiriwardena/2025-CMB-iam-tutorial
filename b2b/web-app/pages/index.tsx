@@ -29,10 +29,10 @@ import logoImage from "@teamspace-app/ui-assets/lib/images/teamspace_logo.png";
 import favicon from "@teamspace-app/ui-assets/lib/images/teamspace_favicon.png";
 
 /**
- * 
+ *
  * @returns - First interface of the app
  */
-export default function Home() { 
+export default function Home() {
 
     const router: NextRouter = useRouter();
     const [openSignUpModal, setOpenSignUpModal] = React.useState(false);
@@ -44,7 +44,7 @@ export default function Home() {
         const url = new URL(currentUrl);
         const searchParams = url.searchParams;
         const orgId = searchParams.get("orgId");
-      
+
         return orgId;
     };
 
@@ -69,10 +69,10 @@ export default function Home() {
                             logoAltText: "Teamspace App Logo",
                             logoUrl: logoImage.src,
                             org: "",
-                            primaryColor: "#4F40EE",
-                            secondaryColor: "#E0E1E2"
+                            primaryColor: "#6672c6",
+                            secondaryColor: "#aed3f6"
                         };
-                        personalize(defaultPersonalization);  
+                        personalize(defaultPersonalization);
                     }
                 });
             setIsSignUpButtonVisible(false)
@@ -85,7 +85,7 @@ export default function Home() {
 
     return (
         <>
-            <IndexHomeComponent 
+            <IndexHomeComponent
                 tagText="Sign in to continue"
                 signinOnClick={ signinOnClick }
                 signUpOnClick={ () => setOpenSignUpModal(true) }

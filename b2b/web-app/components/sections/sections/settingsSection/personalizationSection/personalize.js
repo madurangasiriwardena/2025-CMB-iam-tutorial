@@ -19,35 +19,35 @@ const cp = require("./colorPalettePlugin.js");
 
 function changeFavicon(newFaviconUrl) {
     const head = document.head || document.getElementsByTagName("head")[0];
-  
+
     // Remove existing favicon, if any
     const existingFavicons = document.querySelectorAll("link[rel='icon']");
-    
+
     existingFavicons.forEach(favicon => {
         head.removeChild(favicon);
     });
-  
+
     // Create a new link tag for the new favicon
     const newFavicon = document.createElement("link");
-    
+
     newFavicon.type = "image/x-icon";
     newFavicon.rel = "icon";
     newFavicon.href = newFaviconUrl;
-  
+
     // Append the new favicon to the head
     head.appendChild(newFavicon);
 }
 
-function updatePetCareLogos(newSrc, newAlt) {
-    const petCareLogos = document.querySelectorAll(".pet-care-logo");
-  
+function updateOrganizationLogo(newSrc, newAlt) {
+    const petCareLogos = document.querySelectorAll(".teamspace-logo");
+
     petCareLogos.forEach(logo => {
-  
+
         // Change the src to a temporary value to force a reload
         logo.src = "";
         logo.alt = "";
         logo.removeAttribute("srcset");
-  
+
         // Set a timeout to change the src to the new value after a short delay
         setTimeout(() => {
             logo.src = newSrc;
@@ -60,7 +60,7 @@ function hexToRGBA(hex, alpha) {
     const r = parseInt(hex.substring(1, 3), 16);
     const g = parseInt(hex.substring(3, 5), 16);
     const b = parseInt(hex.substring(5, 7), 16);
-  
+
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
@@ -91,12 +91,13 @@ function changeColorTheme(newColor) {
     document.documentElement.style.setProperty("--rs-text-link-hover", rsPrimary800);
     document.documentElement.style.setProperty("--rs-text-link-active", rsPrimary900);
     document.documentElement.style.setProperty("--rs-text-active", rsPrimary700);
+    document.documentElement.style.setProperty("--rs-sidenav-inverse-text", rsPrimary700);
     document.documentElement.style.setProperty("--rs-bg-active", rsPrimary500);
     document.documentElement.style.setProperty("--rs-state-hover-bg", rsPrimary50);
     document.documentElement.style.setProperty("--rs-color-focus-ring", hexToRGBA(rsPrimary500, 0.25));
     document.documentElement.style.setProperty("--rs-state-focus-shadow", "0 0 0 3px " + hexToRGBA(rsPrimary500, 0.25));
     document.documentElement.style.setProperty(
-        "--rs-state-focus-outline", 
+        "--rs-state-focus-outline",
         "3px solid " + hexToRGBA(rsPrimary500, 0.25)
     );
     document.documentElement.style.setProperty("--rs-btn-primary-bg", rsPrimary500);
@@ -169,7 +170,7 @@ function changeColorTheme(newColor) {
 export function personalize(personalization) {
     changeColorTheme(personalization.primaryColor);
     changeFavicon(personalization.faviconUrl);
-    updatePetCareLogos(personalization.logoUrl, personalization.logoAltText);
+    updateOrganizationLogo(personalization.logoUrl, personalization.logoAltText);
 }
 
 export default personalize;
