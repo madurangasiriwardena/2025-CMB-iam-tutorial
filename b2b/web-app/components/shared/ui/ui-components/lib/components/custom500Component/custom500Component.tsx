@@ -56,7 +56,7 @@ export function Custom500Component(prop : Custom500ComponentProps) {
                     Go Back
                 </Button>
             </Stack>
-            
+
         </Stack>
     );
 }

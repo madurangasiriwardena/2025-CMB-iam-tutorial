@@ -49,8 +49,6 @@ import {ChromePicker} from 'react-color';
 import {signout} from "@teamspace-app/util-authorization-config-util";
 import {upgradeTier} from "pages/api/upgrade";
 import defaultBrandingPreference from "ui/ui-assets/lib/data/defaultBrandingPreference.json";
-import logoImage from "@teamspace-app/ui-assets/lib/images/teamspace_logo.png";
-import favicon from "@teamspace-app/ui-assets/lib/images/teamspace_favicon.png";
 import {useThemeStore} from "../../../theme-store";
 
 /**
@@ -340,7 +338,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                             <Button
                                 className={styles["revertButton"]}
                                 size="lg"
-                                appearance="primary"
+                                appearance="default"
                                 onClick={onRevert}
                             >
                                 Revert
@@ -414,7 +412,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                     <br></br>
                                     <Button
                                         className={styles.buttonCircular}
-                                        appearance="primary"
+                                        appearance="default"
                                         onClick={onBusinessTierUpgrade}
                                     >
                                         Upgrade Now
@@ -449,7 +447,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                     <br></br>
                                     <Button
                                         className={styles.buttonCircular}
-                                        appearance="primary"
+                                        appearance="default"
                                         onClick={onEnterpriseTierUpgrade}
                                     >
                                         Upgrade Now
@@ -472,13 +470,13 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
-                        appearance="primary"
+                        appearance="default"
                         onClick={signOutCallback} // Trigger the sign-out functionality
                     >
                         Re-login
                     </Button>
                     <Button
-                        appearance="subtle"
+                        appearance="ghost"
                         onClick={() => setShowUpgradeModal(false)} // Close the modal
                     >
                         Cancel

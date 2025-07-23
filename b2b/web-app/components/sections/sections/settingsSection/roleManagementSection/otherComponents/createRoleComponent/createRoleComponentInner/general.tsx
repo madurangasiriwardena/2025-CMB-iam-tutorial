@@ -25,9 +25,9 @@ import FormSuite from "rsuite/Form";
 import styles from "../../../../../../../../styles/Settings.module.css";
 
 /**
- * 
+ *
  * @param prop - `displayName` , `setDisplayName`, `onNext`
- * 
+ *
  * @returns The general section of create role modal
  */
 export default function General(prop) {
@@ -98,7 +98,7 @@ export default function General(prop) {
                                         <Button
                                             className={ styles.addUserButton }
                                             size="md"
-                                            appearance="primary"
+                                            appearance="default"
                                             type="submit"
                                             disabled={ !checkIfJSONisEmpty(errors) }>
                                             Next

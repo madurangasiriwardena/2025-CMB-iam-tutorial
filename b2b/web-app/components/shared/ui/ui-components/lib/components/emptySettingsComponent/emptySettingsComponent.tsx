@@ -21,9 +21,9 @@ import styles from "../../../../../../../styles/app.module.css";
 import { EmptySettingsComponentProps } from "../../models/emptySettingsComponent/emptySettingsComponent";
 
 /**
- * 
+ *
  * @param prop - onAddIdentityProviderClick (function to open add idp modal)
- * 
+ *
  * @returns The componet to show when there is no idp's.
  */
 export function EmptySettingsComponent(prop: EmptySettingsComponentProps) {
@@ -45,7 +45,7 @@ export function EmptySettingsComponent(prop: EmptySettingsComponentProps) {
                     onAddButtonClick
                         ? (<Button
                             className={ styles["buttonCircular"] }
-                            appearance="primary"
+                            appearance="default"
                             onClick={ onAddButtonClick }
                             size="md"
                             style={ { marginTop: "12px" } }>

@@ -141,10 +141,10 @@ export default function EditMeeting(props: EditMeetingProps) {
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={handleSave} appearance="primary">
+                <Button onClick={handleSave} appearance="default">
                     Save
                 </Button>
-                <Button onClick={closeEditMeetingDialog} appearance="subtle">
+                <Button onClick={closeEditMeetingDialog} appearance="ghost">
                     Cancel
                 </Button>
             </Modal.Footer>

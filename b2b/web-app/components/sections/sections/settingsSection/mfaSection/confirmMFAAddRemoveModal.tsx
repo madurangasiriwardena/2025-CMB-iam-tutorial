@@ -47,9 +47,9 @@ interface ConfirmMFAAddRemoveModalProps {
 }
 
 /**
- * 
+ *
  * @param prop - session, applicationDetail, idpDetails, idpIsinAuthSequence, openModal, onModalClose, fetchAllIdPs
- * 
+ *
  * @returns Add/Remove from login flow button
  */
 export default function ConfirmMFAAddRemoveModal(props: ConfirmMFAAddRemoveModalProps) {
@@ -128,7 +128,7 @@ export default function ConfirmMFAAddRemoveModal(props: ConfirmMFAAddRemoveModal
                 <Button
                     onClick={ idpIsinAuthSequence ? onRemove : onAdd }
                     className={ stylesSettings.addUserButton }
-                    appearance="primary">
+                    appearance="default">
                     Confirm
                 </Button>
                 <Button onClick={ onModalClose } className={ stylesSettings.addUserButton } appearance="ghost">
@@ -145,8 +145,8 @@ export default function ConfirmMFAAddRemoveModal(props: ConfirmMFAAddRemoveModal
 }
 
 /**
- * 
- * @returns When then `config.ManagementAPIConfig.SharedApplicationName` is not the correct applicaiton, 
+ *
+ * @returns When then `config.ManagementAPIConfig.SharedApplicationName` is not the correct applicaiton,
  * it will show this section
  */
 function EmptySelectApplicationBody() {
@@ -171,11 +171,11 @@ function EmptySelectApplicationBody() {
 }
 
 /**
- * 
+ *
  * @param prop - idpIsinAuthSequence, applicationDetail
- * 
- * @returns  When then config.ManagementAPIConfig.SharedApplicationName is the correct applicaiton, 
- * it will show this section 
+ *
+ * @returns  When then config.ManagementAPIConfig.SharedApplicationName is the correct applicaiton,
+ * it will show this section
  */
 function ApplicationListAvailable(props: ApplicationListAvailableProps) {
 
@@ -205,9 +205,9 @@ function ApplicationListAvailable(props: ApplicationListAvailableProps) {
 }
 
 /**
- * 
+ *
  * @param prop - application
- * 
+ *
  * @returns The component to show the applicaiton name and the description
  */
 function ApplicationListItem(props: ApplicationListItemProps) {

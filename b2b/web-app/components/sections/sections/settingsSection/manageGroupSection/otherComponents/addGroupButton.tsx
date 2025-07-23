@@ -28,7 +28,7 @@ export default function AddGroupButton(props : AddGroupButtonProps) {
 
     return (
         <Button
-            appearance="primary"
+            appearance="default"
             size="lg"
             onClick={ onClick }>
             + New Group

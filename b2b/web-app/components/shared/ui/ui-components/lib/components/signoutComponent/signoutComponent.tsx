@@ -45,7 +45,7 @@ export function SignOutComponent(prop: SignOutComponentProps) {
             <Modal.Footer>
                 <Button
                     size="lg"
-                    appearance="primary"
+                    appearance="default"
                     type="submit"
                     onClick={ signOut }>
                     Submit
