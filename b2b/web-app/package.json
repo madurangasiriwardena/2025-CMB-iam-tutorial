@@ -15,7 +15,6 @@
     "@babel/traverse": "^7.23.2",
     "@nrwl/eslint-plugin-nx": "15.1.1",
     "@nrwl/jest": "15.2.0",
-    "@nrwl/next": "^15.2.0",
     "@types/react": "18.0.20",
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@typescript-eslint/parser": "^5.36.1",
