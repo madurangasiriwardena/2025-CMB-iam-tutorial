@@ -40,9 +40,9 @@ interface IdentityProviderDetailsProps {
 }
 
 /**
- * 
+ *
  * @param prop - session, id (idp id), fetchAllIdPs (function to fetch all Idps)
- * 
+ *
  * @returns idp item details component
  */
 export default function IdentityProviderDetails(props: IdentityProviderDetailsProps) {
@@ -123,9 +123,9 @@ export default function IdentityProviderDetails(props: IdentityProviderDetailsPr
 }
 
 /**
- * 
+ *
  * @param prop - `idpDetails`, `activeKeyNav`, `activeKeyNavSelect`
- * 
+ *
  * @returns navigation component of idp details
  */
 function IdentityProviderDetailsNav(prop) {
@@ -143,7 +143,7 @@ function IdentityProviderDetailsNav(prop) {
     };
 
     return (
-        <Nav appearance="ghost" activeKey={ activeKeyNav } style={ { marginBottom: 10, marginTop: 15 } }>
+        <Nav appearance="subtle" activeKey={ activeKeyNav } style={ { marginBottom: 10, marginTop: 15 } }>
             <div
                 style={ {
                     alignItems: "stretch",

@@ -16,15 +16,15 @@
  * under the License.
  */
 
-import { controllerDecodeAddGroup } 
+import { controllerDecodeAddGroup }
     from "@teamspace-app/data-access-controller";
-import { AddedGroup, InternalUser, Member, SendGroup } 
+import { AddedGroup, InternalUser, Member, SendGroup }
     from "@teamspace-app/shared/data-access/data-access-common-models-util";
-import { FormButtonToolbar, FormField, ModelHeaderComponent } 
+import { FormButtonToolbar, FormField, ModelHeaderComponent }
     from "@teamspace-app/shared/ui/ui-basic-components";
 import { errorTypeDialog, successTypeDialog } from "@teamspace-app/shared/ui/ui-components";
 import { checkIfJSONisEmpty } from "@teamspace-app/shared/util/util-common";
-import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE, fieldValidate } 
+import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE, fieldValidate }
     from "@teamspace-app/shared/util/util-front-end-util";
 import { Session } from "next-auth";
 import { useEffect, useState } from "react";
@@ -42,9 +42,9 @@ interface AddGroupComponentProps {
 }
 
 /**
- * 
+ *
  * @param prop - session, open (whether modal open or close), onClose (on modal close)
- * 
+ *
  * @returns Modal to add a group.
  */
 export default function AddGroupComponent(props: AddGroupComponentProps) {
@@ -110,7 +110,7 @@ export default function AddGroupComponent(props: AddGroupComponentProps) {
                                 <FormField
                                     name="groupName"
                                     label="Group Name"
-                                    helperText="A name for the group. Can contain between 3 to 30 
+                                    helperText="A name for the group. Can contain between 3 to 30
                                     alphanumeric characters, dashes (-), and underscores (_)."
                                     needErrorMessage={ true }
                                 >
@@ -126,7 +126,7 @@ export default function AddGroupComponent(props: AddGroupComponentProps) {
                                     <></>
                                 </FormField>
                                 <div>
-                                    <Table autoHeight autoWidth data={ users }>
+                                    <Table autoHeight data={ users }>
                                         <Column width={ 500 } align="left">
                                             <HeaderCell>
                                                 <h6>Users</h6>
@@ -135,10 +135,10 @@ export default function AddGroupComponent(props: AddGroupComponentProps) {
                                                 { (rowData: InternalUser) => (
                                                     <Checkbox
                                                         checked={ checkedUsers.includes(rowData) }
-                                                        onChange={ (value: any, checked: boolean, 
+                                                        onChange={ (value: any, checked: boolean,
                                                             event: React.SyntheticEvent<HTMLInputElement>) => {
                                                             if (checked) {
-                                                                setCheckedUsers((prevUsers) => 
+                                                                setCheckedUsers((prevUsers) =>
                                                                     [ ...prevUsers, rowData ]);
                                                             } else {
                                                                 setCheckedUsers((prevUsers) =>

@@ -14,7 +14,7 @@ const BrandingPreviewSection: React.FC<BrandingPreviewSectionProps> = ({ logoUrl
     const themeVars = generateThemeVars({ primaryColor, secondaryColor });
     logoUrl = logoUrl || logoImage.src;
     return (
-        <CustomProvider theme="default">
+        <CustomProvider>
             <div
                 style={{
                     display: "flex",

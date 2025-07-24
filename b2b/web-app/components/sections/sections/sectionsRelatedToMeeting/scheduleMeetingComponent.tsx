@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { FormButtonToolbar, FormField, ModelHeaderComponent } 
+import { FormButtonToolbar, FormField, ModelHeaderComponent }
     from "@teamspace-app/shared/ui/ui-basic-components";
 import { errorTypeDialog, successTypeDialog } from "@teamspace-app/shared/ui/ui-components";
 import { checkIfJSONisEmpty } from "@teamspace-app/shared/util/util-common";
-import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE, fieldValidate } 
+import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE, fieldValidate }
     from "@teamspace-app/shared/util/util-front-end-util";
 import { postMeeting } from "../../../../APICalls/ScheduleMeeting/post-meeting";
 import { Meeting, MeetingInfo } from "../../../../types/meeting";
@@ -43,7 +43,7 @@ interface ScheduleMeetingComponentProps {
  *
  * @param props - session, open (whether modal open or close), onClose (on modal close)
  *
- * @returns Modal to add a doctor.
+ * @returns Modal to add a meeting.
  */
 export default function ScheduleMeetingComponent(props: ScheduleMeetingComponentProps) {
 
@@ -72,7 +72,7 @@ export default function ScheduleMeetingComponent(props: ScheduleMeetingComponent
             form.restart();
             onClose();
         } else {
-            errorTypeDialog(toaster, "Error Occured", "Error occured while adding the doctor. Try again.");
+            errorTypeDialog(toaster, "Error Occurred", "Error occurred while adding the meeting. Try again.");
         }
     };
 
