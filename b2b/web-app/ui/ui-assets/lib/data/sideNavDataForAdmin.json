@@ -1,41 +1,6 @@
 {
     "items": [
         {
-            "title": "Dashboard",
-            "eventKey": "10",
-            "icon": "DashboardIcon",
-            "type": "item",
-            "hideBasedOnScope": true,
-            "scopes": [
-                "list_meetings",
-                "view_org_info",
-                "update_org_info"
-            ]
-        },
-        {
-            "title": "Dashboard",
-            "eventKey": "9",
-            "icon": "DashboardIcon",
-            "type": "item",
-            "hideBasedOnScope": true,
-            "scopes": [
-                "view_profile",
-                "list_bookings",
-                "list_pets"
-            ]
-        },
-        {
-            "title": "Dashboard",
-            "eventKey": "11",
-            "icon": "DashboardIcon",
-            "type": "item",
-            "hideBasedOnScope": true,
-            "scopes": [
-                "create_pet",
-                "list_bookings"
-            ]
-        },
-        {
             "title": "Manage Meetings",
             "eventKey": "3",
             "icon": "ProfileIcon",
@@ -43,18 +8,6 @@
             "hideBasedOnScope": true,
             "scopes": [
                 "create_meeting"
-            ]
-        },
-        {
-            "title": "Profile",
-            "eventKey": "4",
-            "icon": "ProfileIcon",
-            "type": "item",
-            "hideBasedOnScope": true,
-            "scopes": [
-                "view_profile",
-                "view_doctor",
-                "update_doctor"
             ]
         },
         {
@@ -74,7 +27,7 @@
         {
             "title": "Manage Roles",
             "eventKey": "2-2",
-            "icon": "ManageDoctorIcon",
+            "icon": "ManageGroups",
             "type": "item",
             "hideBasedOnScope": true,
             "scopes": [
@@ -134,71 +87,6 @@
                         "internal_org_application_mgt_update"
                     ]
                 }
-            ]
-        },
-        {
-            "title": "Bookings",
-            "eventKey": "5",
-            "icon": "BookingsIcon",
-            "type": "item",
-            "hideBasedOnScope": true,
-            "scopes": [
-                "view_profile",
-                "list_bookings"
-            ]
-        },
-        {
-            "title": "Pets",
-            "eventKey": "6",
-            "icon": "PetsIcon",
-            "type": "item",
-            "hideBasedOnScope": true,
-            "scopes": [
-                "create_pet",
-                "view_pet",
-                "list_pets"
-            ]
-        },
-        {
-            "title": "Channelling",
-            "eventKey": "7",
-            "icon": "ChannellingIcon",
-            "type": "menu",
-            "hideBasedOnScope": true,
-            "items": [
-                {
-                    "title": "Channel a Doctor",
-                    "eventKey": "7-1",
-                    "type": "item",
-                    "icon": "ManageUserIcon",
-                    "scopes": [
-                        "create_pet",
-                        "list_pets",
-                        "list_doctors",
-                        "view_doctor",
-                        "view_pet",
-                        "create_bookings"
-                    ]
-                },
-                {
-                    "title": "Available Bookings",
-                    "eventKey": "7-2",
-                    "type": "item",
-                    "scopes": [
-                        "create_pet",
-                        "list_bookings"
-                    ]
-                }
-            ]
-        },
-        {
-            "title": "Settings",
-            "eventKey": "8",
-            "icon": "GearCircleIcon",
-            "type": "menu",
-            "hideBasedOnScope": true,
-            "scopes": [
-                "create_pet"
             ]
         }
     ]

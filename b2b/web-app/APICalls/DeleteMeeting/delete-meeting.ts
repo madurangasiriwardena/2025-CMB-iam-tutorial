@@ -18,9 +18,9 @@
 import createHeaders from "../createHeaders";
 import { getMeetingInstance } from "../getMeetings/meetingInstance";
 
-export async function deleteMeeting(accessToken: string, doctorId: string) {
+export async function deleteMeeting(accessToken: string, meetingId: string) {
     const headers = createHeaders(accessToken);
-    const response = await getMeetingInstance().delete(`/meetings/${encodeURIComponent(doctorId)}`, {
+    const response = await getMeetingInstance().delete(`/meetings/${encodeURIComponent(meetingId)}`, {
         headers: headers
     });
 

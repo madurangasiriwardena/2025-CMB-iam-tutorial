@@ -22,9 +22,9 @@ import { Meeting } from "../../types/meeting";
 import createHeaders from "../createHeaders";
 
 
-export async function getMeeting(accessToken: string, doctorId: string) {
+export async function getMeeting(accessToken: string, meetingId: string) {
     const headers = createHeaders(accessToken);
-    const response = await getMeetingInstance().get(`meetings/${encodeURI(doctorId)}`, {
+    const response = await getMeetingInstance().get(`meetings/${encodeURI(meetingId)}`, {
         headers: headers
     });
 

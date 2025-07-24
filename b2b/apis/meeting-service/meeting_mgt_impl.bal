@@ -105,8 +105,8 @@ function deleteMeetingById(string org, string meetingId) returns string|()|error
     if (useDB) {
         return dbDeleteMeetingById(org, meetingId);
     } else {
-        Meeting? doctorRecord = meetingRecords[org, meetingId];
-        if doctorRecord is () {
+        Meeting? meetingRecord = meetingRecords[org, meetingId];
+        if meetingRecord is () {
             return ();
         }
         _ = meetingRecords.remove([org, meetingId]);
@@ -120,7 +120,7 @@ function addMeeting(MeetingItem meetingItem, UserInfo userInfo) returns Meeting|
     time:Utc currentUtc = time:utcNow();
     time:Civil currentTime = time:utcToCivil(currentUtc);
     string timeString = civilToIso8601(currentTime);
-    
+
     Creator creator = {
         userId: userInfo.userId,
         emailAddress: userInfo.emailAddress,

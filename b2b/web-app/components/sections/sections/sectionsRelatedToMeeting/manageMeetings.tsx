@@ -49,7 +49,7 @@ export default function ManageMeetingsSection(props: ManageMeetingsSectionProps)
     const [ isMeetingEditOpen, setIsMeetingEditOpen ] = useState(false);
     const router = useRouter();
 
-    async function getDoctorList() {
+    async function getMeetingList() {
         const accessToken = session.accessToken;
 
         getMeetings(accessToken)
@@ -65,7 +65,7 @@ export default function ManageMeetingsSection(props: ManageMeetingsSectionProps)
     }
 
     useEffect(() => {
-        getDoctorList();
+        getMeetingList();
     }, [ session, isScheduleMeetingOpen, isMeetingEditOpen ]);
 
     useEffect(() => {
@@ -80,7 +80,7 @@ export default function ManageMeetingsSection(props: ManageMeetingsSectionProps)
         setIsScheduleMeetingOpen(false);
     };
 
-    const closeDoctorOverviewDialog = (): void => {
+    const closeMeetingOverviewDialog = (): void => {
         setIsMeetingOverviewOpen(false);
     };
 
@@ -145,7 +145,7 @@ export default function ManageMeetingsSection(props: ManageMeetingsSectionProps)
                     meeting={ meeting }
                     isMeetingEditOpen={ isMeetingEditOpen }
                     setIsMeetingEditOpen={ setIsMeetingEditOpen }
-                    onClose={ closeDoctorOverviewDialog }
+                    onClose={ closeMeetingOverviewDialog }
                 />
             </div>
         </div>
