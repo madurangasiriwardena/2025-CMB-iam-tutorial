@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import {Button} from "rsuite";
+import { Button } from "rsuite";
 import styles from "./indexHomeComponent.module.css";
 import { IndexHomeComponentProps } from "../../models/indexHomeComponent/indexHomeComponent";
 
@@ -26,32 +26,69 @@ import { IndexHomeComponentProps } from "../../models/indexHomeComponent/indexHo
  * @param prop - tagText, signinOnClick
  */
 export function IndexHomeComponent(prop: IndexHomeComponentProps) {
-
     const { logoComponent, signinOnClick, signUpOnClick, isSignUpButtonVisible } = prop;
 
     return (
-        <div>
-            <main className={ styles["main"] }>
-                <div className={ styles["signInDiv"] }>
-                    { logoComponent }
-                    <div className={ styles["image"] }>
+        <div className={styles.container}>
+            {/* Top Bar */}
+            <header className={styles.topBar}>
+                <div className={styles.logoContainer}>
+                    {logoComponent}
+                </div>
+                <div className={styles.buttonContainer}>
                     <Button
-                        className={ styles["signInDivButton"] }
+                        className={styles.signInButton}
                         size="md"
                         appearance="default"
-                        onClick={ signinOnClick }>
+                        onClick={signinOnClick}
+                    >
                         Sign In
                     </Button>
-                        {isSignUpButtonVisible && (
-                            <Button
-                                className={ styles["signUpDivButton"] }
-                                size="md"
-                                appearance="ghost"
-                                onClick={ signUpOnClick }>
-                                Sign Up
-                            </Button>
-                        )}
+                    {isSignUpButtonVisible && (
+                        <Button
+                            className={styles.signUpButton}
+                            size="md"
+                            appearance="primary"
+                            onClick={signUpOnClick}
+                        >
+                            Sign Up
+                        </Button>
+                    )}
+                </div>
+            </header>
 
+            {/* Hero Section */}
+            <main className={styles.main}>
+                <div className={styles.heroContent}>
+                    <h1 className={styles.heroTitle}>Empower Your Team</h1>
+                    <p className={styles.heroSubtitle}>
+                        Seamlessly connect, collaborate, and achieve your goals with Teamspace.
+                    </p>
+                    <p className={styles.heroSubtitle}>
+                        Unlock the potential of your team with tools designed for productivity, 
+                        communication, and collaboration. Start your journey today!
+                    </p>
+                    <Button
+                        className={styles.getStartedButton}
+                        size="lg"
+                        appearance="primary"
+                        onClick={signUpOnClick}
+                    >
+                        Get Started
+                    </Button>
+                </div>
+                <div className={styles.heroImage}>
+                    <div className={styles.imageRotator}>
+                        <img
+                            src="/scheduling.jpg"
+                            alt="Scheduling"
+                            className={styles.image}
+                        />
+                        <img
+                            src="/team-collab.jpg"
+                            alt="Team collaboration"
+                            className={styles.image}
+                        />
                     </div>
                 </div>
             </main>

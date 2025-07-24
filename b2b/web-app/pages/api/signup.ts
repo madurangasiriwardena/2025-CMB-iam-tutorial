@@ -200,22 +200,26 @@ export default async function handler(
     const accessToken = switchOrgRes.data.access_token;
 
     // Step 5: Check for DEFAULT userstore
-    const defaultUserstoreExists = await pollForDefaultUserstore(
-      accessToken,
-      orgId
-    );
+    const userstoreName = getConfig().BusinessAdminAppConfig.ManagementAPIConfig.UserStore;
+    if (userstoreName === "DEFAULT") {
 
-    if (!defaultUserstoreExists) {
+      const defaultUserstoreExists = await pollForDefaultUserstore(
+        accessToken,
+        orgId
+      );
 
-      if (rootAccessToken && orgId) {
-        await rollbackOrganization(rootAccessToken, orgId);
+      if (!defaultUserstoreExists) {
+
+        if (rootAccessToken && orgId) {
+          await rollbackOrganization(rootAccessToken, orgId);
+        }
+
+        return res.status(408).json({
+          error: "Timed out waiting for DEFAULT userstore to be provisioned",
+          message:
+            "Sign up failed. Please try again.",
+        });
       }
-
-      return res.status(408).json({
-        error: "Timed out waiting for DEFAULT userstore to be provisioned",
-        message:
-          "Sign up failed. Please try again.",
-      });
     }
 
     // Step 6: Create user.
