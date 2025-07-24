@@ -22,9 +22,9 @@ import styles from "./formButtonToolbar.module.css";
 import { FormButtonToolbarProps } from "../../models/formButtonToolbar/formButtonToolbarProps";
 
 /**
- * 
+ *
  * @param props `FormButtonToolbarProps`
- * 
+ *
  * @returns Button toolbar for the forms
  */
 export function FormButtonToolbar(props: FormButtonToolbarProps ) {
@@ -36,9 +36,8 @@ export function FormButtonToolbar(props: FormButtonToolbarProps ) {
 
             <ButtonToolbar>
                 <Button
-                    className={styles.buttonCircular}
                     size="lg"
-                    appearance="primary"
+                    appearance="ghost"
                     type="submit"
                     block={block}
                     disabled={ submitButtonDisabled }>

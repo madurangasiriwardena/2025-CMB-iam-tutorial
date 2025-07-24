@@ -48,6 +48,7 @@ import {ChromePicker} from 'react-color';
 import {signout} from "@teamspace-app/util-authorization-config-util";
 import {upgradeTier} from "pages/api/upgrade";
 import defaultBrandingPreference from "ui/ui-assets/lib/data/defaultBrandingPreference.json";
+import BrandingPreviewSection from "./BrandingPreviewSection";
 
 /**
  *
@@ -58,7 +59,6 @@ import defaultBrandingPreference from "ui/ui-assets/lib/data/defaultBrandingPref
 interface PersonalizationSectionComponentProps {
     session: Session
 }
-
 
 export default function PersonalizationSectionComponent(props: PersonalizationSectionComponentProps) {
     const {session} = props;
@@ -153,7 +153,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
         const activeTheme: string = updatedBrandingPreference.preference.theme.activeTheme;
         const defaultPrimaryColor = defaultBrandingPreference.preference.theme[activeTheme].colors.primary.main;
         const defaultSecondaryColor = defaultBrandingPreference.preference.theme[activeTheme].colors.secondary.main;
-        
+
         // Now updatedBrandingPreference is guaranteed to have the correct structure
         updatedBrandingPreference.preference.theme[activeTheme].images.logo.imgURL = values.logo_url;
         updatedBrandingPreference.preference.theme[activeTheme].images.logo.altText = values.logo_alt_text;
@@ -246,8 +246,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                         title="Personalization"
                         subtitle="Customize the user interfaces of your application."
                     />
-
-                    <div style={{ margin: "50px" }}>
+                    <div style={{ display: "flex", gap: "40px", alignItems: "flex-start", justifyContent: "center", width: "100%", marginTop: "30px" }}>
                         <Form
                             onSubmit={onUpdate}
                             initialValues={{
@@ -257,92 +256,134 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                 primary_color: primaryColor,
                                 secondary_color: secondaryColor
                             }}
-                            render={({ handleSubmit, form, submitting, pristine, errors }) => (
-                                <FormSuite
-                                    layout="vertical"
-                                    className={styles.addUserForm}
-                                    onSubmit={() => {
-                                        handleSubmit().then(form.restart);
-                                    }}
-                                    fluid
-                                >
-                                    {/* Logo URL Field */}
-                                    <FormField
-                                        name="logo_url"
-                                        label="Logo URL"
-                                        helperText={
-                                            "Use an image that’s at least 600x600 pixels and less than 1mb in size for better performance."
-                                        }
-                                        needErrorMessage={true}
-                                    >
-                                        <FormSuite.Control name="input" value="a" />
-                                    </FormField>
-
-                                    {/* Logo Alt Text Field */}
-                                    <FormField
-                                        name="logo_alt_text"
-                                        label="Logo Alt Text"
-                                        helperText={
-                                            "Add a short description of the logo image to display when the image does not load and also for SEO and accessibility."
-                                        }
-                                        needErrorMessage={true}
-                                    >
-                                        <FormSuite.Control name="input" />
-                                    </FormField>
-
-                                    {/* Favicon URL Field */}
-                                    <FormField
-                                        name="favicon_url"
-                                        label="Favicon URL"
-                                        helperText={
-                                            "Use an image with a square aspect ratio that’s at least 16x16 pixels in size for better results."
-                                        }
-                                        needErrorMessage={true}
-                                    >
-                                        <FormSuite.Control name="input" type="url" />
-                                    </FormField>
-
-                                    {/* Show Primary and Secondary Color Pickers if Advanced Branding Scope is True */}
-                                    {hasAdvancedBrandingUpdateScope && (
-                                        <>
-                                            <Field
-                                                name="primary_color"
-                                                component={ColorPickerField}
-                                                label="Primary Colour"
-                                            />
-                                            <Field
-                                                name="secondary_color"
-                                                component={ColorPickerField}
-                                                label="Secondary Colour"
-                                            />
-                                        </>
-                                    )}
-
-                                    <FormButtonToolbar
-                                        submitButtonText="Update"
-                                        submitButtonDisabled={
-                                            submitting || pristine || !checkIfJSONisEmpty(errors)
-                                        }
-                                        needCancel={false}
-                                    />
-                                </FormSuite>
+                            render={({ handleSubmit, values, form, submitting, pristine, errors }) => (
+                                <>
+                                    <div style={{ flex: 1, minWidth: "340px" }}>
+                                        <FormSuite
+                                            layout="vertical"
+                                            className={styles.addUserForm}
+                                            onSubmit={() => {
+                                                handleSubmit().then(form.restart);
+                                            }}
+                                            fluid>
+                                            <FormField
+                                                name="logo_url"
+                                                label="Logo URL"
+                                                helperText={
+                                                    "Use an image that’s at least 600x600 pixels and " +
+                                                    "less than 1mb in size for better performance."
+                                                }
+                                                needErrorMessage={true}
+                                            >
+                                                <FormSuite.Control name="input" value="a"/>
+                                            </FormField>
+                                            <FormField
+                                                name="logo_alt_text"
+                                                label="Logo Alt Text"
+                                                helperText={
+                                                    "Add a short description of the logo image to display when " +
+                                                    "the image does not load and also for SEO and accessibility."
+                                                }
+                                                needErrorMessage={true}
+                                            >
+                                                <FormSuite.Control name="input"/>
+                                            </FormField>
+                                            <FormField
+                                                name="favicon_url"
+                                                label="Favicon URL"
+                                                helperText={
+                                                    "Use an image with a square aspect ratio that’s " +
+                                                    "at least 16x16 pixels in size for better results."
+                                                }
+                                                needErrorMessage={true}
+                                            >
+                                                <FormSuite.Control name="input" type="url"/>
+                                            </FormField>
+                                            <div style={{ display: "flex", gap: 24, width: "100%" }}>
+                                                <div style={{ flex: 1 }}>
+                                                    <Field
+                                                        name="primary_color"
+                                                        component={ColorPickerField}
+                                                        label="Primary Colour"
+                                                    />
+                                                </div>
+                                                <div style={{ flex: 1 }}>
+                                                    <Field
+                                                        name="secondary_color"
+                                                        component={ColorPickerField}
+                                                        label="Button Colour"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <br/>
+                                            <div style={{
+                                                display: "flex",
+                                                justifyContent: "space-between",
+                                                alignItems: "center",
+                                                marginTop: "24px",
+                                                gap: "12px"
+                                            }}>
+                                                <span style={{
+                                                    display: "flex",
+                                                    flexDirection: "column",
+                                                    textAlign: "left",
+                                                    flex: 1
+                                                }}>
+                                                    <span style={{fontSize: "16px", fontWeight: 600}}>
+                                                        Save and publish the theme
+                                                    </span>
+                                                </span>
+                                                <Button
+                                                    size="lg"
+                                                    appearance="default"
+                                                    style={{ minWidth: 120 }}
+                                                >Update</Button>
+                                            </div>
+                                        </FormSuite>
+                                        <Divider style={{background: "#bebebe"}}/>
+                                        <div style={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                            alignItems: "center",
+                                            marginTop: "24px",
+                                            gap: "12px"
+                                        }}>
+                                            <span style={{display: "flex", flexDirection: "column", textAlign: "left", flex: 1}}>
+                                                <span style={{color: "red", fontSize: "16px", fontWeight: 600}}>
+                                                    Revert to default
+                                                </span>
+                                                <span style={{color: "black", fontSize: "14px"}}>
+                                                    Once the branding preferences are reverted, they can't be recovered and your users will see Asgardeo's default branding.
+                                                </span>
+                                            </span>
+                                            <Button
+                                                className={styles["revertButton"]}
+                                                size="lg"
+                                                appearance="default"
+                                                style={{ minWidth: 120 }}
+                                                onClick={onRevert}
+                                            >
+                                                Revert
+                                            </Button>
+                                        </div>
+                                    </div>
+                                    <div style={{ flex: 1, minWidth: "340px", maxWidth: "550px", background: "#fff", borderRadius: "16px", boxShadow: "0 4px 24px rgba(0,0,0,0.10)", padding: "32px 24px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+                                        <h4 style={{ marginBottom: "24px", fontWeight: 700, fontSize: "20px", color: "#222" }}>Preview</h4>
+                                        <BrandingPreviewSection
+                                            logoUrl={values.logo_url}
+                                            logoAltText={values.logo_alt_text}
+                                            primaryColor={values.primary_color}
+                                            secondaryColor={values.secondary_color}
+                                        />
+                                    </div>
+                                </>
                             )}
                         />
-                        <Divider style={{ background: "#bebebe" }} />
-                        <Button
-                            className={styles["revertButton"]}
-                            size="lg"
-                            appearance="default"
-                            onClick={onRevert}
-                        >
-                            {"Revert to default"}
-                        </Button>
                     </div>
-
                     {/* Show Enterprise Plan Upgrade if Advanced Branding Scope is False */}
                     {!hasAdvancedBrandingUpdateScope && (
                         <div style={{ marginBottom: "30px" }}>
-                             <div
+                            <div
                                 style={{
                                     margin: "20px 0",
                                     padding: "10px",
@@ -386,7 +427,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                             margin: "10px 0"
                                         }}
                                     >
-                                        $9/user/mo
+                                        $9/month/user
                                     </p>
                                     <p>
                                         Personalization: <strong>Advanced</strong>
@@ -459,7 +500,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                         margin: "10px 0"
                                     }}
                                 >
-                                    $5/user/mo
+                                    $5/month/user
                                 </p>
                                 <p>
                                     Personalization: <strong>Basic</strong>
@@ -493,7 +534,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                         margin: "10px 0"
                                     }}
                                 >
-                                    $9/user/mo
+                                    $9/month/user
                                 </p>
                                 <p>
                                     Personalization: <strong>Advanced</strong>
