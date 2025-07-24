@@ -116,8 +116,8 @@ export const upgradeTier = async (
         // Show success modal
         setShowUpgradeModal(true);
     } catch (error) {
-        console.error(`Error while upgrading ${tier} Tier`, error);
-        errorTypeDialog(toaster, "Error Occured", `Failed to upgrade to ${tier} tier.`);
+        console.error(`Error while upgrading ${tier} Plan`, error);
+        errorTypeDialog(toaster, "Error Occurred", `Failed to upgrade to ${tier} Plan.`);
     } finally {
         setLoadingDisplay(LOADING_DISPLAY_NONE.display);
     }

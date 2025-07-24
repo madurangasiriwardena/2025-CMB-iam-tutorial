@@ -16,7 +16,7 @@ service / on new http:Listener(9093) {
 
     @http:ResourceConfig {
         auth: {
-            scopes: "create_branding"
+            scopes: "create_basic_branding"
         }
     }
     resource function post personalization(http:Headers headers, @http:Payload Personalization newPersonalization) returns Personalization|error? {

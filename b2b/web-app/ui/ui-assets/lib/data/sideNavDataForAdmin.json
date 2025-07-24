@@ -103,7 +103,7 @@
             "type": "item",
             "hideBasedOnScope": true,
             "scopes": [
-            
+                "internal_org_application_mgt_view"
             ]
         },
         {
