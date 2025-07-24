@@ -20,6 +20,7 @@ import { requestOptions } from "@teamspace-app/data-access-common-api-util";
 import { dataNotRecievedError, notPostError } 
     from "@teamspace-app/shared/data-access/data-access-common-api-util";
 import { getOrgUrl } from "@teamspace-app/shared/util/util-application-config-util";
+import { getConfig } from "@teamspace-app/util-application-config-util";
 import { NextApiRequest, NextApiResponse } from "next";
 
 /**
@@ -38,10 +39,11 @@ export default async function viewUsers(req: NextApiRequest, res: NextApiRespons
     const body = JSON.parse(req.body);
     const session = body.session;
     const orgId = body.orgId;
+    const userstoreDomain = getConfig().BusinessAdminAppConfig.ManagementAPIConfig.UserStore;
 
     try {
         const fetchData = await fetch(
-            `${getOrgUrl(orgId)}/scim2/Users?domain=DEFAULT`,
+            `${getOrgUrl(orgId)}/scim2/Users?domain=${userstoreDomain}`,
             requestOptions(session)
         );
         const users = await fetchData.json();

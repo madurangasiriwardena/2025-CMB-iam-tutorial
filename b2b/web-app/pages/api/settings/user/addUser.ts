@@ -23,6 +23,7 @@ import {
   notPostError,
 } from "@teamspace-app/shared/data-access/data-access-common-api-util";
 import { getOrgUrl } from "@teamspace-app/shared/util/util-application-config-util";
+import { getConfig } from "@teamspace-app/util-application-config-util";
 
 /**
  * backend API call to create a user
@@ -42,6 +43,7 @@ export default async function addUser(req, res) {
   const session = body.session;
   const orgId = body.orgId;
   const user = body.param;
+  const userstoreDomain = getConfig().BusinessAdminAppConfig.ManagementAPIConfig.UserStore;
 
   try {
     const fetchData = await fetch(
@@ -58,7 +60,7 @@ export default async function addUser(req, res) {
               emails: [{ primary: true, value: user.email }],
               name: { familyName: user.lastName, givenName: user.firstName },
               password: user.password,
-              userName: `DEFAULT/${user.email}`,
+              userName: `${userstoreDomain}/${user.email}`,
             }),
           }
     );
