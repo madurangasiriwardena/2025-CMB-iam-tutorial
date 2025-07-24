@@ -333,11 +333,11 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                                         Save and publish the theme
                                                     </span>
                                                 </span>
-                                                <FormButtonToolbar
-                                                    submitButtonText="Update"
-                                                    submitButtonDisabled={submitting || pristine || !checkIfJSONisEmpty(errors)}
-                                                    needCancel={false}
-                                                />
+                                                <Button
+                                                    size="lg"
+                                                    appearance="default"
+                                                    style={{ minWidth: 120 }}
+                                                >Update</Button>
                                             </div>
                                         </FormSuite>
                                         <Divider style={{background: "#bebebe"}}/>
@@ -360,6 +360,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                                 className={styles["revertButton"]}
                                                 size="lg"
                                                 appearance="default"
+                                                style={{ minWidth: 120 }}
                                                 onClick={onRevert}
                                             >
                                                 Revert
@@ -426,7 +427,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                             margin: "10px 0"
                                         }}
                                     >
-                                        $9/user/mo
+                                        $9/month/user
                                     </p>
                                     <p>
                                         Personalization: <strong>Advanced</strong>
@@ -499,7 +500,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                         margin: "10px 0"
                                     }}
                                 >
-                                    $5/user/mo
+                                    $5/month/user
                                 </p>
                                 <p>
                                     Personalization: <strong>Basic</strong>
@@ -533,7 +534,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                         margin: "10px 0"
                                     }}
                                 >
-                                    $9/user/mo
+                                    $9/month/user
                                 </p>
                                 <p>
                                     Personalization: <strong>Advanced</strong>
