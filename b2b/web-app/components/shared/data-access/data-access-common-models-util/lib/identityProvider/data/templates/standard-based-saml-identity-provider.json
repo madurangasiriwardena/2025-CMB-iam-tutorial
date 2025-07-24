@@ -1,5 +1,5 @@
 {
-    "description": "Configure a new enterprise identity provider with SAML 2.0",
+    "description": "Enterprise identity provider with SAML 2.0",
     "id": "enterprise-saml-idp",
     "idp": {
         "image": "",

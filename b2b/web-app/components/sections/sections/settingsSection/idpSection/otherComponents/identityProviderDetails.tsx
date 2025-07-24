@@ -97,7 +97,7 @@ export default function IdentityProviderDetails(props: IdentityProviderDetailsPr
                     (<AccordianItemHeaderComponent
                         imageSrc={ getImageForTheIdentityProvider(idpDetails.templateId) }
                         title={ idpDetails.name }
-                        description={ idpDetails.description } />)
+                        description={ " " } />)
                 }
                 eventKey={ id }
                 id={ id }>
