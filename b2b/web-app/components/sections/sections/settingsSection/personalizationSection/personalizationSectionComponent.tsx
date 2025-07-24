@@ -234,7 +234,6 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
     // Check if the session has the required scope
     const hasBrandingUpdateScope = session?.scope?.includes("internal_org_branding_preference_update");
 
-    // In the main render, use form state for live preview
     return (
         <Container>
             {hasBrandingUpdateScope ? (
@@ -243,7 +242,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                         title="Personalization"
                         subtitle="Customize the user interfaces of your application."
                     />
-                    <div style={{ display: "flex", gap: "40px", alignItems: "flex-start", justifyContent: "center", width: "100%" }}>
+                    <div style={{ display: "flex", gap: "40px", alignItems: "flex-start", justifyContent: "center", width: "100%", marginTop: "30px" }}>
                         <Form
                             onSubmit={onUpdate}
                             initialValues={{
@@ -336,8 +335,8 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                             </Button>
                                         </div>
                                     </div>
-                                    <div style={{ flex: 1, minWidth: "340px", maxWidth: "480px", background: "#fff", borderRadius: "16px", boxShadow: "0 4px 24px rgba(0,0,0,0.10)", padding: "32px 24px", display: "flex", flexDirection: "column", alignItems: "center" }}>
-                                        <h4 style={{ marginBottom: "24px", fontWeight: 700, fontSize: "20px", color: "#222" }}>Live Branding Preview</h4>
+                                    <div style={{ flex: 1, minWidth: "340px", maxWidth: "550px", background: "#fff", borderRadius: "16px", boxShadow: "0 4px 24px rgba(0,0,0,0.10)", padding: "32px 24px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+                                        <h4 style={{ marginBottom: "24px", fontWeight: 700, fontSize: "20px", color: "#222" }}>Preview</h4>
                                         <BrandingPreviewSection
                                             logoUrl={values.logo_url}
                                             logoAltText={values.logo_alt_text}

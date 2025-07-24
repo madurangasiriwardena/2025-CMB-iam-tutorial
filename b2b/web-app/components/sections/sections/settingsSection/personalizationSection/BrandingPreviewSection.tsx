@@ -19,12 +19,11 @@ const BrandingPreviewSection: React.FC<BrandingPreviewSectionProps> = ({ logoUrl
                 style={{
                     display: "flex",
                     height: "340px",
-                    width: "660px",
+                    width: "500px",
                     background: "#f7f7fa",
                     borderRadius: "12px",
                     boxShadow: "0 2px 12px rgba(0,0,0,0.10)",
                     overflow: "hidden",
-                    transform: "scale(0.7)",
                     transformOrigin: "top left"
                 }}
                 className="branding-preview-theme"
@@ -42,7 +41,7 @@ const BrandingPreviewSection: React.FC<BrandingPreviewSectionProps> = ({ logoUrl
                 }}>
                     {/* Logo at the top */}
                     <div style={{ width: "100%" }}>
-                        <img src={logoUrl} alt={logoAltText} style={{ maxWidth: "80px", maxHeight: "80px", marginBottom: "10px", display: "block", marginLeft: "auto", marginRight: "auto" }} />
+                        <img src={logoUrl} alt={logoAltText} style={{ maxWidth: "85px", maxHeight: "85px", marginBottom: "10px", display: "block", marginLeft: "auto", marginRight: "auto" }} />
                         {/* Menu items */}
                         <div style={{ marginTop: "30px" }}>
                             <div style={{
@@ -51,69 +50,74 @@ const BrandingPreviewSection: React.FC<BrandingPreviewSectionProps> = ({ logoUrl
                                 fontWeight: 700,
                                 borderRadius: "6px",
                                 padding: "5px 0",
-                                textAlign: "center",
-                                fontSize: "10px",
+                                textAlign: "left",
+                                paddingLeft: "15px",
+                                fontSize: "8px",
                                 boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
                             }}>Manage Meetings</div>
                             <div style={{
                                 color: "#e0e0e0",
                                 padding: "5px 0",
-                                textAlign: "center",
-                                fontSize: "10px"
+                                textAlign: "left",
+                                paddingLeft: "15px",
+                                fontSize: "8px"
                             }}>Manage Users</div>
                             <div style={{
                                 color: "#e0e0e0",
                                 padding: "5px 0",
-                                textAlign: "center",
-                                fontSize: "10px"
+                                textAlign: "left",
+                                paddingLeft: "15px",
+                                fontSize: "8px"
                             }}>Manage Roles</div>
                             <div style={{
                                 color: "#e0e0e0",
                                 padding: "5px 0",
-                                textAlign: "center",
-                                fontSize: "10px"
+                                textAlign: "left",
+                                paddingLeft: "15px",
+                                fontSize: "8px"
                             }}>Personalization</div>
                             <div style={{
                                 color: "#e0e0e0",
                                 padding: "5px 0",
-                                textAlign: "center",
-                                fontSize: "10px"
+                                textAlign: "left",
+                                paddingLeft: "15px",
+                                fontSize: "8px"
                             }}>Security</div>
                         </div>
                     </div>
                     {/* Sign out button at the bottom */}
                     <Button style={{
-                        width: "84%",
-                        padding: "9px 0",
+                        width: "50%",
+                        padding: "2px 0",
                         border: "none",
                         borderRadius: "6px",
                         fontWeight: 600,
-                        fontSize: "10px",
+                        fontSize: "8px",
                         marginBottom: "0",
                         cursor: "pointer",
                     }}>Sign out</Button>
                 </div>
                 {/* Main Panel */}
                 <div style={{ flex: 1, padding: "28px 32px", background: "#fff", display: "flex", flexDirection: "column" }}>
-                    <div style={{ fontWeight: 700, fontSize: "16px", marginBottom: "20px", color: "#222" }}>Manage Meetings</div>
-                    <Button
-                        style={{
-                            alignSelf: "flex-end",
-                            marginTop: "22px",
-                            padding: "10px 24px",
-                            border: "none",
-                            borderRadius: "6px",
-                            fontWeight: 600,
-                            fontSize: "14px",
-                            cursor: "pointer",
-                        }}
-                    >
-                        Schedule a meeting
-                    </Button>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px" }}>
+                        <div style={{ fontWeight: 700, fontSize: "12px", color: "#222" }}>Manage Meetings</div>
+                        <Button
+                            style={{
+                                padding: "5px 10px",
+                                border: "none",
+                                borderRadius: "6px",
+                                fontWeight: 600,
+                                fontSize: "8px",
+                                cursor: "pointer",
+                            }}
+                        >
+                            Schedule a meeting
+                        </Button>
+                    </div>
                     <ul style={{ listStyle: "none", padding: 0, margin: 0, flex: 1 }}>
-                        <li style={{ padding: "12px 0", borderBottom: "1px solid #eee", fontSize: "14px", color: "#333" }}>Team Sync - 10:00 AM</li>
-                        <li style={{ padding: "12px 0", borderBottom: "1px solid #eee", fontSize: "14px", color: "#333" }}>Project Update - 2:00 PM</li>
-                        <li style={{ padding: "12px 0", borderBottom: "1px solid #eee", fontSize: "14px", color: "#333" }}>Client Call - 4:30 PM</li>
+                        <li style={{ padding: "10px 0", borderBottom: "1px solid #eee", fontSize: "8px", color: "#333" }}>Team Sync - 10:00 AM</li>
+                        <li style={{ padding: "12px 0", borderBottom: "1px solid #eee", fontSize: "8px", color: "#333" }}>Project Update - 2:00 PM</li>
+                        <li style={{ padding: "12px 0", borderBottom: "1px solid #eee", fontSize: "8px", color: "#333" }}>Client Call - 4:30 PM</li>
                     </ul>
                 </div>
             </div>
