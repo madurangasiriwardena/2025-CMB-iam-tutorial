@@ -150,13 +150,16 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
         // Use defaultBrandingPreference if brandingPreference is not present
         const updatedBrandingPreference: BrandingPreference = brandingPreference
             ? brandingPreference : defaultBrandingPreference;
-        // Now updatedBrandingPreference is guaranteed to have the correct structure
         const activeTheme: string = updatedBrandingPreference.preference.theme.activeTheme;
+        const defaultPrimaryColor = defaultBrandingPreference.preference.theme[activeTheme].colors.primary.main;
+        const defaultSecondaryColor = defaultBrandingPreference.preference.theme[activeTheme].colors.secondary.main;
+
+        // Now updatedBrandingPreference is guaranteed to have the correct structure
         updatedBrandingPreference.preference.theme[activeTheme].images.logo.imgURL = values.logo_url;
         updatedBrandingPreference.preference.theme[activeTheme].images.logo.altText = values.logo_alt_text;
         updatedBrandingPreference.preference.theme[activeTheme].images.favicon.imgURL = values.favicon_url;
-        updatedBrandingPreference.preference.theme[activeTheme].colors.primary.main = values.primary_color;
-        updatedBrandingPreference.preference.theme[activeTheme].colors.secondary.main = values.secondary_color;
+        updatedBrandingPreference.preference.theme[activeTheme].colors.primary.main = values.primary_color || defaultPrimaryColor; // Fallback to default if empty
+        updatedBrandingPreference.preference.theme[activeTheme].colors.secondary.main = values.secondary_color || defaultSecondaryColor; // Fallback to default if empty
         updatedBrandingPreference.name = session.orgId;
         delete updatedBrandingPreference.resolvedFrom;
         controllerDecodeUpdateBrandingPrefrence(session, updatedBrandingPreference)
@@ -231,12 +234,13 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
         </FormSuite.Group>
     );
 
-    // Check if the session has the required scope
-    const hasBrandingUpdateScope = session?.scope?.includes("internal_org_branding_preference_update");
+    // Check if the session has the basic branding or advanced branding scope
+    const hasBasicBrandingUpdateScope = session?.scope?.includes("create_basic_branding");
+    const hasAdvancedBrandingUpdateScope = session?.scope?.includes("create_advanced_branding");
 
     return (
         <Container>
-            {hasBrandingUpdateScope ? (
+            {hasBasicBrandingUpdateScope || hasAdvancedBrandingUpdateScope ? (
                 <>
                     <SettingsTitleComponent
                         title="Personalization"
@@ -375,34 +379,22 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                             )}
                         />
                     </div>
-                </>
-            ) : (
-                <>
-                    {/* Upgrade Message */}
-                    <SettingsTitleComponent
-                        title="Personalization"
-                        subtitle="Customize the user interfaces of your application."
-                    />
+                    {/* Show Enterprise Plan Upgrade if Advanced Branding Scope is False */}
+                    {!hasAdvancedBrandingUpdateScope && (
+                        <div style={{ marginBottom: "30px" }}>
+                            <div
+                                style={{
+                                    margin: "20px 0",
+                                    padding: "10px",
+                                    backgroundColor: "#d9d9d9",
+                                    borderRadius: "5px",
+                                    textAlign: "center",
+                                    color: "#272c36"
+                                }}
+                            >
+                                <p>Upgrade your plan for advanced personalizations.</p>
+                            </div>
 
-                    <div style={{marginBottom: "20px"}}></div>
-
-                    {/* Upgrade Message */}
-                    <div
-                        style={{
-                            margin: "20px 0",
-                            padding: "10px",
-                            backgroundColor: "#d9d9d9",
-                            borderRadius: "5px",
-                            textAlign: "center",
-                            color: "#272c36",
-                        }}
-                    >
-                        <p>For more advanced customizations, upgrade your tier.</p>
-                    </div>
-
-                    {/* Tier Upgrade Cards */}
-                    {(
-                        <div style={{marginBottom: "30px"}}>
                             <div
                                 style={{
                                     display: "flex",
@@ -412,10 +404,10 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                     padding: "20px",
                                     backgroundColor: "#f9f9f9",
                                     borderRadius: "10px",
-                                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)"
                                 }}
                             >
-                                {/* Business Tier */}
+                                {/* Enterprise Plan */}
                                 <div
                                     style={{
                                         flex: 1,
@@ -423,56 +415,21 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                         padding: "20px",
                                         border: "1px solid #ddd",
                                         borderRadius: "10px",
-                                        backgroundColor: "#fff",
+                                        backgroundColor: "#fff"
                                     }}
                                 >
-                                    <h3>Business Tier</h3>
+                                    <h3>Enterprise Plan</h3>
                                     <p
                                         style={{
                                             fontSize: "24px",
                                             fontWeight: "bold",
-                                            margin: "10px 0",
-                                        }}
-                                    >
-                                        $5/user/mo
-                                    </p>
-                                    <p>
-                                        Personalization: <strong>Advanced</strong>
-                                    </p>
-                                    <br></br>
-                                    <Button
-                                        className={styles.buttonCircular}
-                                        appearance="default"
-                                        onClick={onBusinessTierUpgrade}
-                                    >
-                                        Upgrade Now
-                                    </Button>
-                                </div>
-
-                                {/* Enterprise Tier */}
-                                <div
-                                    style={{
-                                        flex: 1,
-                                        textAlign: "center",
-                                        padding: "20px",
-                                        border: "1px solid #ddd",
-                                        borderRadius: "10px",
-                                        backgroundColor: "#fff",
-                                    }}
-                                >
-                                    <h3>Enterprise Tier</h3>
-                                    <p
-                                        style={{
-                                            fontSize: "24px",
-                                            fontWeight: "bold",
-                                            margin: "10px 0",
+                                            margin: "10px 0"
                                         }}
                                     >
                                         $9/user/mo
                                     </p>
                                     <p>
-                                        Personalization: <strong>Custom</strong>
-
+                                        Personalization: <strong>Advanced</strong>
                                     </p>
                                     <br></br>
                                     <Button
@@ -487,6 +444,112 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                         </div>
                     )}
                 </>
+            ) : (
+                <>
+                    {/* Show Upgrade Cards if No Branding Scopes */}
+                    <SettingsTitleComponent
+                        title="Personalization"
+                        subtitle="Customize the user interfaces of your application."
+                    />
+
+                    <div style={{ marginBottom: "20px" }}></div>
+
+                    <div
+                        style={{
+                            margin: "20px 0",
+                            padding: "10px",
+                            backgroundColor: "#d9d9d9",
+                            borderRadius: "5px",
+                            textAlign: "center",
+                            color: "#272c36"
+                        }}
+                    >
+                        <p>Upgrade your plan for basic and advanced personalizations.</p>
+                    </div>
+
+                    <div style={{ marginBottom: "30px" }}>
+                        <div
+                            style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                gap: "20px",
+                                padding: "20px",
+                                backgroundColor: "#f9f9f9",
+                                borderRadius: "10px",
+                                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)"
+                            }}
+                        >
+                            {/* Business Plan */}
+                            <div
+                                style={{
+                                    flex: 1,
+                                    textAlign: "center",
+                                    padding: "20px",
+                                    border: "1px solid #ddd",
+                                    borderRadius: "10px",
+                                    backgroundColor: "#fff"
+                                }}
+                            >
+                                <h3>Business Plan</h3>
+                                <p
+                                    style={{
+                                        fontSize: "24px",
+                                        fontWeight: "bold",
+                                        margin: "10px 0"
+                                    }}
+                                >
+                                    $5/user/mo
+                                </p>
+                                <p>
+                                    Personalization: <strong>Basic</strong>
+                                </p>
+                                <br></br>
+                                <Button
+                                    className={styles.buttonCircular}
+                                    appearance="default"
+                                    onClick={onBusinessTierUpgrade}
+                                >
+                                    Upgrade Now
+                                </Button>
+                            </div>
+
+                            {/* Enterprise Plan */}
+                            <div
+                                style={{
+                                    flex: 1,
+                                    textAlign: "center",
+                                    padding: "20px",
+                                    border: "1px solid #ddd",
+                                    borderRadius: "10px",
+                                    backgroundColor: "#fff"
+                                }}
+                            >
+                                <h3>Enterprise Plan</h3>
+                                <p
+                                    style={{
+                                        fontSize: "24px",
+                                        fontWeight: "bold",
+                                        margin: "10px 0"
+                                    }}
+                                >
+                                    $9/user/mo
+                                </p>
+                                <p>
+                                    Personalization: <strong>Advanced</strong>
+                                </p>
+                                <br></br>
+                                <Button
+                                    className={styles.buttonCircular}
+                                    appearance="default"
+                                    onClick={onEnterpriseTierUpgrade}
+                                >
+                                    Upgrade Now
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                </>
             )}
 
             {/* Modal for Upgrade Success */}
@@ -495,8 +558,9 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                     <Modal.Title>Plan Upgrade Successful</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>You have successfully upgraded your plan to Business Tier.</p>
-                    <p>Please re-login to make the changes effective.</p>
+                    <p>Your subscription plan has been successfully upgraded.</p>
+                    <p>The new subscription cost will be reflected in your next billing cycle.</p>
+                    <p>Please log out and log back in to apply the changes to your account.</p>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button

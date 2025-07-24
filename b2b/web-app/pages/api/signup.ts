@@ -28,6 +28,8 @@ import switchOrg from "./settings/switchOrg";
 import pollForDefaultUserstore from "./helpers/pollUserstore";
 import pollForUserCreation from "./helpers/pollUser";
 import pollforRolePatching from "./helpers/pollRolePatch";
+import listCurrentApplicationInRoot from "./settings/application/listCurrentApplicationInRoot";
+import updateSharedRoles from "./settings/application/updateSharedRoles";
 
 /**
  * Helper function to delete an organization (for rollback)
@@ -340,6 +342,244 @@ export default async function handler(
       }
 
       return res.status(rolePatchstatus).json(rolePatchData);
+    }
+
+    // Step 11: If subscription is business or enterprise, share additional roles and assign user to them
+
+    // Fetch the root application ID using listCurrentApplicationInRoot
+    const rootAppReq = {
+      method: "POST",
+      query: { appName: appName }, 
+    } as unknown as NextApiRequest;
+
+    const rootAppRes = {
+      status: function (code) {
+          this.statusCode = code;
+          return this;
+      },
+      json: function (data) {
+          this.data = data;
+          return this;
+      },
+    } as unknown as NextApiResponse;
+
+    await listCurrentApplicationInRoot(rootAppReq, rootAppRes);
+
+    if (
+      rootAppRes.statusCode !== 200 ||
+      !rootAppRes.data.applications ||
+      rootAppRes.data.applications.length === 0
+    ) {
+      if (rootAccessToken && orgId) {
+          await rollbackOrganization(rootAccessToken, orgId);
+      }
+
+      return res
+          .status(404)
+          .json({ error: `Sign up failed. Root application not found` });
+    }
+
+    const rootAppId = rootAppRes.data.applications[0].id;
+
+    // Handle Business Subscription
+    if (subscription === "business") {
+      const businessRoles = [
+          {
+              displayName: process.env.NEXT_PUBLIC_BASIC_BRANDING_CONFIG_EDITOR_ROLE_NAME,
+              audience: {
+                  display: appName,
+                  type: "application"
+              }
+          }
+      ];
+
+      const operations = [
+        {
+            op: "add",
+            path: `organizations[orgId eq \"${orgId}\"].roles`,
+            value: businessRoles
+        }
+      ];
+
+      const shareRolesReq = {
+          method: "POST",
+          body: JSON.stringify( { param :{
+            applicationId: rootAppId,
+            Operations: operations
+          } })
+      } as unknown as NextApiRequest;
+
+      const shareRolesRes = {
+          status: function (code) {
+              this.statusCode = code;
+              return this;
+          },
+          json: function (data) {
+              this.data = data;
+              return this;
+          }
+      } as unknown as NextApiResponse;
+
+      await updateSharedRoles(shareRolesReq, shareRolesRes);
+
+      for (const role of businessRoles) {
+        const roleReq = {
+          method: "POST",
+          body: JSON.stringify({ accessToken }),
+          query: {
+              orgId,
+              roleName: role.displayName,
+              roleAudienceValue: appId,
+          },
+        } as unknown as NextApiRequest;
+    
+        const roleRes = {
+            status: function (code) {
+                this.statusCode = code;
+                return this;
+            },
+            json: function (data) {
+                this.data = data;
+                return this;
+            },
+        } as unknown as NextApiResponse;
+
+        await getRole(roleReq, roleRes);
+
+        if (
+          roleRes.statusCode !== 200 ||
+          !roleRes.data.Resources ||
+          roleRes.data.Resources.length === 0
+        ) {
+            if (rootAccessToken && orgId) {
+                await rollbackOrganization(rootAccessToken, orgId);
+            }
+    
+            return res.status(404).json({ error: "Sign up failed. Business role not found" });
+        }
+    
+        const businessRoleId = roleRes?.data?.Resources[0]?.id;
+  
+        const { success: rolePatchSuccess, data: rolePatchData, status: rolePatchStatus } = await pollforRolePatching(
+          accessToken,
+          businessRoleId,
+          userId
+        );
+    
+        if (!rolePatchSuccess) {
+            if (rootAccessToken && orgId) {
+                await rollbackOrganization(rootAccessToken, orgId);
+            }
+    
+            return res.status(rolePatchStatus).json({
+                error: rolePatchData.error || "Sign up failed. Couldn't add user to Business role.",
+            });
+        }
+      }
+    }
+
+    // Handle Enterprise Subscription
+    if (subscription === "enterprise") {
+      const enterpriseRoles = [
+          {
+              displayName: process.env.NEXT_PUBLIC_IDP_MANAGER_ROLE_NAME,
+              audience: {
+                  display: appName,
+                  type: "application"
+              }
+          },
+          {
+              displayName: process.env.NEXT_PUBLIC_ADVANCED_BRANDING_CONFIG_EDITOR_ROLE_NAME,
+              audience: {
+                  display: appName,
+                  type: "application"
+              }
+          }
+      ];
+
+      const operations = [
+        {
+            op: "add",
+            path: `organizations[orgId eq \"${orgId}\"].roles`,
+            value: enterpriseRoles
+        }
+      ];
+
+      const shareRolesReq = {
+          method: "POST",
+          body: JSON.stringify({param: {
+            applicationId: rootAppId,
+            Operations: operations
+          }})
+      } as unknown as NextApiRequest;
+
+      const shareRolesRes = {
+          status: function (code) {
+              this.statusCode = code;
+              return this;
+          },
+          json: function (data) {
+              this.data = data;
+              return this;
+          }
+      } as unknown as NextApiResponse;
+
+      await updateSharedRoles(shareRolesReq, shareRolesRes);
+
+      for (const role of enterpriseRoles) {
+        const roleReq = {
+          method: "POST",
+          body: JSON.stringify({ accessToken }),
+          query: {
+              orgId,
+              roleName: role.displayName,
+              roleAudienceValue: appId,
+          },
+        } as unknown as NextApiRequest;
+    
+        const roleRes = {
+            status: function (code) {
+                this.statusCode = code;
+                return this;
+            },
+            json: function (data) {
+                this.data = data;
+                return this;
+            },
+        } as unknown as NextApiResponse;
+
+        await getRole(roleReq, roleRes);
+
+        if (
+          roleRes.statusCode !== 200 ||
+          !roleRes.data.Resources ||
+          roleRes.data.Resources.length === 0
+        ) {
+            if (rootAccessToken && orgId) {
+                await rollbackOrganization(rootAccessToken, orgId);
+            }
+    
+            return res.status(404).json({ error: `Sign up failed. Enterprise role  ${role.displayName} is not found` });
+        }
+    
+        const enterpriseRoleId = roleRes?.data?.Resources[0]?.id;
+  
+        const { success: rolePatchSuccess, data: rolePatchData, status: rolePatchStatus } = await pollforRolePatching(
+          accessToken,
+          enterpriseRoleId,
+          userId
+        );
+    
+        if (!rolePatchSuccess) {
+            if (rootAccessToken && orgId) {
+                await rollbackOrganization(rootAccessToken, orgId);
+            }
+    
+            return res.status(rolePatchStatus).json({
+                error: rolePatchData.error || "Sign up failed. Couldn't add user to Business role.",
+            });
+        }
+      }
     }
 
     return res.status(201).json({

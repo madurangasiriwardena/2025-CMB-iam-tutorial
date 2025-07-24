@@ -190,7 +190,6 @@ Navigate to the Roles section under User Management and create 2 application rol
 | Identity Provider Management API | View Identity Provider                               |
 | Application Management API | All Scope                                     |
 | Claim Management API       | All Scope                                     |
-| Branding Preference Management API | All Scope                             |
 | Meeting Service            | List Meetings, View Meeting, Create Meetings, Update Meeting, Delete Meeting |
 
 ### Role name: idp-manager
@@ -204,12 +203,14 @@ Navigate to the Roles section under User Management and create 2 application rol
 | API Resource               | Scopes                                        |
 | -------------------------- | --------------------------------------------- |
 | Personalization Service    | Create Basic Branding, Update Branding, Delete Branding |
+| Branding Preference Management API | All Scope                             |
 
 ### Role name: advanced-branding-editor
 
 | API Resource               | Scopes                                        |
 | -------------------------- | --------------------------------------------- |
 | Personalization Service    | Create Basic Branding, Create Advanced Branding, Update Branding, Delete Branding |
+| Branding Preference Management API | All Scope                             |
 
 ### Role name: teamspace-user
 
