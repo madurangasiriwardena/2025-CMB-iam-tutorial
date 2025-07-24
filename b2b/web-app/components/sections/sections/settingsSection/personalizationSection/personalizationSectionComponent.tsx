@@ -295,19 +295,46 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                             >
                                                 <FormSuite.Control name="input" type="url"/>
                                             </FormField>
-                                            <Field
-                                                name="primary_color"
-                                                component={ColorPickerField}
-                                                label="Primary Colour"/>
-                                            <Field
-                                                name="secondary_color"
-                                                component={ColorPickerField}
-                                                label="Button Colour"/>
-                                            <FormButtonToolbar
-                                                submitButtonText="Update"
-                                                submitButtonDisabled={submitting || pristine || !checkIfJSONisEmpty(errors)}
-                                                needCancel={false}
-                                            />
+                                            <div style={{ display: "flex", gap: 24, width: "100%" }}>
+                                                <div style={{ flex: 1 }}>
+                                                    <Field
+                                                        name="primary_color"
+                                                        component={ColorPickerField}
+                                                        label="Primary Colour"
+                                                    />
+                                                </div>
+                                                <div style={{ flex: 1 }}>
+                                                    <Field
+                                                        name="secondary_color"
+                                                        component={ColorPickerField}
+                                                        label="Button Colour"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <br/>
+                                            <div style={{
+                                                display: "flex",
+                                                justifyContent: "space-between",
+                                                alignItems: "center",
+                                                marginTop: "24px",
+                                                gap: "12px"
+                                            }}>
+                                                <span style={{
+                                                    display: "flex",
+                                                    flexDirection: "column",
+                                                    textAlign: "left",
+                                                    flex: 1
+                                                }}>
+                                                    <span style={{fontSize: "16px", fontWeight: 600}}>
+                                                        Save and publish the theme
+                                                    </span>
+                                                </span>
+                                                <FormButtonToolbar
+                                                    submitButtonText="Update"
+                                                    submitButtonDisabled={submitting || pristine || !checkIfJSONisEmpty(errors)}
+                                                    needCancel={false}
+                                                />
+                                            </div>
                                         </FormSuite>
                                         <Divider style={{background: "#bebebe"}}/>
                                         <div style={{
