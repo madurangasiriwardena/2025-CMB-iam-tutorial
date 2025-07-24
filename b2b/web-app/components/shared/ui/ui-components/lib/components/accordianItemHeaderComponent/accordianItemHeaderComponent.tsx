@@ -37,13 +37,12 @@ export function AccordianItemHeaderComponent(prop: AccordianItemHeaderComponentP
             <Stack spacing={ 20 }>
                 <Avatar
                     size={ avatarSize as TypeAttributes.Size } 
-                    alt="IDP image"
                     style={ imageSrc ? { background: "rgba(255,0,0,0)" } : { background: "rgba(125,125,125,255)" } }
                 >
                     { imageSrc 
                         ?(<Image
                             src={ imageSrc }
-                            alt="idp image"
+                            alt=""
                             width={ 50 } />)
                         : null 
                     }

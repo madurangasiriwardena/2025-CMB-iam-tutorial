@@ -17,7 +17,7 @@
                 "uri": ""
             }
         },
-        "description": "Configure a new enterprise identity provider with OpenID Connect",
+        "description": "Enterprise identity provider with OpenID Connect",
         "federatedAuthenticators": {
             "authenticators": [
                 {
