@@ -16,16 +16,10 @@
  * under the License.
  */
 
-import { AxiosResponse } from "axios";
-import { getMeetingInstance } from "./meetingInstance";
+import axios, { AxiosResponse } from "axios";
 import { Meeting } from "../../types/meeting";
-import createHeaders from "../createHeaders";
 
 export async function getMeetings(accessToken: string) {
-    const headers = createHeaders(accessToken);
-    const response = await getMeetingInstance().get("/meetings", {
-        headers: headers
-    });
-
+    const response = await axios.post("/api/meetings/listAllMeetings", { accessToken });
     return response as AxiosResponse<Meeting[]>;
 }
