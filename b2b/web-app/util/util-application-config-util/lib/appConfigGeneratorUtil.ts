@@ -43,7 +43,9 @@ interface ConfigObject {
       };
     };
     resourceServerURLs: {
-      apiKey?: string;
+      meetingApiKey?: string;
+      personalizationApiKey?: string;
+      chatApiKey?: string;
       meetingService?: string;
       chatService?: string;
       personalizationService?: string;
@@ -93,7 +95,9 @@ export function getConfig(): ConfigObject {
                 UserStore: config.BusinessAdminAppConfig.ManagementAPIConfig.UserStore
             },
             resourceServerURLs: {
-                apiKey: publicRuntimeConfig.apiKey,
+                meetingApiKey: publicRuntimeConfig.meetingApiKey,
+                personalizationApiKey: publicRuntimeConfig.personalizationApiKey,
+                chatApiKey: publicRuntimeConfig.chatApiKey,
                 meetingService: publicRuntimeConfig.meetingServiceUrl,
                 personalizationService: publicRuntimeConfig.personalizationServiceUrl,
                 chatService: publicRuntimeConfig.chatServiceUrl,

@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const meetingServiceUrl = getConfig().BusinessAdminAppConfig.resourceServerURLs.meetingService;
-    const apiKey = getConfig().BusinessAdminAppConfig.resourceServerURLs.apiKey;
+    const apiKey = getConfig().BusinessAdminAppConfig.resourceServerURLs.meetingApiKey;
     const headers: Record<string, string> = {
       "x-jwt-assertion": accessToken
     };
