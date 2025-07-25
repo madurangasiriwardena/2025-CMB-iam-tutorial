@@ -73,7 +73,6 @@ class AsgardeoManager:
                 scopes_str = " ".join(scopes)
                 nonce = str(uuid.uuid4())[:16]
                 state = str(uuid.uuid4())
-                print(f"Fetching user token: {self.get_user_claims(self.get_user_id_from_thread_id(thread_id))['user_org']}")
 
                 # Generate the authorization URL based on the org
                 authorization_url = (
@@ -106,9 +105,6 @@ class AsgardeoManager:
         if not code_entry:
             raise ValueError("No auth code found for user")
         try:
-            print(f"Fetching user token for state: {state}")
-            print(f"Code entry: {code_entry}")
-            print(f"Agent token: {self.agent_tokens[self.get_thread_id_from_state(state)]}")
             response = requests.post(
                 self.token_url,
                 data={
@@ -122,15 +118,11 @@ class AsgardeoManager:
                 },
                 verify=False
             )
-            print(f"Response status code: {response.status_code}")
             data = response.json()
-            print(data)
             access_token = data.get("access_token")
             token_key = self.get_token_key(code_entry.user_id, code_entry.scopes)
             token = AuthToken(id=code_entry.user_id, scopes=code_entry.scopes, token=access_token)
             self.auth_tokens[token_key] = token
-            print(f"Access token for user {code_entry.user_id} with scopes {code_entry.scopes}: {access_token}")
-            print(f"Token key: {token_key}")
             return access_token
         except Exception as e:
             print(e)
@@ -140,13 +132,9 @@ class AsgardeoManager:
         """
         Exchange authorization code for access token
         """
-        print(f"Fetching agent token for thread_id: {thread_id}")
         if thread_id in self.agent_tokens and self.agent_tokens[thread_id]:
-            # TODO check if the token is still valid.
-            print(f"Agent token already available for thread_id: {thread_id}")
             return self.agent_tokens[thread_id]
         try:
-            print(f"Fetching agent token")
 
             code_verifier = self.generate_code_verifier()
             code_challenge = self.generate_code_challenge(code_verifier)
@@ -166,12 +154,9 @@ class AsgardeoManager:
                 },
                 verify=False
             )
-            print(f"Response status code: {response.status_code}")
             resp_json = response.json()
-            print(f"Response: {resp_json}")
 
             flow_id = resp_json.get("flowId")
-            # idf_authenticator_id = resp_json.get("nextStep", {}).get("authenticators", [{}])[0].get("authenticatorId")
             # TODO Extract this from the response
             idf_authenticator_id = "QmFzaWNBdXRoZW50aWNhdG9yOkxPQ0FM"
 
@@ -188,7 +173,6 @@ class AsgardeoManager:
             }
             resp = requests.post(self.authn_url, json=idf_body, verify=False)
             resp_json = resp.json()
-            print(f"Response2: {resp_json}")
 
             code = resp_json.get("authData", {}).get("code")
             if not code:
@@ -206,16 +190,12 @@ class AsgardeoManager:
                 "resource": "http://localhost:9091"
             }
 
-            # print("\n\nToken Data:", token_data, "\n\n")
-
             headers = {"Content-Type": "application/x-www-form-urlencoded"}
             resp = requests.post(self.token_url, data=token_data, headers=headers, verify=False)
 
             resp_json = resp.json()
-            print(f"Response3: {resp_json}")
 
             access_token = resp_json.get("access_token")
-            print(f"Agent token received: {access_token}")
 
             self.agent_tokens[thread_id] = access_token
             return access_token
