@@ -34,7 +34,6 @@ class ScheduleMeetingTool(BaseTool):
     def _run(self, topic: str, date: str, startTime: str, duration: str, timeZone: str) -> str:
         try:
 
-            print(f"=============Scheduling meeting================")
             if FlowState.BOOKING_PREVIEW_INITIATED not in state_manager.get_states(self.thread_id):
                 raise Exception("Booking preview not completed")
 
@@ -42,9 +41,7 @@ class ScheduleMeetingTool(BaseTool):
             state_manager.add_state(self.thread_id, FlowState.BOOKING_INITIATED)
             # Get access token
             user_id = asgardeo_manager.get_user_id_from_thread_id(self.thread_id)
-            print(f"User ID: {user_id}")
             access_token = asgardeo_manager.get_user_token(user_id, ["openid", "create_meeting"])
-            print(f"Access token: {access_token}")
 
             # Prepare the booking request
             headers = {
@@ -60,10 +57,8 @@ class ScheduleMeetingTool(BaseTool):
                 "timeZone": timeZone
             }
 
-            print(f"Scheduling meeting with data: {meeting_data}")
 
             api_response = requests.post("http://localhost:9091/meetings", json=meeting_data, headers=headers)
-            print(f"API response status code: {api_response.status_code}")
             if (api_response.status_code == 201):
                 meeting_details = api_response.json()
                 response_dict = {
