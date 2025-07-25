@@ -18,12 +18,9 @@
 
 import createHeaders from "../createHeaders";
 import { getPersonalizationInstance } from "../GetPersonalization/personalizationInstance";
+import axios from "axios";
 
 export async function deletePersonalization(accessToken: string) {
-    const headers = createHeaders(accessToken);
-    const response = await getPersonalizationInstance().delete("personalization" , {
-        headers: headers
-    });
-
+    const response = await axios.post("/api/personalization/deletePersonalization", { accessToken });
     return response;
 }

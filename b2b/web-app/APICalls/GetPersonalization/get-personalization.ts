@@ -16,13 +16,9 @@
  * under the License.
  */
 
-import { getPersonalizationInstance } from "./personalizationInstance";
+import axios, {AxiosResponse} from "axios";
 
 export async function getPersonalization(orgId: string) {
-    // const headers = createHeaders(accessToken);
-    const response = await getPersonalizationInstance().get(`personalization/org/${orgId}`, {
-        headers: {}
-    });
-
+    const response = await axios.post("/api/personalization/getPersonalization", { orgId });
     return response;
 }

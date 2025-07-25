@@ -7,13 +7,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { accessToken, meetingId } = req.body;
-  if (!accessToken || !meetingId) {
-    return res.status(400).json({ error: "Missing accessToken or meetingId" });
+  const { accessToken, payload } = req.body;
+  if (!payload) {
+    return res.status(400).json({ error: "Missing personalizationData" });
   }
 
   try {
-    const meetingServiceUrl = getConfig().BusinessAdminAppConfig.resourceServerURLs.meetingService;
+    const personalizationServiceUrl = getConfig().BusinessAdminAppConfig.resourceServerURLs.personalizationService;
     const apiKey = getConfig().BusinessAdminAppConfig.resourceServerURLs.apiKey;
     const headers: Record<string, string> = {
       "x-jwt-assertion": accessToken
@@ -21,13 +21,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (apiKey) {
       headers["api-key"] = apiKey;
     }
-    const response = await axios.delete(`${meetingServiceUrl}/meetings/${meetingId}`,
-      {
-        headers
-      }
-    );
+    const response = await axios.post(`${personalizationServiceUrl}/personalization`, payload, {
+      headers
+    });
     return res.status(200).json(response.data);
   } catch (error: any) {
-    return res.status(500).json({ error: error.message || "Failed to delete meeting" });
+    return res.status(500).json({ error: error.message || "Failed to update personalization data" });
   }
 }
+

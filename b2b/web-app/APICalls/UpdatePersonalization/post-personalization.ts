@@ -19,13 +19,11 @@
 import { Personalization } from "../../types/personalization";
 import createHeaders from "../createHeaders";
 import { getPersonalizationInstance } from "../GetPersonalization/personalizationInstance";
+import axios from "axios";
 
 export async function postPersonalization(accessToken: string, payload?: Personalization) {
-    const headers = createHeaders(accessToken);
     try {
-        const response = await getPersonalizationInstance().post("personalization" , payload, {
-            headers: headers
-        });
+        const response = await axios.post("/api/personalization/updatePersonalization", { accessToken, payload });
         return response;
     } catch (error) {
         // Ignore error responses
