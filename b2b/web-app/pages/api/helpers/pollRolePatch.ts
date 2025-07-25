@@ -51,23 +51,23 @@ export default async function pollforRolePatching(
       this.statusCode = code;
       return this;
     },
-    json: function (data) {
+    json: function (data?: any) {
       this.data = data;
       return this;
     },
-  } as unknown as NextApiResponse;
+  } as unknown as any;
 
   while (Date.now() - startTime < maxRetryTime) {
     attemptCount++;
-    
+
     try {
       await patchRole(patchRoleReq, patchRoleRes);
-      
+
       if (patchRoleRes.statusCode === 200 || patchRoleRes.statusCode === 201) {
-        return { 
-          success: true, 
-          data: patchRoleRes.data, 
-          status: patchRoleRes.statusCode 
+        return {
+          success: true,
+          data: patchRoleRes.data,
+          status: patchRoleRes.statusCode
         };
       }
 
@@ -76,10 +76,10 @@ export default async function pollforRolePatching(
         continue;
       }
 
-      return { 
-        success: false, 
-        data: patchRoleRes.data, 
-        status: patchRoleRes.statusCode 
+      return {
+        success: false,
+        data: patchRoleRes.data,
+        status: patchRoleRes.statusCode
       };
     } catch (err) {
       console.error(`Exception on attempt ${attemptCount}:`, err);
@@ -87,9 +87,9 @@ export default async function pollforRolePatching(
     }
   }
 
-  return { 
-    success: false, 
-    data: { error: "Role adding timed out" }, 
-    status: 408 
+  return {
+    success: false,
+    data: { error: "Role adding timed out" },
+    status: 408
   };
 }

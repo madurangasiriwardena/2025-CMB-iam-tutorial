@@ -62,7 +62,7 @@ export default async function pollForUserCreation(
       this.data = data;
       return this;
     },
-  };
+  } as unknown as any;
 
   while (Date.now() - startTime < maxRetryTime) {
     attemptCount++;

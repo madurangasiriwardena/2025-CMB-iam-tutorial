@@ -26,9 +26,6 @@ import { PatchMethod, checkIfJSONisEmpty } from "@teamspace-app/shared/util/util
 import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE, fieldValidate }
     from "@teamspace-app/shared/util/util-front-end-util";
 import EmailFillIcon from "@rsuite/icons/EmailFill";
-import { postMeeting } from "../../../../../../APICalls/ScheduleMeeting/post-meeting";
-import { Meeting, MeetingInfo } from "../../../../../../types/meeting";
-import { AxiosResponse } from "axios";
 import { Session } from "next-auth";
 import { useCallback, useEffect, useState } from "react";
 import { Form } from "react-final-form";
@@ -153,7 +150,6 @@ export default function AddUserComponent(props: AddUserComponentProps) {
                 let roleDetails: Role;
 
                 if (userTypeSelect === "ADMIN") {
-                    // TODO change the role names
                     roleDetails = rolesList.find((role) => role.displayName === "teamspace-admin");
                     controllerDecodePatchRole(session, roleDetails.id, PatchMethod.ADD, "users", response1.id)
                         .then((response) => onRoleSubmit(response))
@@ -272,15 +268,6 @@ export default function AddUserComponent(props: AddUserComponentProps) {
                                         >
                                             <FormSuite.Control name="input" type="password" autoComplete="off" />
                                         </FormField>
-
-                                        {/* <FormField
-                                            name="repassword"
-                                            label="Re enter password"
-                                            helperText="Re enter the password of the user."
-                                            needErrorMessage={ true }
-                                        >
-                                            <FormSuite.Control name="input" type="password" autoComplete="off" />
-                                        </FormField> */}
 
                                     </div>
 

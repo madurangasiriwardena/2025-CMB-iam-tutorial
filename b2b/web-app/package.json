@@ -42,6 +42,7 @@
     "chart.js": "^3.9.1",
     "chartjs-plugin-datalabels": "^2.2.0",
     "chroma-js": "^3.1.2",
+    "class-variance-authority": "^0.7.1",
     "date-fns": "^2.30.0",
     "dayjs": "^1.11.7",
     "eslint-plugin-header": "^3.1.1",

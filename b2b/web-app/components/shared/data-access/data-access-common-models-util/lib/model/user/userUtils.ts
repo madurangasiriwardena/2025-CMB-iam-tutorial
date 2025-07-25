@@ -16,14 +16,13 @@
  * under the License.
  */
 
-import { getConfig } from "@teamspace-app/util-application-config-util";
 import InternalUser from "./internalUser";
 import User from "./user";
 
 /**
- * 
+ *
  * @param user - (user object return from the IS)
- * 
+ *
  * @returns user object that can be view in front end side
  */
 export function decodeUser(user: User): InternalUser {
@@ -38,9 +37,9 @@ export function decodeUser(user: User): InternalUser {
 }
 
 /**
- * 
+ *
  * @param email - email
- * 
+ *
  * @returns set email.
  */
 export function setEmail(email: string) {
@@ -52,26 +51,20 @@ export function setEmail(email: string) {
 }
 
 /**
- * 
+ *
  * @param userName - user name
- * 
+ *
  * @returns set username.
  */
 export function setUsername(userName: string) {
 
-    const userStore = getConfig().BusinessAdminAppConfig.ManagementAPIConfig.UserStore;
-
-    if(userStore.trim()===""){
-        return userName;
-    } else {
-        return `${userStore}/${userName}`;
-    }
+    return userName
 }
 
 /**
- * 
+ *
  * @param userName - user name
- * 
+ *
  * @returns get username. If the IS is Asgardeo DEFAULT/ is removed from the username else returns the original username
  */
 export function getUsername(userName: string) {

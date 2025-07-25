@@ -22,6 +22,7 @@ import { PatchMethod } from "@teamspace-app/shared/util/util-common";
 import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE } from "@teamspace-app/shared/util/util-front-end-util";
 import { getConfig } from "@teamspace-app/util-application-config-util";
 import { Session } from "next-auth";
+import type { Dispatch, SetStateAction } from "react";
 
 export const upgradeTier = async (
     session: Session,
@@ -29,10 +30,10 @@ export const upgradeTier = async (
     organizationId: string,
     tier: "Business" | "Enterprise", // Tier type
     toaster: any,
-    setLoadingDisplay?: Dispatch<SetStateAction<{ display: string }>>,
-    setShowUpgradeModal: (show: boolean) => void
+    setShowUpgradeModal: (show: boolean) => void,
+    setLoadingDisplay?: Dispatch<SetStateAction<{ display: string }>>
 ): Promise<void> => {
-    setLoadingDisplay(LOADING_DISPLAY_BLOCK.display);
+    if (setLoadingDisplay) setLoadingDisplay({ display: LOADING_DISPLAY_BLOCK.display });
 
     // Determine roles based on the tier
     const roles =
@@ -119,6 +120,6 @@ export const upgradeTier = async (
         console.error(`Error while upgrading ${tier} Plan`, error);
         errorTypeDialog(toaster, "Error Occurred", `Failed to upgrade to ${tier} Plan.`);
     } finally {
-        setLoadingDisplay(LOADING_DISPLAY_NONE.display);
+        if (setLoadingDisplay) setLoadingDisplay({ display: LOADING_DISPLAY_NONE.display });
     }
 };

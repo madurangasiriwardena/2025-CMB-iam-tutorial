@@ -19,7 +19,7 @@ const ThemeProvider: React.FC<Props> = ({ children }) => {
   }, [primaryColor, secondaryColor]);
 
   return (
-    <CustomProvider theme="default">
+    <CustomProvider>
       {children}
     </CustomProvider>
   );

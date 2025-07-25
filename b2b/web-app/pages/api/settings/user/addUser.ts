@@ -57,10 +57,10 @@ export default async function addUser(req, res) {
               "Content-Type": "application/scim+json",
             },
             body: JSON.stringify({
-              emails: [{ primary: true, value: user.email }],
-              name: { familyName: user.lastName, givenName: user.firstName },
+              emails: user.emails,
+              name: user.name,
               password: user.password,
-              userName: `${userstoreDomain}/${user.email}`,
+              userName: `${userstoreDomain}/${user.userName}`,
             }),
           }
     );
