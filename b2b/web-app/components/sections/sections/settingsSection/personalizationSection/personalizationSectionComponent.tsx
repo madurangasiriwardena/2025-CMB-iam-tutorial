@@ -150,18 +150,18 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
         // Use defaultBrandingPreference if brandingPreference is not present
         const updatedBrandingPreference: BrandingPreference = brandingPreference
             ? brandingPreference : defaultBrandingPreference;
-        const activeTheme: string = updatedBrandingPreference.preference.theme.activeTheme;
+        const activeTheme: string = (updatedBrandingPreference.preference as { theme: any }).theme.activeTheme;
         const defaultPrimaryColor = defaultBrandingPreference.preference.theme[activeTheme].colors.primary.main;
         const defaultSecondaryColor = defaultBrandingPreference.preference.theme[activeTheme].colors.secondary.main;
 
         // Now updatedBrandingPreference is guaranteed to have the correct structure
-        updatedBrandingPreference.preference.theme[activeTheme].images.logo.imgURL = values.logo_url;
-        updatedBrandingPreference.preference.theme[activeTheme].images.logo.altText = values.logo_alt_text;
-        updatedBrandingPreference.preference.theme[activeTheme].images.favicon.imgURL = values.favicon_url;
-        updatedBrandingPreference.preference.theme[activeTheme].colors.primary.main = values.primary_color || defaultPrimaryColor; // Fallback to default if empty
-        updatedBrandingPreference.preference.theme[activeTheme].colors.secondary.main = values.secondary_color || defaultSecondaryColor; // Fallback to default if empty
+        (updatedBrandingPreference.preference as { theme: any }).theme[activeTheme].images.logo.imgURL = values.logo_url;
+        (updatedBrandingPreference.preference as { theme: any }).theme[activeTheme].images.logo.altText = values.logo_alt_text;
+        (updatedBrandingPreference.preference as { theme: any }).theme[activeTheme].images.favicon.imgURL = values.favicon_url;
+        (updatedBrandingPreference.preference as { theme: any }).theme[activeTheme].colors.primary.main = values.primary_color || defaultPrimaryColor; // Fallback to default if empty
+        (updatedBrandingPreference.preference as { theme: any }).theme[activeTheme].colors.secondary.main = values.secondary_color || defaultSecondaryColor; // Fallback to default if empty
         updatedBrandingPreference.name = session.orgId;
-        delete updatedBrandingPreference.resolvedFrom;
+        delete (updatedBrandingPreference as any).resolvedFrom;
         controllerDecodeUpdateBrandingPrefrence(session, updatedBrandingPreference)
             .then(() => {
                 const newPersonalization: Personalization = {
@@ -205,8 +205,8 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
             session.orgId,
             "Business", // Specify the tier
             toaster,
-            setLoadingDisplay,
-            setShowUpgradeModal
+            setShowUpgradeModal,
+            setLoadingDisplay
         );
     };
 
@@ -217,8 +217,8 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
             session.orgId,
             "Enterprise", // Specify the tier
             toaster,
-            setLoadingDisplay,
-            setShowUpgradeModal
+            setShowUpgradeModal,
+            setLoadingDisplay
         );
     };
 

@@ -56,7 +56,7 @@ export default async function pollForDefaultUserstore(
           this.data = data
           return this
         },
-      } as unknown as NextApiResponse
+      } as unknown as any
 
       await getUserstores(listUserstoresReq, listUserstoresRes)
 

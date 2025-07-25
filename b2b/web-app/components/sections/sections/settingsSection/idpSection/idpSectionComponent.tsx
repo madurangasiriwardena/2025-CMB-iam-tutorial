@@ -169,8 +169,8 @@ export default function IdpSectionComponent(props: IdpSectionComponentProps) {
                 session.orgId,
                 "Enterprise", // Specify the tier
                 toaster,
-                setLoadingDisplay,
-                setShowUpgradeModal
+                setShowUpgradeModal,
+                setLoadingDisplay
             );
         };
 

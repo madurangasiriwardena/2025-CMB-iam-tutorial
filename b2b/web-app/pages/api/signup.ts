@@ -128,7 +128,7 @@ export default async function handler(
         this.data = data;
         return this;
       },
-    } as unknown as NextApiResponse;
+    } as unknown as any;
 
     await validateOrgName(mockReq, mockRes);
 
@@ -154,7 +154,7 @@ export default async function handler(
         this.data = data;
         return this;
       },
-    } as unknown as NextApiResponse;
+    } as unknown as any;
 
     await createOrg(createOrgReq, createOrgRes);
 
@@ -180,7 +180,7 @@ export default async function handler(
         this.data = data;
         return this;
       },
-    } as unknown as NextApiResponse;
+    } as unknown as any;
 
     await switchOrg(switchOrgReq, switchOrgRes);
 
@@ -260,7 +260,7 @@ export default async function handler(
         this.data = data;
         return this;
       },
-    } as unknown as NextApiResponse;
+    } as unknown as any;
 
     await listCurrentApplication(appReq, appRes);
 
@@ -303,7 +303,7 @@ export default async function handler(
         this.data = data;
         return this;
       },
-    } as unknown as NextApiResponse;
+    } as unknown as any;
 
     // Step 9: Get role ID.
     await getRole(roleReq, roleRes);
@@ -353,7 +353,7 @@ export default async function handler(
     // Fetch the root application ID using listCurrentApplicationInRoot
     const rootAppReq = {
       method: "POST",
-      query: { appName: appName }, 
+      query: { appName: appName },
     } as unknown as NextApiRequest;
 
     const rootAppRes = {
@@ -365,7 +365,7 @@ export default async function handler(
           this.data = data;
           return this;
       },
-    } as unknown as NextApiResponse;
+    } as unknown as any;
 
     await listCurrentApplicationInRoot(rootAppReq, rootAppRes);
 
@@ -436,7 +436,7 @@ export default async function handler(
               roleAudienceValue: appId,
           },
         } as unknown as NextApiRequest;
-    
+
         const roleRes = {
             status: function (code) {
                 this.statusCode = code;
@@ -446,7 +446,7 @@ export default async function handler(
                 this.data = data;
                 return this;
             },
-        } as unknown as NextApiResponse;
+        } as unknown as any;
 
         await getRole(roleReq, roleRes);
 
@@ -458,23 +458,23 @@ export default async function handler(
             if (rootAccessToken && orgId) {
                 await rollbackOrganization(rootAccessToken, orgId);
             }
-    
+
             return res.status(404).json({ error: "Sign up failed. Business role not found" });
         }
-    
+
         const businessRoleId = roleRes?.data?.Resources[0]?.id;
-  
+
         const { success: rolePatchSuccess, data: rolePatchData, status: rolePatchStatus } = await pollforRolePatching(
           accessToken,
           businessRoleId,
           userId
         );
-    
+
         if (!rolePatchSuccess) {
             if (rootAccessToken && orgId) {
                 await rollbackOrganization(rootAccessToken, orgId);
             }
-    
+
             return res.status(rolePatchStatus).json({
                 error: rolePatchData.error || "Sign up failed. Couldn't add user to Business role.",
             });
@@ -540,7 +540,7 @@ export default async function handler(
               roleAudienceValue: appId,
           },
         } as unknown as NextApiRequest;
-    
+
         const roleRes = {
             status: function (code) {
                 this.statusCode = code;
@@ -550,7 +550,7 @@ export default async function handler(
                 this.data = data;
                 return this;
             },
-        } as unknown as NextApiResponse;
+        } as unknown as any;
 
         await getRole(roleReq, roleRes);
 
@@ -562,23 +562,23 @@ export default async function handler(
             if (rootAccessToken && orgId) {
                 await rollbackOrganization(rootAccessToken, orgId);
             }
-    
+
             return res.status(404).json({ error: `Sign up failed. Enterprise role  ${role.displayName} is not found` });
         }
-    
+
         const enterpriseRoleId = roleRes?.data?.Resources[0]?.id;
-  
+
         const { success: rolePatchSuccess, data: rolePatchData, status: rolePatchStatus } = await pollforRolePatching(
           accessToken,
           enterpriseRoleId,
           userId
         );
-    
+
         if (!rolePatchSuccess) {
             if (rootAccessToken && orgId) {
                 await rollbackOrganization(rootAccessToken, orgId);
             }
-    
+
             return res.status(rolePatchStatus).json({
                 error: rolePatchData.error || "Sign up failed. Couldn't add user to Business role.",
             });

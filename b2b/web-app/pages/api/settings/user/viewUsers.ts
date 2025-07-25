@@ -17,7 +17,7 @@
  */
 
 import { requestOptions } from "@teamspace-app/data-access-common-api-util";
-import { dataNotRecievedError, notPostError } 
+import { dataNotRecievedError, notPostError }
     from "@teamspace-app/shared/data-access/data-access-common-api-util";
 import { getOrgUrl } from "@teamspace-app/shared/util/util-application-config-util";
 import { getConfig } from "@teamspace-app/util-application-config-util";
@@ -25,10 +25,10 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 /**
  * backend API call to view users
- * 
+ *
  * @param req - request
  * @param res - response
- * 
+ *
  * @returns correct data if the call is successful, else an error message
  */
 export default async function viewUsers(req: NextApiRequest, res: NextApiResponse) {
@@ -47,7 +47,6 @@ export default async function viewUsers(req: NextApiRequest, res: NextApiRespons
             requestOptions(session)
         );
         const users = await fetchData.json();
-        
         res.status(200).json(users);
     } catch (err) {
 

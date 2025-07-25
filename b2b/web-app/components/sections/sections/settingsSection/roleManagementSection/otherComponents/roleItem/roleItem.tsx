@@ -18,7 +18,7 @@
 
 import { Role } from "@teamspace-app/data-access-common-models-util";
 import { controllerDecodeGetRole } from "@teamspace-app/data-access-controller";
-import { AccordianItemHeaderComponent, JsonDisplayComponent } 
+import { AccordianItemHeaderComponent, JsonDisplayComponent }
     from "@teamspace-app/shared/ui/ui-components";
 import CodeIcon from "@rsuite/icons/Code";
 import { Session } from "next-auth";
@@ -39,9 +39,9 @@ interface RoleItemProps {
 }
 
 /**
- * 
+ *
  * @param prop - `session`, `id`, `roleUri`
- * 
+ *
  * @returns role item componet
  */
 export default function RoleItem(props: RoleItemProps) {
@@ -90,7 +90,7 @@ export default function RoleItem(props: RoleItemProps) {
                 header={
                     (<AccordianItemHeaderComponent
                         title={ roleDetails.displayName }
-                        description={ "" } 
+                        description={ "" }
                         avatarSize={ "sm" } />)
                 }
                 eventKey={ id }
@@ -109,9 +109,9 @@ export default function RoleItem(props: RoleItemProps) {
 }
 
 /**
- * 
+ *
  * @param prop - `activeKeyNav`, `activeKeyNavSelect`
- * 
+ *
  * @returns navigation bar of role item section
  */
 function RoleItemNav(props: RoleItemNavProps) {
@@ -119,7 +119,7 @@ function RoleItemNav(props: RoleItemNavProps) {
     const { activeKeyNav, activeKeyNavSelect } = props;
 
     return (
-        <Nav appearance="ghost" activeKey={ activeKeyNav } style={ { marginBottom: 10, marginTop: 15 } }>
+        <Nav appearance="subtle" activeKey={ activeKeyNav } style={ { marginBottom: 10, marginTop: 15 } }>
             <div
                 style={ {
                     alignItems: "stretch",
@@ -127,19 +127,19 @@ function RoleItemNav(props: RoleItemNavProps) {
                 } }>
                 <Nav.Item
                     eventKey="1"
-                    onSelect={ (eventKey) => activeKeyNavSelect(eventKey) }>
+                    onSelect={ (eventKey) => activeKeyNavSelect(String(eventKey)) }>
                     General
                 </Nav.Item>
 
                 <Nav.Item
                     eventKey="2"
-                    onSelect={ (eventKey) => activeKeyNavSelect(eventKey) }>
+                    onSelect={ (eventKey) => activeKeyNavSelect(String(eventKey)) }>
                     Permissions
                 </Nav.Item>
 
                 <Nav.Item
                     eventKey="3"
-                    onSelect={ (eventKey) => activeKeyNavSelect(eventKey) }>
+                    onSelect={ (eventKey) => activeKeyNavSelect(String(eventKey)) }>
                     Users
                 </Nav.Item>
 
@@ -147,7 +147,7 @@ function RoleItemNav(props: RoleItemNavProps) {
 
                 <Nav.Item
                     eventKey="4"
-                    onSelect={ (eventKey) => activeKeyNavSelect(eventKey) }
+                    onSelect={ (eventKey) => activeKeyNavSelect(String(eventKey)) }
                     icon={ <CodeIcon /> }>
                     Developer Tools
                 </Nav.Item>

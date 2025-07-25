@@ -18,14 +18,13 @@
 
 import Image from "next/image";
 import { Avatar, Stack } from "rsuite";
-import { TypeAttributes } from "rsuite/esm/@types/common";
 import { AccordianItemHeaderComponentProps } from
     "../../models/accordianItemHeaderComponent/accordianItemHeaderComponent";
 
 /**
- * 
+ *
  * @param prop - `title`, `description`, `imageUrl`
- * 
+ *
  * @returns header componet for items in an accordian
  */
 export function AccordianItemHeaderComponent(prop: AccordianItemHeaderComponentProps) {
@@ -36,15 +35,15 @@ export function AccordianItemHeaderComponent(prop: AccordianItemHeaderComponentP
         <Stack>
             <Stack spacing={ 20 }>
                 <Avatar
-                    size={ avatarSize as TypeAttributes.Size } 
+                    size={ avatarSize as any }
                     style={ imageSrc ? { background: "rgba(255,0,0,0)" } : { background: "rgba(125,125,125,255)" } }
                 >
-                    { imageSrc 
+                    { imageSrc
                         ?(<Image
                             src={ imageSrc }
                             alt=""
                             width={ 50 } />)
-                        : null 
+                        : null
                     }
                 </Avatar>
                 <Stack direction="column" justifyContent="flex-start" alignItems="stretch">
