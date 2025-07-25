@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
-const DEFAULT_PRIMARY_COLOR = '#6672c6';
-const DEFAULT_SECONDARY_COLOR = '#0a345c';
+export const DEFAULT_PRIMARY_COLOR = '#6672c6';
+export const DEFAULT_SECONDARY_COLOR = '#0a345c';
 
 interface ThemeStore {
   primaryColor: string;
