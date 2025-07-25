@@ -17,14 +17,21 @@ public isolated class UserInfoResolver {
     # + return - UserInfo record or error
     public isolated function retrieveUserInfo(http:Headers headers) returns UserInfo|error {
 
-        string jwtHeader = "";
-        var authHeader = headers.getHeader("Header1");
-        if authHeader is http:HeaderNotFoundError {
-            return authHeader;
-        } else {
-            if (authHeader.startsWith("Bearer ")) {
-                jwtHeader = authHeader.substring(7);
+        var jwtHeader = headers.getHeader("x-jwt-assertion");
+
+        if jwtHeader is http:HeaderNotFoundError {
+            var authHeader = headers.getHeader("Authorization");
+            if authHeader is http:HeaderNotFoundError {
+                return authHeader;
+            } else {
+                if (authHeader.startsWith("Bearer ")) {
+                    jwtHeader = authHeader.substring(7);
+                }
             }
+        }
+
+        if (jwtHeader is http:HeaderNotFoundError) {
+            return jwtHeader;
         }
 
         [jwt:Header, jwt:Payload] [_, payload] = check jwt:decode(jwtHeader);

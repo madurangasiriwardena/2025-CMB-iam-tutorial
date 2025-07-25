@@ -16,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const meetingServiceUrl = getConfig().BusinessAdminAppConfig.resourceServerURLs.meetingService;
     const apiKey = getConfig().BusinessAdminAppConfig.resourceServerURLs.apiKey;
     const headers: Record<string, string> = {
-      Authorization: `Bearer ${accessToken}`
+      "x-jwt-assertion": accessToken
     };
     if (apiKey) {
       headers["api-key"] = apiKey;
