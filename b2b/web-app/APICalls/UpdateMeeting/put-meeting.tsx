@@ -16,15 +16,14 @@
  * under the License.
  */
 
+import axios from "axios";
 import { MeetingInfo } from "../../types/meeting";
-import createHeaders from "../createHeaders";
-import { getMeetingInstance } from "../getMeetings/meetingInstance";
 
 export async function putMeeting(accessToken: string, meetingId: string, payload?: MeetingInfo) {
-    const headers = createHeaders(accessToken);
-    const response = await getMeetingInstance().put(`meetings/${encodeURIComponent(meetingId)}`, payload, {
-        headers: headers
+    const response = await axios.put("/api/meetings/updateMeeting", {
+        accessToken,
+        meetingId,
+        meetingData: payload
     });
-
     return response;
 }

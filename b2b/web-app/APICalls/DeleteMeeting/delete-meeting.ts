@@ -15,14 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import createHeaders from "../createHeaders";
-import { getMeetingInstance } from "../getMeetings/meetingInstance";
+import axios from "axios";
 
 export async function deleteMeeting(accessToken: string, meetingId: string) {
-    const headers = createHeaders(accessToken);
-    const response = await getMeetingInstance().delete(`/meetings/${encodeURIComponent(meetingId)}`, {
-        headers: headers
-    });
-
-    return response;
+    return await axios.post("/api/meetings/deleteMeeting", {accessToken, meetingId});
 }

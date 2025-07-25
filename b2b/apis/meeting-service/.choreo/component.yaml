@@ -2,7 +2,7 @@ schemaVersion: 1.2
 
 endpoints:
   - name: meeting-service
-    displayName: Go Meeting Service
+    displayName: Meeting Service
     service:
       basePath: /
       port: 9091

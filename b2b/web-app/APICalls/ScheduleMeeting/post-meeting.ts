@@ -16,19 +16,10 @@
  * under the License.
  */
 
-import { AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 import { Meeting, MeetingInfo } from "../../types/meeting";
-import createHeaders from "../createHeaders";
-import { getMeetingInstance } from "../getMeetings/meetingInstance";
 
-export async function postMeeting(accessToken: string, payload?: MeetingInfo) {
-    const headers = createHeaders(accessToken);
-    const response = await getMeetingInstance().post("/meetings", payload, {
-        headers: headers
-    });
-
-    console.log(`Response Status: ${response.status}`);
-
+export async function postMeeting(accessToken: string, meetingData?: MeetingInfo) {
+    const response = await axios.post("/api/meetings/createMeeting", { accessToken, meetingData });
     return response as AxiosResponse<Meeting>;
-
 }

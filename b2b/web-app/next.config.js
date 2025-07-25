@@ -27,6 +27,7 @@ const nextConfig = {
     idpCreationRole: process.env.NEXT_PUBLIC_IDP_MANAGER_ROLE_NAME,
     baseOrgUrl: process.env.BASE_ORG_URL,
     baseUrl: process.env.BASE_URL,
+    apiKey: process.env.API_KEY,
     meetingServiceUrl: process.env.MEETING_SERVICE_URL,
     chatServiceUrl: process.env.CHAT_SERVICE_URL,
     clientId: process.env.CLIENT_ID,
