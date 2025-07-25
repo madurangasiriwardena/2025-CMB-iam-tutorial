@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const personalizationServiceUrl = getConfig().BusinessAdminAppConfig.resourceServerURLs.personalizationService;
-    const apiKey = getConfig().BusinessAdminAppConfig.resourceServerURLs.apiKey;
+    const apiKey = getConfig().BusinessAdminAppConfig.resourceServerURLs.personalizationApiKey;
     const headers: Record<string, string> = {
       "x-jwt-assertion": accessToken
     };
@@ -26,7 +26,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
     return res.status(200).json(response.data);
   } catch (error: any) {
+    if (error.response && error.response.status) {
+      return res.status(error.response.status).json({ error: error.message || "Failed to update personalization data" });
+    }
     return res.status(500).json({ error: error.message || "Failed to update personalization data" });
   }
 }
-

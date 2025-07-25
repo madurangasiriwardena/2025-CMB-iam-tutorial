@@ -15,7 +15,7 @@
  * under the License.
  */
 
-import { dataNotRecievedError, notPostError } 
+import { dataNotRecievedError, notPostError }
     from "@teamspace-app/shared/data-access/data-access-common-api-util";
 import { NextApiRequest, NextApiResponse } from "next";
 import getToken from "../../clientCredentials";
@@ -25,7 +25,7 @@ export default async function listCurrentApplicationInRoot(req: NextApiRequest, 
     if (req.method !== "POST") {
         notPostError(res);
     }
-    
+
     const tokenData = await getToken();
     const rootAccessToken = tokenData.access_token;
 

@@ -334,6 +334,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                                     </span>
                                                 </span>
                                                 <Button
+                                                    type="submit"
                                                     size="lg"
                                                     appearance="default"
                                                     style={{ minWidth: 120 }}

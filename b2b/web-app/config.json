@@ -87,7 +87,9 @@
             }
         },
         "resourceServerURLs": {
-            "apiKey": "<API_KEY>",
+            "meetingApiKey": "<API_KEY>",
+            "personalizationApiKeyApiKey": "<API_KEY>",
+            "chatApiKey": "<API_KEY>",
             "meetingService": "<MEETING_SERVICE_URL>",
             "chatService": "<CHAT_SERVICE_URL>",
             "personalizationService": "<PERSONALIZATION_SERVICE_URL>"
