@@ -18,7 +18,7 @@ public isolated class UserInfoResolver {
     public isolated function retrieveUserInfo(http:Headers headers) returns UserInfo|error {
 
         string jwtHeader = "";
-        var authHeader = headers.getHeader("Authorization");
+        var authHeader = headers.getHeader("Header1");
         if authHeader is http:HeaderNotFoundError {
             return authHeader;
         } else {
