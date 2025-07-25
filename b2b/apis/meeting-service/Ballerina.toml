@@ -5,8 +5,3 @@ version = "1.0.0"
 
 [build-options]
 observabilityIncluded = true
-
-[[dependency]]
-org = "pubudu538"
-name = "choreo.user.info"
-version = "0.1.1"
