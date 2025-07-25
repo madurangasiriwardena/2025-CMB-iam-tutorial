@@ -1,4 +1,5 @@
 import chroma from "chroma-js";
+import { DEFAULT_PRIMARY_COLOR, DEFAULT_SECONDARY_COLOR } from "components/sections/theme-store";
 
 export interface ThemeColors {
     primaryColor: string;
@@ -6,8 +7,8 @@ export interface ThemeColors {
 }
 
 export function generateThemeVars({ primaryColor, secondaryColor }: ThemeColors) {
-    const primary = primaryColor || '#1976d2';
-    const secondary = secondaryColor || '#388e3c';
+    const primary = primaryColor || DEFAULT_PRIMARY_COLOR;
+    const secondary = secondaryColor || DEFAULT_SECONDARY_COLOR;
     const contrastText = chroma.contrast(secondary, '#000') > chroma.contrast(secondary, '#fff') ? '#000' : '#fff';
     const hoverBg = chroma(secondary).brighten(0.5).hex();
     const themeVars: { [key: string]: string } = {
