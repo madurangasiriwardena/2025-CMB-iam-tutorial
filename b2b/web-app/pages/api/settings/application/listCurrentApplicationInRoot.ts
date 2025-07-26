@@ -33,7 +33,6 @@ export default async function listCurrentApplicationInRoot(req: NextApiRequest, 
     const decodedAppName = appName.toString().replace(/%20/g, "");
 
     try {
-        console.log("path" + `${getConfig().CommonConfig.AuthorizationConfig.BaseOrganizationUrl}/api/server/v1/applications?filter=name+eq+${decodedAppName}`);
         const fetchData = await fetch(
             `${getConfig().CommonConfig.AuthorizationConfig.BaseOrganizationUrl}/api/server/v1/applications?filter=name+eq+${decodedAppName}`,
                 {

@@ -49,6 +49,7 @@ import {signout} from "@teamspace-app/util-authorization-config-util";
 import {upgradeTier} from "pages/api/upgrade";
 import defaultBrandingPreference from "ui/ui-assets/lib/data/defaultBrandingPreference.json";
 import BrandingPreviewSection from "./BrandingPreviewSection";
+import { DEFAULT_PRIMARY_COLOR, DEFAULT_SECONDARY_COLOR } from "components/sections/theme-store";
 
 /**
  *
@@ -131,6 +132,11 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
     const fetchBrandingPreference = async () => {
         const res: BrandingPreference = (await controllerDecodeGetBrandingPrefrence(session) as BrandingPreference);
         if (!res) {
+            setLogoUrl("");
+            setLogoAltText("");
+            setFavicon("");
+            setPrimaryColor(DEFAULT_PRIMARY_COLOR);
+            setSecondaryColor(DEFAULT_SECONDARY_COLOR);
             console.debug("Branding response is not retrieved.");
             return;
         }
@@ -150,16 +156,15 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
         // Use defaultBrandingPreference if brandingPreference is not present
         const updatedBrandingPreference: BrandingPreference = brandingPreference
             ? brandingPreference : defaultBrandingPreference;
-        const activeTheme: string = (updatedBrandingPreference.preference as { theme: any }).theme.activeTheme;
-        const defaultPrimaryColor = defaultBrandingPreference.preference.theme[activeTheme].colors.primary.main;
-        const defaultSecondaryColor = defaultBrandingPreference.preference.theme[activeTheme].colors.secondary.main;
+        const activeTheme: string = updatedBrandingPreference.preference.theme.activeTheme;
 
         // Now updatedBrandingPreference is guaranteed to have the correct structure
-        (updatedBrandingPreference.preference as { theme: any }).theme[activeTheme].images.logo.imgURL = values.logo_url;
-        (updatedBrandingPreference.preference as { theme: any }).theme[activeTheme].images.logo.altText = values.logo_alt_text;
-        (updatedBrandingPreference.preference as { theme: any }).theme[activeTheme].images.favicon.imgURL = values.favicon_url;
-        (updatedBrandingPreference.preference as { theme: any }).theme[activeTheme].colors.primary.main = values.primary_color || defaultPrimaryColor; // Fallback to default if empty
-        (updatedBrandingPreference.preference as { theme: any }).theme[activeTheme].colors.secondary.main = values.secondary_color || defaultSecondaryColor; // Fallback to default if empty
+        updatedBrandingPreference.preference.theme[activeTheme].images.logo.imgURL = values.logo_url;
+        updatedBrandingPreference.preference.theme[activeTheme].images.logo.altText = values.logo_alt_text;
+        updatedBrandingPreference.preference.theme[activeTheme].images.favicon.imgURL = values.favicon_url;
+        updatedBrandingPreference.preference.theme[activeTheme].colors.primary.main = values.primary_color || DEFAULT_PRIMARY_COLOR;
+        updatedBrandingPreference.preference.theme[activeTheme].colors.secondary.main = values.secondary_color || DEFAULT_SECONDARY_COLOR;
+
         updatedBrandingPreference.name = session.orgId;
         delete (updatedBrandingPreference as any).resolvedFrom;
         controllerDecodeUpdateBrandingPrefrence(session, updatedBrandingPreference)
@@ -169,8 +174,8 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                     logoAltText: values["logo_alt_text"],
                     logoUrl: values["logo_url"],
                     org: session.orgId,
-                    primaryColor: values["primary_color"],
-                    secondaryColor: values["secondary_color"]
+                    primaryColor: values["primary_color"] || DEFAULT_PRIMARY_COLOR,
+                    secondaryColor: values["secondary_color"] || DEFAULT_SECONDARY_COLOR
                 };
                 postPersonalization(session.accessToken, newPersonalization)
                     .then(() => {
@@ -222,12 +227,22 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
         );
     };
 
-
-    const ColorPickerField = ({input, meta, label, helperText}) => (
+    const PrimaryColorPickerField = ({input, meta, label, helperText}) => (
         <FormSuite.Group>
             <b>{label}</b>
             <ChromePicker
-                color={input.value || '#000000'}
+                color={input.value || DEFAULT_PRIMARY_COLOR}
+                onChange={(color) => input.onChange(color.hex)}
+            />
+            <small>{meta.touched && meta.error ? meta.error : helperText}</small>
+        </FormSuite.Group>
+    );
+
+    const ButtonColorPickerField = ({input, meta, label, helperText}) => (
+        <FormSuite.Group>
+            <b>{label}</b>
+            <ChromePicker
+                color={input.value || DEFAULT_SECONDARY_COLOR}
                 onChange={(color) => input.onChange(color.hex)}
             />
             <small>{meta.touched && meta.error ? meta.error : helperText}</small>
@@ -299,22 +314,87 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                             >
                                                 <FormSuite.Control name="input" type="url"/>
                                             </FormField>
-                                            <div style={{ display: "flex", gap: 24, width: "100%" }}>
-                                                <div style={{ flex: 1 }}>
-                                                    <Field
-                                                        name="primary_color"
-                                                        component={ColorPickerField}
-                                                        label="Primary Colour"
-                                                    />
+                                            {hasAdvancedBrandingUpdateScope ? (
+                                                <div style={{ display: "flex", gap: 24, width: "100%" }}>
+                                                    <div style={{ flex: 1 }}>
+                                                        <Field
+                                                            name="primary_color"
+                                                            component={PrimaryColorPickerField}
+                                                            label="Primary Colour"
+                                                        />
+                                                    </div>
+                                                    <div style={{ flex: 1 }}>
+                                                        <Field
+                                                            name="secondary_color"
+                                                            component={ButtonColorPickerField}
+                                                            label="Button Colour"
+                                                        />
+                                                    </div>
+                                                </div> 
+                                            ) : (
+                                                <div style={{ marginBottom: "30px" }}>
+                                                    <div
+                                                        style={{
+                                                            margin: "20px 0",
+                                                            padding: "10px",
+                                                            backgroundColor: "#d9d9d9",
+                                                            borderRadius: "5px",
+                                                            textAlign: "center",
+                                                            color: "#272c36"
+                                                        }}
+                                                    >
+                                                        <p>Unlock advanced personalization features like color customization.</p>
+                                                    </div>
+                        
+                                                    <div
+                                                        style={{
+                                                            display: "flex",
+                                                            justifyContent: "center",
+                                                            alignItems: "center",
+                                                            gap: "20px",
+                                                            padding: "20px",
+                                                            backgroundColor: "#f9f9f9",
+                                                            borderRadius: "10px",
+                                                            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)"
+                                                        }}
+                                                    >
+                                                        {/* Enterprise Plan */}
+                                                        <div
+                                                            style={{
+                                                                flex: 1,
+                                                                textAlign: "center",
+                                                                padding: "20px",
+                                                                border: "1px solid #ddd",
+                                                                borderRadius: "10px",
+                                                                backgroundColor: "#fff"
+                                                            }}
+                                                        >
+                                                            <h3>Enterprise Plan</h3>
+                                                            <p
+                                                                style={{
+                                                                    fontSize: "24px",
+                                                                    fontWeight: "bold",
+                                                                    margin: "10px 0"
+                                                                }}
+                                                            >
+                                                                $9/month/user
+                                                            </p>
+                                                            <p>
+                                                                Personalization: <strong>Advanced</strong>
+                                                            </p>
+                                                            <br></br>
+                                                            <Button
+                                                                className={styles.buttonCircular}
+                                                                appearance="default"
+                                                                onClick={onEnterpriseTierUpgrade}
+                                                            >
+                                                                Upgrade Now
+                                                            </Button>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div style={{ flex: 1 }}>
-                                                    <Field
-                                                        name="secondary_color"
-                                                        component={ColorPickerField}
-                                                        label="Button Colour"
-                                                    />
-                                                </div>
-                                            </div>
+                                            )
+                                            }
                                             <br/>
                                             <div style={{
                                                 display: "flex",
@@ -381,70 +461,6 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                             )}
                         />
                     </div>
-                    {/* Show Enterprise Plan Upgrade if Advanced Branding Scope is False */}
-                    {!hasAdvancedBrandingUpdateScope && (
-                        <div style={{ marginBottom: "30px" }}>
-                            <div
-                                style={{
-                                    margin: "20px 0",
-                                    padding: "10px",
-                                    backgroundColor: "#d9d9d9",
-                                    borderRadius: "5px",
-                                    textAlign: "center",
-                                    color: "#272c36"
-                                }}
-                            >
-                                <p>Upgrade your plan for advanced personalizations.</p>
-                            </div>
-
-                            <div
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    gap: "20px",
-                                    padding: "20px",
-                                    backgroundColor: "#f9f9f9",
-                                    borderRadius: "10px",
-                                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)"
-                                }}
-                            >
-                                {/* Enterprise Plan */}
-                                <div
-                                    style={{
-                                        flex: 1,
-                                        textAlign: "center",
-                                        padding: "20px",
-                                        border: "1px solid #ddd",
-                                        borderRadius: "10px",
-                                        backgroundColor: "#fff"
-                                    }}
-                                >
-                                    <h3>Enterprise Plan</h3>
-                                    <p
-                                        style={{
-                                            fontSize: "24px",
-                                            fontWeight: "bold",
-                                            margin: "10px 0"
-                                        }}
-                                    >
-                                        $9/month/user
-                                    </p>
-                                    <p>
-                                        Personalization: <strong>Advanced</strong>
-                                    </p>
-                                    <br></br>
-                                    <Button
-                                        className={styles.buttonCircular}
-                                        appearance="default"
-                                        onClick={onEnterpriseTierUpgrade}
-                                    >
-                                        Upgrade Now
-                                    </Button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
                 </>
             ) : (
                 <>
