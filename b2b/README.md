@@ -86,7 +86,7 @@ Add the following post logout URL for the authorized redirect URLs:
 
 - `http://localhost:3002`
 
-Enable app as a public client. Select Access token type as JWT. Click on Update.
+Select Access token type as JWT. Click on Update.
 
 ## Allow required grant types
 
@@ -185,7 +185,7 @@ Navigate to the application in the Asgardeo console.
 
 ## Create Roles
 
-Navigate to the Roles section under User Management and create 2 application roles for teamspace admin and user with the following details.
+Navigate to the Roles section under User Management and create 2 application roles for the teamspace admin and user with the following details.
 
 ### Role name: teamspace-admin
 
@@ -195,9 +195,17 @@ Navigate to the Roles section under User Management and create 2 application rol
 | SCIM2 Roles API            | All Scope                                     |
 | SCIM2 Groups API           | All Scope                                     |
 | Identity Provider Management API | View Identity Provider                               |
-| Application Management API | All Scope                                     |
+| Application Management API (Organization API) | All Scope                                     |
 | Claim Management API       | All Scope                                     |
 | Meeting Service            | List Meetings, View Meeting, Create Meetings, Update Meeting, Delete Meeting |
+
+### Role name: teamspace-user
+
+| API Resource               | Scopes                                        |
+| -------------------------- | --------------------------------------------- |
+| Meeting Service            | List Meetings, View Meeting, Create Meetings, Update Meeting, Delete Meeting |
+
+Additionally, define the following three application roles for the TeamSpace application to model administrator functionalities based on the customer's subscription plan:
 
 ### Role name: idp-manager
 
@@ -219,12 +227,15 @@ Navigate to the Roles section under User Management and create 2 application rol
 | Personalization Service    | Create Basic Branding, Create Advanced Branding, Update Branding, Delete Branding |
 | Branding Preference Management API | All Scope                             |
 
-### Role name: teamspace-user
 
-| API Resource               | Scopes                                        |
-| -------------------------- | --------------------------------------------- |
-| Meeting Service            | List Meetings, View Meeting, Create Meetings, Update Meeting, Delete Meeting |
+## Configure role sharing
 
+1. Navigate to your application in the Asgardeo console.
+2. Click on the "Shared Access" tab.
+3. Select "Share the application with all organizations".
+4. Under that enable "Share a subset of roles with all organizations" option.
+5. Select "teamspace-admin" and "teamspace-user" roles.
+6. Click "save".
 
 ## Configure Next.js app
 
@@ -323,7 +334,7 @@ Visit the sample application at `http://localhost:3002`.
 
 Visit the sample application at `http://localhost:3002/?orgId=<org-id>`. Replace `<org-id>` with the organization id retrieved from the console.
 
-1. Click on the Get Started to get started.
+1. Click on "Get Started".
 2. You will get a Sign In prompt and click on the Sign In With SSO at the bottom of the menu.
 3. Provide the WorkLink as the Name of the Organization and click Submit.
 4. Use admin user credentials (`admin@worklink.com`) created to login to the application.
