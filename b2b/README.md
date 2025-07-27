@@ -64,7 +64,8 @@ If you have not already done so, create an organization in Asgardeo before regis
   > **Note:**  
   > The authorized redirect URL determines where Asgardeo should send users after they successfully log in. Typically, this will be the web address where Teamspace is hosted. For this guide, we'll use `http://localhost:3002/api/auth/callback/asgardeo`, as the app will be accessible at this URL.
 
-5. Allow sharing the application with organizations and click "Create". You can also do this later from the “Advanced” tab of the created application as well.
+5. Allow sharing the application with organizations and click "Create". If selected, choose `Share with all organizations` and `Do not share roles with all organizations.` in next step.
+   You can also do this later from the “Shared Access” tab of the created application as well.
 
 <img width="800" alt="Image" src="https://github.com/user-attachments/assets/3098f851-4855-4f0a-a98b-00e6a9f3f8ba" />
 
@@ -85,7 +86,7 @@ Add the following post logout URL for the authorized redirect URLs:
 
 - `http://localhost:3002`
 
-Enable app as a public client. Select Access token type as JWT. Click on Update.
+Select Access token type as JWT. Click on Update.
 
 ## Allow required grant types
 
@@ -107,6 +108,12 @@ Based on the features we are expecting to implement, the following grant types a
 3. Allow the above grant types and update.
 
 <img width="800" alt="Image" src="https://github.com/user-attachments/assets/462017e2-992c-43d2-82b8-0fc791bedf8a" />
+
+## Select required user attributes
+
+1. Navigate to your application in the Asgardeo console.
+2. Click on the "User Attributes" tab.
+3. Mark "Email" as a requested attribute and click "Update".
 
 ## Create API Resources
 
@@ -178,7 +185,7 @@ Navigate to the application in the Asgardeo console.
 
 ## Create Roles
 
-Navigate to the Roles section under User Management and create 2 application roles for teamspace admin and user with the following details.
+Navigate to the Roles section under User Management and create 2 application roles for the teamspace admin and user with the following details.
 
 ### Role name: teamspace-admin
 
@@ -188,15 +195,23 @@ Navigate to the Roles section under User Management and create 2 application rol
 | SCIM2 Roles API            | All Scope                                     |
 | SCIM2 Groups API           | All Scope                                     |
 | Identity Provider Management API | View Identity Provider                               |
-| Application Management API | All Scope                                     |
+| Application Management API (Organization API) | All Scope                                     |
 | Claim Management API       | All Scope                                     |
 | Meeting Service            | List Meetings, View Meeting, Create Meetings, Update Meeting, Delete Meeting |
+
+### Role name: teamspace-user
+
+| API Resource               | Scopes                                        |
+| -------------------------- | --------------------------------------------- |
+| Meeting Service            | List Meetings, View Meeting, Create Meetings, Update Meeting, Delete Meeting |
+
+Additionally, define the following three application roles for the TeamSpace application to model administrator functionalities based on the customer's subscription plan:
 
 ### Role name: idp-manager
 
 | API Resource               | Scopes                                        |
 | -------------------------- | --------------------------------------------- |
-| Identity Provider Management API | Create Identity Provider , Update Identity Provider, Delete Identity Provider |
+| Identity Provider Management API | Create Identity Provider, Update Identity Provider, Delete Identity Provider |
 
 ### Role name: basic-branding-editor
 
@@ -212,12 +227,15 @@ Navigate to the Roles section under User Management and create 2 application rol
 | Personalization Service    | Create Basic Branding, Create Advanced Branding, Update Branding, Delete Branding |
 | Branding Preference Management API | All Scope                             |
 
-### Role name: teamspace-user
 
-| API Resource               | Scopes                                        |
-| -------------------------- | --------------------------------------------- |
-| Meeting Service            | List Meetings, View Meeting, Create Meetings, Update Meeting, Delete Meeting |
+## Configure role sharing
 
+1. Navigate to your application in the Asgardeo console.
+2. Click on the "Shared Access" tab.
+3. Select "Share the application with all organizations".
+4. Under that enable "Share a subset of roles with all organizations" option.
+5. Select "teamspace-admin" and "teamspace-user" roles.
+6. Click "save".
 
 ## Configure Next.js app
 
@@ -236,6 +254,7 @@ BASE_ORG_URL=https://api.asgardeo.io/t/{ORG_NAME}
 MEETING_SERVICE_URL=http://localhost:9091
 PERSONALIZATION_SERVICE_URL=http://localhost:9093
 HOSTED_URL=http://localhost:3002
+CHAT_SERVICE_URL=http://localhost:8000
 SHARED_APP_NAME="Teamspace"
 CLIENT_ID={CLIENT_ID}
 CLIENT_SECRET={CLIENT_SECRET}
@@ -272,14 +291,6 @@ In the root organization, navigate to the Styles & Text section under the Brandi
 
 4. Expand the Color Palette and add `#69a2f4` as the Primary Color.
 
-### Customize email templates
-
-Navigate to the root organization's email templates section.
-
-1. Select Request New User Password.
-2. Search for `{{account.recovery.endpoint-url}}/confirmrecovery.do?confirmation={{confirmation-code}}&amp;userstoredomain={{userstore-domain}}&amp;username={{url:user-name}}&amp;type=invite`.
-3. Append the following params to the URL `sp=Teamspace&orgid={{organization-id}}` (NOTE: Need to add the created application name).
-
 ### Configure the first Organization
 
 1. Create a sub-organization named WorkLink from the Organizations section and switch to the sub-organization.
@@ -288,12 +299,6 @@ Navigate to the root organization's email templates section.
     - Invite the user to set their own password. User will get the navigation to the sample application when you have completed the customize email templates step.
     - Set a password for the user.
 4. Add the user to the teamspace-admin role.
-
-### Configure the login flow
-
-1. Navigate to WSO2 Identity Server Console of the primary organization.
-2. Remove the Basic Authentication option and keep the “Sign In with SSO” option.
-3. Click on update.
 
 ## Sign up to Teamspace
 
@@ -329,7 +334,7 @@ Visit the sample application at `http://localhost:3002`.
 
 Visit the sample application at `http://localhost:3002/?orgId=<org-id>`. Replace `<org-id>` with the organization id retrieved from the console.
 
-1. Click on the Get Started to get started.
+1. Click on "Get Started".
 2. You will get a Sign In prompt and click on the Sign In With SSO at the bottom of the menu.
 3. Provide the WorkLink as the Name of the Organization and click Submit.
 4. Use admin user credentials (`admin@worklink.com`) created to login to the application.
