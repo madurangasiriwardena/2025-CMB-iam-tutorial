@@ -241,10 +241,12 @@ Additionally, define the following three application roles for the TeamSpace app
 
 ## Configure the AI Agent Chat Service
 
-### Enable App-Native Authentication
+### Configure the Application
 1. Navigate to your application in the Asgardeo console.
 2. Click on the "Advanced" tab.
 3. Under the "App-Native Authentication" section, tick the "Enable app-native authentication API" and click "Update".
+4. Navigate to the "Protocol" tab.
+5. Add `http://localhost:8000/callback` as a "Authorized Redirect URL" and click "Update".
 
 ### Create AI Agent
 1. Navigate to the AI Agent section in the Asgardeo console.
