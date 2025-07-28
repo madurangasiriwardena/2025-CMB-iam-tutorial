@@ -45,10 +45,10 @@ export default async function pollForUserCreation(
       accessToken,
       orgId,
       param: {
-        firstName,
-        lastName,
-        email,
-        password,
+        emails : [{ "primary" : "true", "value" : email }],
+        name : { "familyName" : lastName , "givenName" : firstName },
+        userName : email,
+        password : password,
       },
     }),
   };
