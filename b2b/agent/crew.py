@@ -99,7 +99,7 @@ def create_crew(question, thread_id: str = None):
             ### 2. Booking Finalization
             When flow_state contains "BOOKING_PREVIEW_INITIATED" and "BOOKING_AUTHORIZED":
             - Wait for explicit user approval ("Yes, schedule it!")
-            - Consider the user has approved the preview when the user message contains "Yes, schedule it!" or similar confirmation
+            - Consider the user has approved the preview when the user message contains "SCHEDULE_MEETING"
             - Call ScheduleMeetingTool to schedule the meeting
             - If errors occur, revert to confirmation step
             - Summarize scheduling in chat_response

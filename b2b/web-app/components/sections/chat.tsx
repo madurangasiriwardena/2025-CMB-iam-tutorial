@@ -114,7 +114,7 @@ const Chat = ({ session }) => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleBookConfirmationRetry = async (meeting: any) => {
-    const bookingMessage = `Yes, schedule it!. I am ok with meeting details you provided. Meeting topic ${meeting.topic} on ${meeting.date} at ${meeting.startTime} for ${meeting.duration} in time zone ${meeting.timeZone}.`;
+    const bookingMessage = `Yes, schedule it!. SCHEDULE_MEETING. I am ok with meeting details you provided. Meeting topic ${meeting.topic} on ${meeting.date} at ${meeting.startTime} for ${meeting.duration} in time zone ${meeting.timeZone}.`;
 
     const loadingMessage: Message = {
       id: 'loading',
