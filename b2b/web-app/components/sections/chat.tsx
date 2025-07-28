@@ -5,6 +5,8 @@ import {Info, Send} from "lucide-react";
 import {SchedulingConfirmationCard} from "./chat/booking-confirmation-card";
 import {useStateStore} from "./state-store";
 import {getConfig} from "@teamspace-app/util-application-config-util";
+import AdminIcon from '@rsuite/icons/Admin';
+import SendIcon from '@rsuite/icons/Send';
 
 type MeetingPreview = {
   topic: string
@@ -295,12 +297,13 @@ const Chat = ({ session }) => {
                 maxWidth: 400,
                 width: '100%',
                 minHeight: 320,
+                maxHeight: '80vh', // Ensure widget is not taller than viewport
                 display: 'flex',
                 flexDirection: 'column',
                 overflow: 'hidden',
               }}
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', borderBottom: '1px solid #eee', background: '#f7f7fa' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', borderBottom: '1px solid #eee', background: '#f7f7fa', position: 'sticky', top: 0, zIndex: 2 }}>
               <span style={{ fontWeight: 600 }}>Teamspace Agent</span>
               <button
                   onClick={() => setOpen(false)}
@@ -321,11 +324,17 @@ const Chat = ({ session }) => {
                         marginBottom: 12,
                       }}
                   >
-                    <img
-                        src={msg.isUser ? 'https://ui-avatars.com/api/?name=User&background=4F40EE&color=fff&size=32' : 'https://ui-avatars.com/api/?name=AI&background=E0E1E2&color=333&size=32'}
-                        alt={msg.isUser ? 'User' : 'AI'}
-                        style={{ width: 32, height: 32, borderRadius: '50%', margin: msg.isUser ? '0 0 0 8px' : '0 8px 0 0' }}
-                    />
+                    {msg.isUser ? (
+                        <span style={{ width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 8px 0 0' }}>
+                          <AdminIcon style={{ fontSize: 32, color: '#4F40EE', display: 'block' }} />
+                        </span>
+                    ) : (
+                        <img
+                            src="/agent-icon.png"
+                            alt="User"
+                            style={{ width: 32, height: 32, borderRadius: '50%', margin: '0 0 0 8px', objectFit: 'cover', display: 'block' }}
+                        />
+                    )}
                     <div
                         style={{
                           background: msg.isUser ? '#4F40EE' : '#fff',
@@ -360,9 +369,8 @@ const Chat = ({ session }) => {
               <div ref={messagesEndRef} />
             </div>
             <div style={{ padding: 16, borderTop: '1px solid #eee', background: '#fff' }}>
-              <form onSubmit={handleSubmit} style={{ display: 'flex', gap: 8 }}>
-                <input
-                    type="text"
+              <form onSubmit={handleSubmit} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                <textarea
                     placeholder="Type your message..."
                     value={input}
                     onChange={e => setInput(e.target.value)}
@@ -374,7 +382,7 @@ const Chat = ({ session }) => {
                     disabled={isLoading || !input.trim()}
                     style={{ padding: '8px 16px', background: '#4F40EE', color: '#fff', border: 'none', borderRadius: 4, cursor: isLoading ? 'not-allowed' : 'pointer' }}
                 >
-                  <Send size={18} />
+                  <SendIcon style={{ fontSize: 20 }} />
                 </button>
               </form>
             </div>
